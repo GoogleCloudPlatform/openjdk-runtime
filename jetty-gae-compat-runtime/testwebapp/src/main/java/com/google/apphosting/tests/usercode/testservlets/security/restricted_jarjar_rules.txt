@@ -1,1 +1,0 @@
-rule com.google.apphosting.tests.usercode.testservlets.security.Restricted com.google.appengine.repackaged.@0 
