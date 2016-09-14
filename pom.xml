@@ -34,7 +34,8 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
     <appengine.api.version>1.9.40</appengine.api.version>
-    <docker.label.prefix>async-</docker.label.prefix>
+    <docker.tag>8-jre</docker.tag>
+    <docker.appengine.image>gcr.io/google_appengine/base</docker.appengine.image>
   </properties>
 
   <developers>

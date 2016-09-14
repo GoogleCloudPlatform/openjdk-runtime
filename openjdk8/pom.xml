@@ -67,7 +67,7 @@
             <configuration>
               <imageName>openjdk8</imageName>
 	      <imageTags>
-	        <imageTag>${docker.label.prefix}8-jre</imageTag>
+	        <imageTag>${docker.tag}</imageTag>
 	      </imageTags>
               <dockerDirectory>${project.build.directory}/docker</dockerDirectory>
             </configuration>
@@ -81,7 +81,7 @@
 	    <configuration>
 	      <imageName>openjdk8</imageName>
 	      <imageTags>
-	        <imageTag>${docker.label.prefix}8-jre</imageTag>
+	        <imageTag>${docker.tag}</imageTag>
 	      </imageTags>
 	    </configuration>
 	  </execution>
