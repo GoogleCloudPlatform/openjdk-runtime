@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM gcr.io/google_appengine/base
+FROM ${docker.appengine.image}
 ENV DEBIAN_FRONTEND noninteractive
 
 # Create env vars to identify image
 ENV GAE_IMAGE_NAME ${project.artifactId}
-ENV GAE_IMAGE_LABEL ${docker.label.prefix}8-jre
+ENV GAE_IMAGE_LABEL ${docker.tag}
 ENV GAE_IMAGE_VERSION ${project.version}
 
 # Update debian 
