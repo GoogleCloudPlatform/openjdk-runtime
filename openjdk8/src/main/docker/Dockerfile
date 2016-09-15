@@ -17,7 +17,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Create env vars to identify image
 ENV GAE_IMAGE_NAME ${project.artifactId}
-ENV GAE_IMAGE_LABEL ${docker.tag}
+ENV GAE_IMAGE_LABEL ${openjdk8.version}-${project.version}-${maven.build.timestamp}
 ENV GAE_IMAGE_VERSION ${project.version}
 
 # Update debian 
@@ -25,7 +25,7 @@ RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/a
  && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
     ca-certificates \
-    openjdk-8-jre \
+    openjdk-8-jre=${openjdk8.version}'-*' \
     netbase \
     wget \ 
     unzip \

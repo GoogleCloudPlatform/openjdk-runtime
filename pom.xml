@@ -21,7 +21,7 @@
 
   <groupId>com.google.cloud.runtimes</groupId>
   <artifactId>openjdk-parent</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Google App Engine OpenJDK Runtime Parent</name>
   <scm>
@@ -32,9 +32,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
+    <maven.build.timestamp.format>yyyy-MM-dd_HH_mm</maven.build.timestamp.format>
     <appengine.api.version>1.9.40</appengine.api.version>
-    <docker.tag>8-jre</docker.tag>
+    <openjdk8.version>8u102</openjdk8.version>
     <docker.appengine.image>gcr.io/google_appengine/base</docker.appengine.image>
   </properties>
 
@@ -156,8 +156,9 @@
         <plugin>
           <groupId>com.spotify</groupId>
           <artifactId>docker-maven-plugin</artifactId>
-          <version>0.3.2</version>
+          <version>0.4.13</version>
         </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
