@@ -35,6 +35,7 @@
     <maven.build.timestamp.format>yyyy-MM-dd_HH_mm</maven.build.timestamp.format>
     <appengine.api.version>1.9.40</appengine.api.version>
     <openjdk8.version>8u102</openjdk8.version>
+    <docker.tag.prefix></docker.tag.prefix>
     <docker.appengine.image>gcr.io/google_appengine/base</docker.appengine.image>
   </properties>
 

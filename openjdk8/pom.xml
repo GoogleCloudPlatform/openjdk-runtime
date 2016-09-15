@@ -67,11 +67,11 @@
             <configuration>
               <imageName>openjdk</imageName>
 	      <imageTags>
-	        <imageTag>${openjdk8.version}-${project.version}-${maven.build.timestamp}</imageTag>
-	        <imageTag>${openjdk8.version}-${project.version}</imageTag>
-	        <imageTag>${openjdk8.version}-${maven.build.timestamp}</imageTag>
-	        <imageTag>${openjdk8.version}</imageTag>
-	        <imageTag>8</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}-${project.version}-${maven.build.timestamp}</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}-${project.version}</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}-${maven.build.timestamp}</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}</imageTag>
+	        <imageTag>${docker.tag.prefix}8</imageTag>
 	      </imageTags>
               <dockerDirectory>${project.build.directory}/docker</dockerDirectory>
             </configuration>
@@ -85,11 +85,11 @@
 	    <configuration>
 	      <imageName>openjdk</imageName>
 	      <imageTags>
-	        <imageTag>${openjdk8.version}-${project.version}-${maven.build.timestamp}</imageTag>
-	        <imageTag>${openjdk8.version}-${project.version}</imageTag>
-	        <imageTag>${openjdk8.version}-${maven.build.timestamp}</imageTag>
-	        <imageTag>${openjdk8.version}</imageTag>
-	        <imageTag>8</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}-${project.version}-${maven.build.timestamp}</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}-${project.version}</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}-${maven.build.timestamp}</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}</imageTag>
+	        <imageTag>${docker.tag.prefix}8</imageTag>
 	      </imageTags>
 	    </configuration>
 	  </execution>

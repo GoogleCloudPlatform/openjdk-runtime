@@ -17,7 +17,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Create env vars to identify image
 ENV GAE_IMAGE_NAME ${project.artifactId}
-ENV GAE_IMAGE_LABEL ${openjdk8.version}-${project.version}-${maven.build.timestamp}
+ENV GAE_IMAGE_LABEL ${docker.tag.prefix}${openjdk8.version}-${project.version}-${maven.build.timestamp}
 ENV GAE_IMAGE_VERSION ${project.version}
 
 # Update debian 
