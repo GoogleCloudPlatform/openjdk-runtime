@@ -37,18 +37,19 @@ The entry point for the openjdk8 image is [docker-entrypoint.bash](https://githu
 
 If the default command (java) is used, then the entry point sources the [setup-env.bash](https://github.com/GoogleCloudPlatform/openjdk-runtime/blob/master/openjdk8/src/main/docker/setup-env.bash), which looks for supported features to be enabled and/or configured.  The following table indicates the environment variables that may be used to enable/disable/configure features, any default values if they are not set: 
 
-|Env Var           | Description         | Type     | Default                               |
-|------------------|---------------------|----------|---------------------------------------|
-|`DBG_ENABLE`      | Stackdriver Debugger| boolean  | `true`                                |
-|`TMPDIR`          | Temporary Directory | dirname  |                                       |
-|`JAVA_TMP_OPTS`   | JVM tmpdir args     | JVM args | `-Djava.io.tmpdir=${TMPDIR}`          |
-|`HEAP_SIZE`       | Available heap      | size     | Derived from `/proc/meminfo`          |
-|`JAVA_HEAP_OPTS`  | JVM heap args       | JVM args | `-Xms${HEAP_SIZE} -Xmx${HEAP_SIZE}`   |
-|`JAVA_GC_OPTS`    | JVM GC args         | JVM args | `-XX:+UseG1GC` plus configuration     |
-|`JAVA_GC_LOG`     | JVM GC log file     | filename |                                       |
-|`JAVA_GC_LOG_OPTS`| JVM GC args         | JVM args | Derived from `$JAVA_GC_LOG`           |
-|`JAVA_USER_OPTS`  | JVM other args      | JVM args |                                       |
-|`JAVA_OPTS`       | JVM args            | JVM args | See below                             |
+|Env Var           | Description         | Type     | Default                                     |
+|------------------|---------------------|----------|---------------------------------------------|
+|`DBG_ENABLE`      | Stackdriver Debugger| boolean  | `true`                                      |
+|`TMPDIR`          | Temporary Directory | dirname  |                                             |
+|`JAVA_TMP_OPTS`   | JVM tmpdir args     | JVM args | `-Djava.io.tmpdir=${TMPDIR}`                |
+|`GAE_MEMORY_MB`   | Available memory    | size     | Set by GAE or `/proc/meminfo`-400M          |
+|`HEAP_SIZE_MB`    | Available heap      | size     | 80% of `${GAE_MEMORY_MB}`                   |
+|`JAVA_HEAP_OPTS`  | JVM heap args       | JVM args | `-Xms${HEAP_SIZE_MB}M -Xmx${HEAP_SIZE_MB}M` |
+|`JAVA_GC_OPTS`    | JVM GC args         | JVM args | `-XX:+UseG1GC` plus configuration           |
+|`JAVA_GC_LOG`     | JVM GC log file     | filename |                                             |
+|`JAVA_GC_LOG_OPTS`| JVM GC args         | JVM args | Derived from `$JAVA_GC_LOG`                 |
+|`JAVA_USER_OPTS`  | JVM other args      | JVM args |                                             |
+|`JAVA_OPTS`       | JVM args            | JVM args | See below                                   |
 
 If not explicitly set, `JAVA_OPTS` is defaulted to 
 ```
