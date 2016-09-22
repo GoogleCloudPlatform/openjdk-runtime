@@ -16,16 +16,16 @@ FROM ${docker.appengine.image}
 ENV DEBIAN_FRONTEND noninteractive
 
 # Create env vars to identify image
+ENV OPENJDK_VERSION ${openjdk8.version}
 ENV GAE_IMAGE_NAME ${project.artifactId}
-ENV GAE_IMAGE_LABEL ${docker.tag}
-ENV GAE_IMAGE_VERSION ${project.version}
+ENV GAE_IMAGE_LABEL ${docker.tag.prefix}${openjdk8.version}-${maven.build.timestamp}
 
 # Update debian 
 RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list \
  && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
     ca-certificates \
-    openjdk-8-jre \
+    openjdk-8-jre=${openjdk8.version}'-*' \
     netbase \
     wget \ 
     unzip \
