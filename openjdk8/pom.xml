@@ -21,7 +21,7 @@
   <parent>
     <groupId>com.google.cloud.runtimes</groupId>
     <artifactId>openjdk-parent</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>Google App Engine Image for OpenJDK (openjdk8)</name>
@@ -65,9 +65,11 @@
               <goal>build</goal>
             </goals>
             <configuration>
-              <imageName>openjdk8</imageName>
+              <imageName>openjdk</imageName>
 	      <imageTags>
-	        <imageTag>${docker.tag}</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}-${maven.build.timestamp}</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}</imageTag>
+	        <imageTag>${docker.tag.prefix}8</imageTag>
 	      </imageTags>
               <dockerDirectory>${project.build.directory}/docker</dockerDirectory>
             </configuration>
@@ -79,9 +81,11 @@
 	      <goal>removeImage</goal>
 	    </goals>
 	    <configuration>
-	      <imageName>openjdk8</imageName>
+	      <imageName>openjdk</imageName>
 	      <imageTags>
-	        <imageTag>${docker.tag}</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}-${maven.build.timestamp}</imageTag>
+	        <imageTag>${docker.tag.prefix}${openjdk8.version}</imageTag>
+	        <imageTag>${docker.tag.prefix}8</imageTag>
 	      </imageTags>
 	    </configuration>
 	  </execution>
