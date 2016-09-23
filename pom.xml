@@ -21,7 +21,7 @@
 
   <groupId>com.google.cloud.runtimes</groupId>
   <artifactId>openjdk-parent</artifactId>
-  <version>1-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Google App Engine OpenJDK Runtime Parent</name>
   <scm>
