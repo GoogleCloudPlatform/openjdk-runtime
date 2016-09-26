@@ -9,7 +9,7 @@ $ git clone https://github.com/GoogleCloudPlatform/openjdk-runtime.git
 $ cd openjdk8
 $ mvn clean install
 ```
-The resulting image is called openjdk8:8-jre 
+The resulting image is called openjdk
 
 ## The Default Entry Point
 The default entrypoint will print the JDK version:
