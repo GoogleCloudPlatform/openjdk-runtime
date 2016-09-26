@@ -6,7 +6,7 @@ This repository contains the source for the `gcr.io/google_appengine/opendjk` [d
 To build the image you need git, docker and maven installed:
 ```
 $ git clone https://github.com/GoogleCloudPlatform/openjdk-runtime.git
-$ cd openjdk8
+$ cd openjdk-runtime
 $ mvn clean install
 ```
 The resulting image is called openjdk
