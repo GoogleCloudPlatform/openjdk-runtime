@@ -65,9 +65,10 @@
               <goal>build</goal>
             </goals>
             <configuration>
-              <imageName>openjdk8</imageName>
+              <imageName>openjdk</imageName>
 	      <imageTags>
-	        <imageTag>${docker.tag}</imageTag>
+              <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
+              <imageTag>${docker.tag.prefix}8</imageTag>
 	      </imageTags>
               <dockerDirectory>${project.build.directory}/docker</dockerDirectory>
             </configuration>
@@ -79,10 +80,11 @@
 	      <goal>removeImage</goal>
 	    </goals>
 	    <configuration>
-	      <imageName>openjdk8</imageName>
+	      <imageName>openjdk</imageName>
 	      <imageTags>
-	        <imageTag>${docker.tag}</imageTag>
-	      </imageTags>
+              <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
+              <imageTag>${docker.tag.prefix}8</imageTag>
+          </imageTags>
 	    </configuration>
 	  </execution>
         </executions>
