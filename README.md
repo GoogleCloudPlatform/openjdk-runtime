@@ -6,15 +6,15 @@ This repository contains the source for the `gcr.io/google_appengine/opendjk` [d
 To build the image you need git, docker and maven installed:
 ```
 $ git clone https://github.com/GoogleCloudPlatform/openjdk-runtime.git
-$ cd openjdk8
+$ cd openjdk-runtime
 $ mvn clean install
 ```
-The resulting image is called openjdk8:8-jre 
+The resulting image is called openjdk
 
 ## The Default Entry Point
 The default entrypoint will print the JDK version:
 ```
-$ docker run openjdk8:8-jre
+$ docker run openjdk
 openjdk version "1.8.0_66-internal"
 OpenJDK Runtime Environment (build 1.8.0_66-internal-b17)
 OpenJDK 64-Bit Server VM (build 25.66-b17, mixed mode)
@@ -22,13 +22,13 @@ OpenJDK 64-Bit Server VM (build 25.66-b17, mixed mode)
 
 Any arguments passed to the entry point that are not executable are treated as arguments to the java command:
 ```
-$ docker run openjdk8:8-jre -jar /usr/share/someapplication.jar
+$ docker run openjdk -jar /usr/share/someapplication.jar
 ```
 
 Any arguments passed to the entry point that are executable replace the default command, thus a shell could
 be run with:
 ```
-> docker run -it --rm openjdk8:8-jre bash
+> docker run -it --rm openjdk bash
 root@c7b35e88ff93:/# 
 ```
 
