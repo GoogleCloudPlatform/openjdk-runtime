@@ -25,7 +25,7 @@ RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/a
  && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
     ca-certificates \
-    openjdk-8-jre=${openjdk8.version}'-*' \
+    openjdk-8-jre-headless=${openjdk8.version}'-*' \
     netbase \
     wget \ 
     unzip \
