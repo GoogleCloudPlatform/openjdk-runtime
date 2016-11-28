@@ -32,22 +32,6 @@ RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/a
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
 
-# workaround for https://bugs.debian.org/775775
-RUN /var/lib/dpkg/info/ca-certificates-java.postinst configure
-
-# Upgrade to OpenSSL 1.0.2 (via sid)
-ADD sid.list /etc/apt/sources.list.d/
-RUN apt-get -y update \
- && apt-get -y -q --no-install-recommends install \
-    libssl1.0.2 \
-    openssl \
-# Cleanup sid references
- && rm /etc/apt/sources.list.d/sid.list \
- && apt-get -y update \
-# Cleanup apt-get temporary files
- && apt-get -y -q upgrade \
- && apt-get -y -q autoremove
-
 # Add the cloud debugger libraries
 ADD https://storage.googleapis.com/cloud-debugger/appengine-java/current/cdbg_java_agent.tar.gz /opt/cdbg/
 COPY docker-entrypoint.bash /
