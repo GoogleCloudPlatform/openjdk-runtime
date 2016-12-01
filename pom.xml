@@ -36,7 +36,7 @@
     <appengine.api.version>1.9.40</appengine.api.version>
     <openjdk8.version>8u111</openjdk8.version>
     <docker.tag.prefix></docker.tag.prefix>
-    <docker.appengine.image>gcr.io/google_appengine/base</docker.appengine.image>
+    <docker.appengine.image>gcr.io/google_appengine/debian8</docker.appengine.image>
   </properties>
 
   <developers>
