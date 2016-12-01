@@ -66,11 +66,12 @@
             </goals>
             <configuration>
               <imageName>openjdk</imageName>
-	      <imageTags>
-              <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
-              <imageTag>${docker.tag.prefix}8</imageTag>
-	      </imageTags>
+              <imageTags>
+                  <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
+                  <imageTag>${docker.tag.prefix}8</imageTag>
+              </imageTags>
               <dockerDirectory>${project.build.directory}/docker</dockerDirectory>
+              <pullOnBuild>true</pullOnBuild>
             </configuration>
           </execution>
 	  <execution>
