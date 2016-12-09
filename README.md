@@ -1,6 +1,6 @@
 # Google Cloud Platform OpenJDK Docker Image
 
-This repository contains the source for the `gcr.io/google_appengine/opendjk` [docker](https://docker.com) image. This image can be used as the base image for running Java applications on [Google App Engine Flexible Environment](https://cloud.google.com/appengine/docs/flexible/java/) and [Google Container Engine](https://cloud.google.com/container-engine).
+This repository contains the source for the `gcr.io/google_appengine/openjdk` [docker](https://docker.com) image. This image can be used as the base image for running Java applications on [Google App Engine Flexible Environment](https://cloud.google.com/appengine/docs/flexible/java/) and [Google Container Engine](https://cloud.google.com/container-engine).
 
 ## Building the image
 To build the image you need git, docker and maven installed:
