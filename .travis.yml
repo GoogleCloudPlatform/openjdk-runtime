@@ -21,11 +21,7 @@ services:
   
 jdk:
   - oraclejdk8
-install: mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script: mvn --batch-mode clean verify | egrep -v "(^\[INFO\] Download|^\[INFO\].*skipping)"
-# after_success:
-#  - mvn clean cobertura:cobertura coveralls:report
 branches:
   only:
   - master
-  - async-support
