@@ -1,0 +1,24 @@
+# Test spec for the Cloud Runtimes container structure testing framework.
+#
+# See https://github.com/GoogleCloudPlatform/runtimes-common/blob/master/structure_tests/README.md for more detail.
+#
+schemaVersion: 1.0.0
+
+commandTests:
+- name: 'java version is 1.8'
+  command: ['java', '-version']
+  expectedError: ['openjdk version "1\.8.*"']
+
+fileExistenceTests:
+- name: 'ssl certificates are present'
+  path: '/etc/ssl/certs/java/cacerts'
+  isDirectory: false
+  shouldExist: true
+- name: 'App Engine logs directory exists'
+  path: '/var/log/app_engine'
+  isDirectory: true
+  shouldExist: true
+- name: 'Cloud debugger agent is installed'
+  path: '/opt/cdbg/format-env-appengine-vm.sh' 
+  isDirectory: false
+  shouldExist: true
