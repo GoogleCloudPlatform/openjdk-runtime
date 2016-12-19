@@ -52,6 +52,13 @@
               </resources>
             </configuration>
           </execution>
+          <execution>
+           <id>testResources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>testResources</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -89,6 +96,30 @@
 	    </configuration>
 	  </execution>
         </executions>
+      </plugin>
+      <plugin>
+	<groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.5.0</version>
+        <executions>
+          <execution>
+            <id>structure-test</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>../../scripts/ext_run.sh</executable>
+          <workingDirectory>${project.build.directory}</workingDirectory>
+          <arguments>
+            <argument>--image</argument>
+            <argument>openjdk:${docker.tag.prefix}8-${maven.build.timestamp}</argument>
+            <argument>--config</argument>
+            <argument>${project.build.testOutputDirectory}/structure.yaml</argument>
+          </arguments>
+        </configuration>
       </plugin>
     </plugins>
   </build>
