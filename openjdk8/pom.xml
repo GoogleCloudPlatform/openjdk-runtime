@@ -104,7 +104,7 @@
         <executions>
           <execution>
             <id>structure-test</id>
-            <phase>verify</phase>
+            <phase>integration-test</phase>
             <goals>
               <goal>exec</goal>
             </goals>
