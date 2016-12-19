@@ -22,3 +22,11 @@ fileExistenceTests:
   path: '/opt/cdbg/format-env-appengine-vm.sh' 
   isDirectory: false
   shouldExist: true
+- name: 'Docker entrypoint exists'
+  path: '/docker-entrypoint.bash'
+  isDirectory: false
+  shouldExist: true
+- name: 'Env setup script exists'
+  path: '/setup-env.bash'
+  isDirectory: false
+  shouldExist: true
