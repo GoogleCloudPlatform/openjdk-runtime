@@ -18,10 +18,12 @@ language: java
 
 services:
   - docker
-  
+
 jdk:
   - oraclejdk8
-script: mvn --batch-mode clean verify | egrep -v "(^\[INFO\] Download|^\[INFO\].*skipping)"
+
+script: mvn --batch-mode clean verify
+
 branches:
   only:
   - master
