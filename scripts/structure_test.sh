@@ -18,7 +18,7 @@
 # Fetch and execute the structure test framework run script.
 #
 dir=`dirname $0`
-scriptPath=https://raw.githubusercontent.com/GoogleCloudPlatform/runtimes-common/master/structure_tests/ext_run.sh
+scriptPath=https://raw.githubusercontent.com/GoogleCloudPlatform/runtimes-common/a5efef7f1f2cfd60814641fcff8239ea301e661d/structure_tests/ext_run.sh
 destDir=$dir/../target
 fileName=$destDir/run_structure_tests.sh
 
