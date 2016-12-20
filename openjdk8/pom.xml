@@ -54,7 +54,7 @@
           </execution>
           <execution>
            <id>testResources</id>
-            <phase>generate-resources</phase>
+            <phase>generate-test-resources</phase>
             <goals>
               <goal>testResources</goal>
             </goals>
