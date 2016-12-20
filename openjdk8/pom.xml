@@ -58,6 +58,17 @@
             <goals>
               <goal>testResources</goal>
             </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>${basedir}/src/test/resources</directory>
+                  <filtering>true</filtering>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
           </execution>
         </executions>
       </plugin>
