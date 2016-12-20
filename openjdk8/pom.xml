@@ -53,12 +53,13 @@
             </configuration>
           </execution>
           <execution>
-           <id>testResources</id>
-            <phase>generate-test-resources</phase>
+            <id>filter-test-resources</id>
+            <phase>generate-resources</phase>
             <goals>
-              <goal>testResources</goal>
+              <goal>copy-resources</goal>
             </goals>
             <configuration>
+              <outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/src/test/resources</directory>
