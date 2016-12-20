@@ -5,9 +5,12 @@
 schemaVersion: 1.0.0
 
 commandTests:
-- name: 'java version is 1.8'
+- name: 'correct java version is installed'
   command: ['java', '-version']
   expectedError: ['openjdk version "1\.${openjdk.version.major}.*${openjdk.version.minor}"']
+- name: 'OPENJDK_VERSION env variable is set correctly'
+  command: ['env']
+  expectedOutput: ['OPENJDK_VERSION=${openjdk.version}']
 
 fileExistenceTests:
 - name: 'ssl certificates are present'
