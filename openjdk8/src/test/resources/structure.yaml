@@ -1,0 +1,35 @@
+# Test spec for the Cloud Runtimes container structure testing framework.
+#
+# See https://github.com/GoogleCloudPlatform/runtimes-common/blob/master/structure_tests/README.md for more detail.
+#
+schemaVersion: 1.0.0
+
+commandTests:
+- name: 'correct java version is installed'
+  command: ['java', '-version']
+  expectedError: ['openjdk version "1\.${openjdk.version.major}.*${openjdk.version.minor}"']
+- name: 'OPENJDK_VERSION env variable is set correctly'
+  command: ['env']
+  expectedOutput: ['OPENJDK_VERSION=${openjdk.version}']
+
+fileExistenceTests:
+- name: 'ssl certificates are present'
+  path: '/etc/ssl/certs/java/cacerts'
+  isDirectory: false
+  shouldExist: true
+- name: 'App Engine logs directory exists'
+  path: '/var/log/app_engine'
+  isDirectory: true
+  shouldExist: true
+- name: 'Cloud debugger agent is installed'
+  path: '/opt/cdbg/format-env-appengine-vm.sh'
+  isDirectory: false
+  shouldExist: true
+- name: 'Docker entrypoint exists'
+  path: '/docker-entrypoint.bash'
+  isDirectory: false
+  shouldExist: true
+- name: 'Env setup script exists'
+  path: '/setup-env.bash'
+  isDirectory: false
+  shouldExist: true
