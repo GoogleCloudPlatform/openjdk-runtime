@@ -111,7 +111,7 @@
           </execution>
         </executions>
         <configuration>
-          <executable>../../scripts/ext_run.sh</executable>
+          <executable>../../scripts/structure_test.sh</executable>
           <workingDirectory>${project.build.directory}</workingDirectory>
           <arguments>
             <argument>--image</argument>
