@@ -33,3 +33,7 @@ fileExistenceTests:
   path: '/setup-env.bash'
   isDirectory: false
   shouldExist: true
+
+licenseTests:
+- debian: true
+  files: []
