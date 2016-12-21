@@ -42,9 +42,7 @@ RUN tar Cxfvz /opt/cdbg /opt/cdbg/cdbg_java_agent.tar.gz --no-same-owner \
  && mkdir /var/log/app_engine \
  && chmod go+rwx /var/log/app_engine
 
-ONBUILD WORKDIR /app
-ONBUILD ADD app.jar .
+WORKDIR /app
 
 ENTRYPOINT ["/docker-entrypoint.bash"]
 CMD ["java", "-jar", "app.jar"]
-
