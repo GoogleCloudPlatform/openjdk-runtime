@@ -80,7 +80,6 @@
   </distributionManagement>
 
   <modules>
-    <module>logging</module>
     <module>openjdk8</module>
   </modules>
 
