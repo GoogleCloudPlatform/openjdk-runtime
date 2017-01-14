@@ -32,6 +32,12 @@ RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/a
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
 
+# Add shutdown agent
+RUN mkdir ${docker.agentjars.dir}
+COPY shutdown-javaagent.jar ${docker.agentjars.dir}/
+COPY format-env-shutdown-javaagent.sh ${docker.agentjars.dir}/
+RUN chmod +x ${docker.agentjars.dir}/format-env-shutdown-javaagent.sh
+
 # Add the cloud debugger libraries
 ADD https://storage.googleapis.com/cloud-debugger/appengine-java/current/cdbg_java_agent.tar.gz /opt/cdbg/
 COPY docker-entrypoint.bash /
