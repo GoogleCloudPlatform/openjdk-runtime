@@ -81,7 +81,6 @@
   </distributionManagement>
 
   <modules>
-    <module>logging</module>
     <module>monitoring/shutdown-javaagent</module>
     <module>openjdk8</module>
   </modules>
