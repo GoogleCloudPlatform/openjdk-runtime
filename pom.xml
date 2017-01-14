@@ -39,6 +39,7 @@
     <openjdk.version>${openjdk.version.major}u${openjdk.version.minor}</openjdk.version>
     <docker.tag.prefix></docker.tag.prefix>
     <docker.appengine.image>gcr.io/google_appengine/debian8</docker.appengine.image>
+    <docker.agentjars.dir>/opt/agents</docker.agentjars.dir>
   </properties>
 
   <developers>
@@ -80,6 +81,7 @@
   </distributionManagement>
 
   <modules>
+    <module>monitoring/shutdown-javaagent</module>
     <module>openjdk8</module>
   </modules>
 
