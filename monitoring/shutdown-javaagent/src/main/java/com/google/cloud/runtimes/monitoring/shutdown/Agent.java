@@ -28,7 +28,7 @@ public class Agent {
 
     if (isThreadDumpEnabled || isHeapInfoEnabled) {
       int timeOutInSeconds = agentConfig.getTimeOutInSeconds();
-      ILogging logging = new CloudLogging(agentConfig);
+      ILogging logging = new CloudLogging(agentConfig.getLogConfig());
       try {
         shutdownReporter = new ShutdownReporter(isThreadDumpEnabled, isHeapInfoEnabled,
             timeOutInSeconds * 1000, logging);

@@ -11,16 +11,16 @@ public class AgentConfigTest {
   private String threadDumpEnvVar = "SHUTDOWN_LOGGING_THREAD_DUMP";
 
   @Test
-  public void cliParamsParsing() {
+  public void paramsParsing() {
     testSysEnvironment.clear(heapInfoEnvVar);
     testSysEnvironment.clear(threadDumpEnvVar);
-    String cliParams = "heap_info=true;thread_dump=false;timeout=20";
-    AgentConfig agentConfig = new AgentConfig(cliParams, testSysEnvironment);
+    String params = "heap_info=true;thread_dump=false;timeout=20";
+    AgentConfig agentConfig = new AgentConfig(params, testSysEnvironment);
     assertEquals(agentConfig.isHeapInfoEnabled(), true);
     assertEquals(agentConfig.isThreadDumpEnabled(), false);
     assertEquals(agentConfig.getTimeOutInSeconds(), 20);
-    cliParams = "heap_info=false;thread_dump=true";
-    agentConfig = new AgentConfig(cliParams, testSysEnvironment);
+    params = "heap_info=false;thread_dump=true";
+    agentConfig = new AgentConfig(params, testSysEnvironment);
     assertEquals(agentConfig.isHeapInfoEnabled(), false);
     assertEquals(agentConfig.isThreadDumpEnabled(), true);
   }
@@ -37,23 +37,23 @@ public class AgentConfigTest {
 
   @Test
   public void timeOutParamWithinRange() {
-    String cliParams = "timeout=100";
-    AgentConfig agentConfig = new AgentConfig(cliParams, testSysEnvironment);
+    String params = "timeout=100";
+    AgentConfig agentConfig = new AgentConfig(params, testSysEnvironment);
     assertEquals(agentConfig.getTimeOutInSeconds(), agentConfig.getTimeOutDefault());
-    cliParams = "timeout=-1";
-    agentConfig = new AgentConfig(cliParams, testSysEnvironment);
+    params = "timeout=-1";
+    agentConfig = new AgentConfig(params, testSysEnvironment);
     assertEquals(agentConfig.getTimeOutInSeconds(), agentConfig.getTimeOutDefault());
-    cliParams = "timeout=25";
-    agentConfig = new AgentConfig(cliParams, testSysEnvironment);
+    params = "timeout=25";
+    agentConfig = new AgentConfig(params, testSysEnvironment);
     assertEquals(agentConfig.getTimeOutInSeconds(), 25);
   }
 
   @Test
-  public void envVarOverridesCli() {
+  public void envVarOverridesDirectArguments() {
     testSysEnvironment.set(heapInfoEnvVar, "true");
     testSysEnvironment.set(threadDumpEnvVar, "false");
-    String cliParams = "heap_info=false;thread_dump=true";
-    AgentConfig agentConfig = new AgentConfig(cliParams, testSysEnvironment);
+    String params = "heap_info=false;thread_dump=true";
+    AgentConfig agentConfig = new AgentConfig(params, testSysEnvironment);
     assertEquals(agentConfig.isThreadDumpEnabled(), false);
     assertEquals(agentConfig.isHeapInfoEnabled(), true);
   }

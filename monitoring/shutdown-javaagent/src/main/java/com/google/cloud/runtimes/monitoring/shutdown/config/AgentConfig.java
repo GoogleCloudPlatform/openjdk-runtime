@@ -6,45 +6,44 @@ import java.util.Map;
 
 public class AgentConfig {
 
-  private final Map<String, String> cliParams;
-  private final SysEnvironment env;
   private final String threadDumpEnvVar = "SHUTDOWN_LOGGING_THREAD_DUMP";
   private final String heapInfoEnvVar = "SHUTDOWN_LOGGING_HEAP_INFO";
-  private final String gaeInstanceEnvVar = "GAE_INSTANCE";
-  private final String gaeServiceEnvVar = "GAE_SERVICE";
-  private final String gaeVersionEnvVar = "GAE_VERSION";
-  private final String threadDumpCliParam = "thread_dump";
-  private final String heapInfoCliParam = "heap_info";
-  private final String timeOutCliParam = "timeout";
+  private final String threadDumpParam = "thread_dump";
+  private final String heapInfoParam = "heap_info";
+  private final String timeOutParam = "timeout";
   private final boolean threadDumpDefault = false;
   private final boolean heapInfoDefault = false;
   private final int timeOutDefaultInSeconds = 30;
   private final int timeOutMinInSeconds = 1;
   private final int timeOutMaxInSeconds = 60;
-  private final String shutdownLogName = "app.shutdown";
-  private final String logPrefix = "App Engine Flex VM Shutdown";
-  private final String loggingResourceType = "gae_app";
+  private Map<String, String> params;
+  private SysEnvironment env;
+  private LogConfig logConfig;
 
+  /**
+   * Configure agent : environment variables override direct parameters.
+   * @param agentArgs direct parameters in format key1=value1;key2=value2
+   * @param env Environment
+   */
   public AgentConfig(String agentArgs, SysEnvironment env) {
-    this.cliParams = parseCliArgs(agentArgs);
-    this.env = env;
+    init(agentArgs, env);
   }
 
   public AgentConfig(String agentArgs) {
-    this.cliParams = parseCliArgs(agentArgs);
     this.env = new SysEnvironment();
+    init(agentArgs, env);
   }
 
   public boolean isHeapInfoEnabled() {
-    return getEnvVarWithCliFallback(heapInfoEnvVar, heapInfoCliParam, heapInfoDefault);
+    return getEnvVarWithDirectArgFallback(heapInfoEnvVar, heapInfoParam, heapInfoDefault);
   }
 
   public boolean isThreadDumpEnabled() {
-    return getEnvVarWithCliFallback(threadDumpEnvVar, threadDumpCliParam, threadDumpDefault);
+    return getEnvVarWithDirectArgFallback(threadDumpEnvVar, threadDumpParam, threadDumpDefault);
   }
 
   public int getTimeOutInSeconds() {
-    return getIntegerCliParam(timeOutCliParam, timeOutDefaultInSeconds, timeOutMinInSeconds,
+    return getIntInRangeParam(timeOutParam, timeOutDefaultInSeconds, timeOutMinInSeconds,
         timeOutMaxInSeconds);
   }
 
@@ -60,62 +59,17 @@ public class AgentConfig {
     return timeOutDefaultInSeconds;
   }
 
-  public String getLogName() {
-    return shutdownLogName;
+  public LogConfig getLogConfig() {
+    return logConfig;
   }
 
-  /**
-   * Constructs mandatory agent log prefix.
-   * @return log prefix string
-   */
-  public String getLogPrefix() {
-    StringBuilder sb = new StringBuilder(logPrefix).append(" ");
-    String instanceId = getInstanceId();
-    if (instanceId != null) {
-      sb.append("vm : ").append(instanceId).append("\n");
-    }
-    return sb.toString();
+  private void init(String agentArgs, SysEnvironment sysEnv) {
+    params = parseParams(agentArgs);
+    logConfig = new LogConfig(env);
+    env = sysEnv;
   }
 
-  public String getLoggingResourceType() {
-    return loggingResourceType;
-  }
-
-  /**
-   * Returns log labels.
-   * @return  labels (name -> value) map
-   */
-  public Map<String, String> getLogLabels() {
-    Map<String, String> labels = new HashMap<>();
-    Map<String, String> labelToEnvVar = getLogToEnvVar();
-    for (Map.Entry<String, String> labelToEnvVarPair : labelToEnvVar.entrySet()) {
-      String envVarValue = env.get(labelToEnvVarPair.getValue());
-      if (envVarValue != null) {
-        labels.put(labelToEnvVarPair.getKey(), envVarValue);
-      }
-    }
-    return labels;
-  }
-
-  public String getInstanceId() {
-    return env.get(gaeInstanceEnvVar);
-  }
-
-  public String getService() {
-    return env.get(gaeServiceEnvVar);
-  }
-
-  public String getVersion() {
-    return env.get(gaeVersionEnvVar);
-  }
-
-  private Map<String, String> getLogToEnvVar() {
-    Map<String, String> logLabelsToEnvVar = new HashMap<>();
-    logLabelsToEnvVar.put("instance_id", gaeInstanceEnvVar);
-    return logLabelsToEnvVar;
-  }
-
-  private Map<String, String> parseCliArgs(String agentArgs) {
+  private Map<String, String> parseParams(String agentArgs) {
 
     if (agentArgs == null || agentArgs.isEmpty()) {
       return Collections.emptyMap();
@@ -131,7 +85,7 @@ public class AgentConfig {
     return cliArgMap;
   }
 
-  private int getIntegerCliParam(String param, int defaultValue, int min, int max) {
+  private int getIntInRangeParam(String param, int defaultValue, int min, int max) {
     String valueStr = getCliParam(param);
     int parsedInt;
     try {
@@ -146,10 +100,10 @@ public class AgentConfig {
   }
 
   private String getCliParam(String cliArgName) {
-    return cliParams.get(cliArgName);
+    return params.get(cliArgName);
   }
 
-  private boolean getEnvVarWithCliFallback(String envVarName, String cliArgName,
+  private boolean getEnvVarWithDirectArgFallback(String envVarName, String cliArgName,
       boolean defaultValue) {
     boolean value = defaultValue;
     String valueStr = env.get(envVarName);

@@ -5,37 +5,42 @@ import com.google.cloud.logging.LogEntry;
 import com.google.cloud.logging.Logging;
 import com.google.cloud.logging.LoggingException;
 import com.google.cloud.logging.LoggingOptions;
-import com.google.cloud.runtimes.monitoring.shutdown.config.AgentConfig;
+import com.google.cloud.logging.Payload.StringPayload;
+import com.google.cloud.logging.Severity;
+import com.google.cloud.runtimes.monitoring.shutdown.config.LogConfig;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class CloudLogging implements ILogging {
 
-  private final ErrorLogFormatter errorLogFormatter;
-  private final String logName;
-  private Logging logging;
-  private final MonitoredResource monitoredResource;
-  private final Collection<LogEntry> logEntries;
   private boolean initialized;
+  private Logging logging;
+  private final String logName;
+  private final MonitoredResource monitoredResource;
   private final String logPrefix;
   private final Map<String, String> logLabels;
+  private final LogBuffer logBuffer;
+  private final Severity severity;
 
   /**
    * Instantiate logging via StackDriver
    * Maintains a buffered list of logEntry events till flush is called.
    */
-  public CloudLogging(AgentConfig config) {
-    this.errorLogFormatter = new ErrorLogFormatter(config);
+  public CloudLogging(LogConfig config) {
     this.logName = config.getLogName();
     this.monitoredResource = MonitoredResource.newBuilder(config.getLoggingResourceType()).build();
-    this.logEntries = new ArrayList<>();
     this.initialized = false;
     this.logPrefix = config.getLogPrefix();
     this.logLabels = config.getLogLabels();
+    int maxLogBufferSize = config.getMaxLogPayloadSize();
+    this.logBuffer = new LogBuffer(maxLogBufferSize);
+    this.severity = config.getLogSeverity();
+
   }
 
   @Override
@@ -51,20 +56,21 @@ public class CloudLogging implements ILogging {
   @Override
   public void log(String text) {
     if (validate(text)) {
-      logEntries.add(createLogEntry(addPrefix(text)));
+      logBuffer.addLog(addPrefix(text));
     }
   }
 
   @Override
   public void flush() {
+    List<LogEntry> logEntries = getLogEntries();
     if (!logEntries.isEmpty()) {
       if (!initialized) {
-        logToStdErr();
+        logToStdErr(logEntries);
       } else {
         try {
           logging.write(logEntries);
         } catch (Exception e) {
-          logToStdErr();
+          logToStdErr(logEntries);
         }
       }
       logEntries.clear();
@@ -89,10 +95,11 @@ public class CloudLogging implements ILogging {
   }
 
   private LogEntry createLogEntry(String text) {
-    return LogEntry.newBuilder(errorLogFormatter.getJsonPayload(text))
+    return LogEntry.newBuilder(StringPayload.of(text))
         .setLogName(logName)
         .setResource(monitoredResource)
         .setLabels(logLabels)
+        .setSeverity(severity)
         .build();
   }
 
@@ -108,7 +115,7 @@ public class CloudLogging implements ILogging {
   /**
    * Log to standard err if logging service is not initialized.
    */
-  public void logToStdErr() {
+  public void logToStdErr(Collection<LogEntry> logEntries) {
     for (LogEntry logEntry : logEntries) {
       System.err.println(logEntry.getPayload().getData());
     }
@@ -118,8 +125,9 @@ public class CloudLogging implements ILogging {
     System.err.println(text);
   }
 
-  public int getLogEntriesSize() {
-    return logEntries.size();
+  private List<LogEntry> getLogEntries() {
+    List<String> logChunks = logBuffer.getAndClearChunks();
+    return logChunks.stream().map(this::createLogEntry).collect(Collectors.toList());
   }
 
   private String addPrefix(String text) {

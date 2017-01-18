@@ -9,7 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.google.cloud.logging.Logging;
-import com.google.cloud.runtimes.monitoring.shutdown.config.AgentConfig;
+import com.google.cloud.runtimes.monitoring.shutdown.config.LogConfig;
 import com.google.cloud.runtimes.monitoring.shutdown.config.TestSysEnvironment;
 
 import org.junit.Test;
@@ -18,8 +18,8 @@ import org.mockito.ArgumentMatchers;
 public class CloudLoggingTest {
 
   private Logging logging = mock(Logging.class);
-  private AgentConfig agentConfig = new AgentConfig(null, new TestSysEnvironment());
-  CloudLogging cloudLogging = spy(new CloudLogging(agentConfig));
+  private LogConfig logConfig = new LogConfig(new TestSysEnvironment());
+  private CloudLogging cloudLogging = spy(new CloudLogging(logConfig));
 
   @Test
   public void logToStdErrIfCloudLoggingNotInitialized() {
@@ -49,9 +49,7 @@ public class CloudLoggingTest {
     cloudLogging.setLoggingAgent(logging);
     cloudLogging.log("text1");
     cloudLogging.log("text2");
-    assertEquals(cloudLogging.getLogEntriesSize(), 2);
     cloudLogging.flush();
-    assertEquals(cloudLogging.getLogEntriesSize(), 0);
     verify(logging, times(1)).write(ArgumentMatchers.anyList());
   }
 }
