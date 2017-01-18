@@ -1,3 +1,19 @@
+/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.google.cloud.runtimes.monitoring.shutdown.log;
 
 import com.google.cloud.MonitoredResource;
@@ -15,7 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
+/** {@code logging} via Cloud logging : logs are buffered until flushed.
+ **/
 public class CloudLogging implements ILogging {
 
   private boolean initialized;
@@ -28,8 +45,8 @@ public class CloudLogging implements ILogging {
   private final Severity severity;
 
   /**
-   * Instantiate logging via StackDriver
-   * Maintains a buffered list of logEntry events till flush is called.
+   * Configured using {@code LogConfig}.
+   * @param config logging configuration
    */
   public CloudLogging(LogConfig config) {
     this.logName = config.getLogName();
@@ -40,7 +57,6 @@ public class CloudLogging implements ILogging {
     int maxLogBufferSize = config.getMaxLogPayloadSize();
     this.logBuffer = new LogBuffer(maxLogBufferSize);
     this.severity = config.getLogSeverity();
-
   }
 
   @Override
@@ -112,9 +128,7 @@ public class CloudLogging implements ILogging {
     return logging;
   }
 
-  /**
-   * Log to standard err if logging service is not initialized.
-   */
+  /** Log to standard err if logging service is not initialized. */
   public void logToStdErr(Collection<LogEntry> logEntries) {
     for (LogEntry logEntry : logEntries) {
       System.err.println(logEntry.getPayload().getData());

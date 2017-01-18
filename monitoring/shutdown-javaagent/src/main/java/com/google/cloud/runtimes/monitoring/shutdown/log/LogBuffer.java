@@ -1,3 +1,19 @@
+/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.google.cloud.runtimes.monitoring.shutdown.log;
 
 import com.google.common.collect.ImmutableList;
@@ -5,14 +21,21 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
 
+/** A {@code buffer} to log in chunks of under a given size. Chunk separation is done around new
+ * lines when possible.
+ *
+ * <p>Note : not thread safe
+ */
 public class LogBuffer {
 
   private StringBuilder buffer;
   private int maxBufferSize;
   private final List<String> chunks;
 
-  /**Not thread-safe implementation to split log strings into fixed size chunks around new line.
-   * Converts log into fixed size chunks.
+  /**
+   * Not thread-safe implementation to split log strings into fixed size chunks around new line.
+   *
+   * <p>Converts log into fixed size chunks.
    * @param maxBufferSize max buffer size
    */
   public LogBuffer(int maxBufferSize) {
@@ -22,8 +45,9 @@ public class LogBuffer {
   }
 
   /**
-   * Convert string to be logged into chunks maintaining new line boundaries. Text in a single line
-   * will get broken into chunks only if the line exceeds max buffer size length.
+   * Convert string to be logged into chunks maintaining new line boundaries.
+   *
+   * <p>Text in a single line is broken into chunks if the line exceeds max buffer size length.
    * @param text log string
    */
   public void addLog(String text) {
@@ -47,8 +71,8 @@ public class LogBuffer {
   }
 
   /**
-   * Adds current buffer entries as new chunk and returns list of log chunks.
-   * Clears list of chunks
+   * Adds current buffer entries as new chunk and returns list of log chunks. Clears list of chunks
+   *
    * @return copy of list of chunks as strings
    */
   public List<String> getAndClearChunks() {

@@ -1,9 +1,27 @@
+/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.google.cloud.runtimes.monitoring.shutdown.config;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/** {@code Configuration} for the Java agent {@code Agent}.
+ **/
 public class AgentConfig {
 
   private final String threadDumpEnvVar = "SHUTDOWN_LOGGING_THREAD_DUMP";
@@ -22,6 +40,7 @@ public class AgentConfig {
 
   /**
    * Configure agent : environment variables override direct parameters.
+   *
    * @param agentArgs direct parameters in format key1=value1;key2=value2
    * @param env Environment
    */
@@ -43,8 +62,8 @@ public class AgentConfig {
   }
 
   public int getTimeOutInSeconds() {
-    return getIntInRangeParam(timeOutParam, timeOutDefaultInSeconds, timeOutMinInSeconds,
-        timeOutMaxInSeconds);
+    return getIntInRangeParam(
+        timeOutParam, timeOutDefaultInSeconds, timeOutMinInSeconds, timeOutMaxInSeconds);
   }
 
   public boolean getHeapInfoDefault() {
@@ -103,8 +122,8 @@ public class AgentConfig {
     return params.get(cliArgName);
   }
 
-  private boolean getEnvVarWithDirectArgFallback(String envVarName, String cliArgName,
-      boolean defaultValue) {
+  private boolean getEnvVarWithDirectArgFallback(
+      String envVarName, String cliArgName, boolean defaultValue) {
     boolean value = defaultValue;
     String valueStr = env.get(envVarName);
     if (valueStr == null) {
@@ -118,5 +137,4 @@ public class AgentConfig {
     }
     return value;
   }
-
 }

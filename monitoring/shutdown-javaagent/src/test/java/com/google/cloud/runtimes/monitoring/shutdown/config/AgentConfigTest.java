@@ -1,3 +1,19 @@
+/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.google.cloud.runtimes.monitoring.shutdown.config;
 
 import static org.junit.Assert.assertEquals;
@@ -11,7 +27,7 @@ public class AgentConfigTest {
   private String threadDumpEnvVar = "SHUTDOWN_LOGGING_THREAD_DUMP";
 
   @Test
-  public void paramsParsing() {
+  public void agentParamsAreParsedCorrectly() {
     testSysEnvironment.clear(heapInfoEnvVar);
     testSysEnvironment.clear(threadDumpEnvVar);
     String params = "heap_info=true;thread_dump=false;timeout=20";
@@ -26,7 +42,7 @@ public class AgentConfigTest {
   }
 
   @Test
-  public void defaultParams() {
+  public void defaultParamsAreUsedWhenNoParamsAreSpecified() {
     testSysEnvironment.clear(heapInfoEnvVar);
     testSysEnvironment.clear(threadDumpEnvVar);
     AgentConfig agentConfig = new AgentConfig(null, testSysEnvironment);
@@ -36,7 +52,7 @@ public class AgentConfigTest {
   }
 
   @Test
-  public void timeOutParamWithinRange() {
+  public void defaultTimeOutIsUsedIfTimeOutParameterIsNotInRange() {
     String params = "timeout=100";
     AgentConfig agentConfig = new AgentConfig(params, testSysEnvironment);
     assertEquals(agentConfig.getTimeOutInSeconds(), agentConfig.getTimeOutDefault());
@@ -49,7 +65,7 @@ public class AgentConfigTest {
   }
 
   @Test
-  public void envVarOverridesDirectArguments() {
+  public void environmentVariablesOverrideDirectArguments() {
     testSysEnvironment.set(heapInfoEnvVar, "true");
     testSysEnvironment.set(threadDumpEnvVar, "false");
     String params = "heap_info=false;thread_dump=true";
