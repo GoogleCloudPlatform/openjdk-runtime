@@ -34,6 +34,24 @@
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
+            <id>copy-agent-jars</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/docker</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.parent.build.directory}/agents</directory>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
             <id>copy-resources</id>
             <phase>generate-resources</phase>
             <goals>
