@@ -32,7 +32,19 @@ if [ "$1" = "java" -a -n "$JAVA_OPTS" ]; then
   set -- java $JAVA_OPTS "$@"
 fi
 
-# exec the entry point arguments as a command
-echo "Start command: $@"
-exec "$@"
+
+if [ -z "$SHUTDOWN_THREAD_DUMP" ]
+then
+  # exec the entry point arguments as a command
+  echo "Start command: $@"
+  exec "$@"
+else
+  # capture the TERM signal and send a SIGQUIT first to generate the thread dump
+  trap 'kill -3 $PID; kill $PID' TERM
+  $@ &
+  PID=$!
+  wait $PID
+  wait $PID
+  exit $?
+fi
 
