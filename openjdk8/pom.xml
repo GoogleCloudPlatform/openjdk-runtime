@@ -86,31 +86,31 @@
             <configuration>
               <imageName>openjdk</imageName>
               <imageTags>
-                  <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
-                  <imageTag>${docker.tag.prefix}8</imageTag>
+                <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
+                <imageTag>${docker.tag.prefix}8</imageTag>
               </imageTags>
               <dockerDirectory>${project.build.directory}/docker</dockerDirectory>
               <pullOnBuild>true</pullOnBuild>
             </configuration>
           </execution>
-	  <execution>
-	    <id>clean-docker</id>
-	    <phase>clean</phase>
-	    <goals>
-	      <goal>removeImage</goal>
-	    </goals>
-	    <configuration>
-	      <imageName>openjdk</imageName>
-	      <imageTags>
-              <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
-              <imageTag>${docker.tag.prefix}8</imageTag>
-          </imageTags>
-	    </configuration>
-	  </execution>
+          <execution>
+            <id>clean-docker</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>removeImage</goal>
+            </goals>
+            <configuration>
+              <imageName>openjdk</imageName>
+              <imageTags>
+                <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
+                <imageTag>${docker.tag.prefix}8</imageTag>
+              </imageTags>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
-	<groupId>org.codehaus.mojo</groupId>
+        <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.5.0</version>
         <executions>
