@@ -23,8 +23,8 @@ then
   # exec the entry point arguments as a command
   exec "$@"
 else
-  # capture the TERM signal and send a SIGQUIT first to generate the thread dump
-  trap 'kill -3 $PID; kill $PID' TERM
+  # capture the TERM signal and send a QUIT first to generate the thread dump
+  trap 'kill -QUIT $PID; kill -TERM $PID' TERM
   $@ &
   PID=$!
   wait $PID
