@@ -46,8 +46,6 @@ If the default command (java) is used, then the entry point sources the [setup-e
 |`HEAP_SIZE_MB`    | Available heap      | size     | 80% of `${GAE_MEMORY_MB}`                   |
 |`JAVA_HEAP_OPTS`  | JVM heap args       | JVM args | `-Xms${HEAP_SIZE_MB}M -Xmx${HEAP_SIZE_MB}M` |
 |`JAVA_GC_OPTS`    | JVM GC args         | JVM args | `-XX:+UseG1GC` plus configuration           |
-|`JAVA_GC_LOG`     | JVM GC log file     | filename |                                             |
-|`JAVA_GC_LOG_OPTS`| JVM GC args         | JVM args | Derived from `$JAVA_GC_LOG`                 |
 |`JAVA_USER_OPTS`  | JVM other args      | JVM args |                                             |
 |`JAVA_OPTS`       | JVM args            | JVM args | See below                                   |
 
@@ -58,7 +56,6 @@ JAVA_OPTS:=-showversion \
            ${DBG_AGENT} \
            ${JAVA_HEAP_OPTS} \
            ${JAVA_GC_OPTS} \
-           ${JAVA_GC_LOG_OPTS} \
            ${JAVA_USER_OPTS}
 ```
 
