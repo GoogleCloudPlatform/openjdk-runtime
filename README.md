@@ -12,14 +12,6 @@ $ mvn clean install
 The resulting image is called openjdk
 
 ## The Default Entry Point
-The default entrypoint will print the JDK version:
-```
-$ docker run openjdk
-openjdk version "1.8.0_66-internal"
-OpenJDK Runtime Environment (build 1.8.0_66-internal-b17)
-OpenJDK 64-Bit Server VM (build 25.66-b17, mixed mode)
-```
-
 Any arguments passed to the entry point that are not executable are treated as arguments to the java command:
 ```
 $ docker run openjdk -jar /usr/share/someapplication.jar
@@ -62,6 +54,19 @@ JAVA_OPTS:=-showversion \
 The command line executed is effectively (where $@ are the args passed into the docker entry point):
 ```
 java $JAVA_OPTS "$@"
+```
+
+## The Default Command
+The default command will attempt to run `app.jar` in the current working directory.
+It's equivalent to:
+```
+$ docker run openjdk java -jar app.jar
+Error: Unable to access jarfile app.jar
+```
+The error is normal because the default command is designed for child containers that have a Dockerfile definition like this:
+```
+FROM openjdk
+ADD my_app_0.0.1.jar app.jar
 ```
 
 # Contributing changes
