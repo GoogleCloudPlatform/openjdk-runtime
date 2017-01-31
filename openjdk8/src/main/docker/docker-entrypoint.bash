@@ -17,17 +17,18 @@ if ! type "$1" &>/dev/null; then
   set -- java $JAVA_OPTS "$@"
 fi
 
-
-if [ -z "$SHUTDOWN_THREAD_DUMP" ]
+# If configured, output a thread dump on shutdown
+if isTrue "${SHUTDOWN_THREAD_DUMP_ENABLE}"
 then
-  # exec the entry point arguments as a command
-  exec "$@"
-else
   # capture the TERM signal and send a QUIT first to generate the thread dump
-  trap 'kill -QUIT $PID; kill -TERM $PID' TERM
+  export THREAD_DUMP_FILE=${THREAD_DUMP_FILE:-/var/log/app_engine/app-shutdown.log}
+  trap 'kill -QUIT $PID; jstack $PID >> $THREAD_DUMP_FILE 2>&1; kill -TERM $PID' TERM
   $@ &
   PID=$!
   wait $PID
   wait $PID
   exit $?
+else
+  # exec the entry point arguments as a command
+  exec "$@"
 fi
