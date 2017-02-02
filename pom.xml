@@ -35,7 +35,7 @@
     <maven.build.timestamp.format>yyyy-MM-dd_HH_mm</maven.build.timestamp.format>
     <appengine.api.version>1.9.40</appengine.api.version>
     <openjdk.version.major>8</openjdk.version.major>
-    <openjdk.version.minor>111</openjdk.version.minor>
+    <openjdk.version.minor>121</openjdk.version.minor>
     <openjdk.version>${openjdk.version.major}u${openjdk.version.minor}</openjdk.version>
     <docker.tag.prefix></docker.tag.prefix>
     <docker.appengine.image>gcr.io/google_appengine/debian8</docker.appengine.image>

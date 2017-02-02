@@ -24,7 +24,7 @@ ENV GAE_IMAGE_LABEL ${docker.tag.prefix}${openjdk.version}-${maven.build.timesta
 RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list \
  && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
-    ca-certificates \
+    ca-certificates-java=20161107'*' \
     openjdk-8-jre-headless=${openjdk.version}'-*' \
     netbase \
     wget \ 
