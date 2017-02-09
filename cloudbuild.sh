@@ -18,13 +18,12 @@ set -e
 
 DOCKER_NAMESPACE='gcr.io/$PROJECT_ID'
 RUNTIME_NAME="openjdk"
-# TODO make sure same format as maven generates
-CANDIDATE_NAME=`date +%Y-%m-%d_%H_%M`
+CANDIDATE_NAME="8-`date +%Y-%m-%d_%H_%M`"
 
 export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${CANDIDATE_NAME}"
 echo "IMAGE: $IMAGE"
 
-envsubst < cloudbuild.yaml.in > cloudbuild.yaml
+envsubst < cloudbuild.yaml.in > target/cloudbuild.yaml
 
-gcloud container builds submit --config=cloudbuild.yaml .
+gcloud container builds submit --config=target/cloudbuild.yaml .
 
