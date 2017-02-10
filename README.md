@@ -15,7 +15,7 @@ The resulting image is called openjdk
 ### Cloud build
 To build using the [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/overview), you need to have the [Google Cloud SDK](https://cloud.google.com/sdk/) installed locally.
 ```
-$ ./cloudbuild.sh
+$ ./scripts/cloudbuild.sh
 ```
 
 ## The Default Entry Point

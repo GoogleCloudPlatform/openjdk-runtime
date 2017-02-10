@@ -28,6 +28,79 @@
   <artifactId>openjdk8</artifactId>
   <packaging>pom</packaging>
 
+  <profiles>
+    <profile>
+      <!-- Builds and tests a docker image locally -->
+      <id>local-docker-build</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.spotify</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>build</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <imageName>openjdk</imageName>
+                  <imageTags>
+                    <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
+                    <imageTag>${docker.tag.prefix}8</imageTag>
+                  </imageTags>
+                  <dockerDirectory>${project.build.directory}/docker</dockerDirectory>
+                  <pullOnBuild>true</pullOnBuild>
+                </configuration>
+              </execution>
+              <execution>
+                <id>clean-docker</id>
+                <phase>clean</phase>
+                <goals>
+                  <goal>removeImage</goal>
+                </goals>
+                <configuration>
+                  <imageName>openjdk</imageName>
+                  <imageTags>
+                    <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
+                    <imageTag>${docker.tag.prefix}8</imageTag>
+                  </imageTags>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>structure-test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <executable>../../scripts/structure_test.sh</executable>
+              <workingDirectory>${project.build.directory}</workingDirectory>
+              <arguments>
+                <argument>--image</argument>
+                <argument>openjdk:${docker.tag.prefix}8-${maven.build.timestamp}</argument>
+                <argument>--config</argument>
+                <argument>${project.build.testOutputDirectory}/structure.yaml</argument>
+              </arguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <plugins>
       <plugin>
@@ -69,42 +142,6 @@
                   </includes>
                 </resource>
               </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>com.spotify</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>build</id>
-            <phase>package</phase>
-            <goals>
-              <goal>build</goal>
-            </goals>
-            <configuration>
-              <imageName>openjdk</imageName>
-              <imageTags>
-                <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
-                <imageTag>${docker.tag.prefix}8</imageTag>
-              </imageTags>
-              <dockerDirectory>${project.build.directory}/docker</dockerDirectory>
-              <pullOnBuild>true</pullOnBuild>
-            </configuration>
-          </execution>
-          <execution>
-            <id>clean-docker</id>
-            <phase>clean</phase>
-            <goals>
-              <goal>removeImage</goal>
-            </goals>
-            <configuration>
-              <imageName>openjdk</imageName>
-              <imageTags>
-                <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
-                <imageTag>${docker.tag.prefix}8</imageTag>
-              </imageTags>
             </configuration>
           </execution>
         </executions>

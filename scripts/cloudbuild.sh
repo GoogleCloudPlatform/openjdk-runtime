@@ -16,6 +16,8 @@
 
 set -e
 
+projectRoot=`dirname $0`/..
+
 DOCKER_NAMESPACE='gcr.io/$PROJECT_ID'
 RUNTIME_NAME="openjdk"
 CANDIDATE_NAME="8-`date +%Y-%m-%d_%H_%M`"
@@ -23,7 +25,7 @@ CANDIDATE_NAME="8-`date +%Y-%m-%d_%H_%M`"
 export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${CANDIDATE_NAME}"
 echo "IMAGE: $IMAGE"
 
-envsubst < cloudbuild.yaml.in > target/cloudbuild.yaml
+envsubst < $projectRoot/cloudbuild.yaml.in > $projectRoot/target/cloudbuild.yaml
 
-gcloud container builds submit --config=target/cloudbuild.yaml .
+gcloud container builds submit --config=$projectRoot/target/cloudbuild.yaml .
 
