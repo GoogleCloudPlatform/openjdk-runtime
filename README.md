@@ -3,6 +3,7 @@
 This repository contains the source for the `gcr.io/google_appengine/openjdk` [docker](https://docker.com) image. This image can be used as the base image for running Java applications on [Google App Engine Flexible Environment](https://cloud.google.com/appengine/docs/flexible/java/) and [Google Container Engine](https://cloud.google.com/container-engine).
 
 ## Building the image
+### Local build
 To build the image you need git, docker and maven installed:
 ```
 $ git clone https://github.com/GoogleCloudPlatform/openjdk-runtime.git
@@ -10,6 +11,12 @@ $ cd openjdk-runtime
 $ mvn clean install
 ```
 The resulting image is called openjdk
+
+### Cloud build
+To build using the [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/overview), you need to have the [Google Cloud SDK](https://cloud.google.com/sdk/) installed locally.
+```
+$ ./scripts/cloudbuild.sh
+```
 
 ## The Default Entry Point
 Any arguments passed to the entry point that are not executable are treated as arguments to the java command:
