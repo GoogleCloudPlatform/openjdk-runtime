@@ -6,13 +6,13 @@ function java_shutdown_hook {
   # thread dump
   if [ "${SHUTDOWN_LOGGING_THREAD_DUMP}" = "true" ]; then
     export THREAD_DUMP_FILE=${THREAD_DUMP_FILE:-/var/log/app_engine/app.shutdown.threads}
-    jstack $PID >> $THREAD_DUMP_FILE 2>&1
+    jcmd $PID Thread.print  >> $THREAD_DUMP_FILE 2>&1
   fi
 
   # heap info
   if [ "${SHUTDOWN_LOGGING_HEAP_INFO}" = "true" ]; then
-    export HEAP_INFO_FILE=${THREAD_DUMP_FILE:-/var/log/app_engine/app.shutdown.heap}
-    jstat -gc $PID >> $THREAD_INFO_FILE 2>&1
+    export HEAP_INFO_FILE=${HEAP_INFO_FILE:-/var/log/app_engine/app.shutdown.heap}
+    jcmd $PID GC.class_histogram >> $HEAP_INFO_FILE 2>&1
   fi
 }
 
