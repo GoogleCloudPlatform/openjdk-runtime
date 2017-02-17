@@ -18,7 +18,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Create env vars to identify image
 ENV OPENJDK_VERSION ${openjdk.version}
 ENV GAE_IMAGE_NAME ${project.artifactId}
-ENV GAE_IMAGE_LABEL ${docker.tag.prefix}${openjdk.version}-${maven.build.timestamp}
+ENV GAE_IMAGE_LABEL ${docker.tag.long}
 
 # Update debian 
 RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list \

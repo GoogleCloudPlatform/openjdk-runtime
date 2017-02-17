@@ -50,8 +50,8 @@
                 <configuration>
                   <imageName>openjdk</imageName>
                   <imageTags>
-                    <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
-                    <imageTag>${docker.tag.prefix}8</imageTag>
+                    <imageTag>${docker.tag.short}</imageTag>
+                    <imageTag>${docker.tag.long}</imageTag>
                   </imageTags>
                   <dockerDirectory>${project.build.directory}/docker</dockerDirectory>
                   <pullOnBuild>true</pullOnBuild>
@@ -66,8 +66,8 @@
                 <configuration>
                   <imageName>openjdk</imageName>
                   <imageTags>
-                    <imageTag>${docker.tag.prefix}8-${maven.build.timestamp}</imageTag>
-                    <imageTag>${docker.tag.prefix}8</imageTag>
+                    <imageTag>${docker.tag.short}</imageTag>
+                    <imageTag>${docker.tag.long}</imageTag>
                   </imageTags>
                 </configuration>
               </execution>
@@ -90,7 +90,7 @@
               <workingDirectory>${project.build.directory}</workingDirectory>
               <arguments>
                 <argument>--image</argument>
-                <argument>openjdk:${docker.tag.prefix}8-${maven.build.timestamp}</argument>
+                <argument>openjdk:${docker.tag.long}</argument>
                 <argument>--config</argument>
                 <argument>${project.build.testOutputDirectory}/structure.yaml</argument>
               </arguments>

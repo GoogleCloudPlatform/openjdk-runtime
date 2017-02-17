@@ -20,7 +20,7 @@ projectRoot=`dirname $0`/..
 
 DOCKER_NAMESPACE='gcr.io/$PROJECT_ID'
 RUNTIME_NAME="openjdk"
-CANDIDATE_NAME="8-`date +%Y-%m-%d_%H_%M`"
+export CANDIDATE_NAME="8-`date +%Y-%m-%d-%H-%M`"
 
 export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${CANDIDATE_NAME}"
 echo "IMAGE: $IMAGE"
