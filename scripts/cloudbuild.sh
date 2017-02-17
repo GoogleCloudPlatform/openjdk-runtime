@@ -25,6 +25,7 @@ CANDIDATE_NAME="8-`date +%Y-%m-%d_%H_%M`"
 export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${CANDIDATE_NAME}"
 echo "IMAGE: $IMAGE"
 
+mkdir -p $projectRoot/target
 envsubst < $projectRoot/cloudbuild.yaml.in > $projectRoot/target/cloudbuild.yaml
 
 gcloud container builds submit --config=$projectRoot/target/cloudbuild.yaml .
