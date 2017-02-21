@@ -20,9 +20,9 @@ projectRoot=`dirname $0`/..
 
 DOCKER_NAMESPACE='gcr.io/$PROJECT_ID'
 RUNTIME_NAME="openjdk"
-export CANDIDATE_NAME="8-`date +%Y-%m-%d-%H-%M`"
+export DOCKER_TAG_LONG="8-`date +%Y-%m-%d-%H-%M`"
 
-export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${CANDIDATE_NAME}"
+export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${DOCKER_TAG_LONG}"
 echo "IMAGE: $IMAGE"
 
 mkdir -p $projectRoot/target
