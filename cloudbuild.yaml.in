@@ -4,13 +4,13 @@
 steps:
 # Build the maven project, omitting the docker build step
 - name: 'gcr.io/cloud-builders/maven'
-  args: ['mvn', '-P-local-docker-build', 'clean', 'install', '-Ddocker.tag.long=${DOCKER_TAG_LONG}']
+  args: ['mvn', '-P-local-docker-build', 'clean', 'install' ]
 # Execute the docker build
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=${IMAGE}', '--no-cache', 'openjdk8/target/docker']
+  args: ['build', '--tag=${IMAGE_SHORT}', '--tag=${IMAGE_LONG}', '--no-cache', 'openjdk8/target/docker']
 # Test the built image
 # See https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/structure_tests
 - name: 'gcr.io/gcp-runtimes/structure_test'
-  args: ['--image', '${IMAGE}', '-v', '--config', '/workspace/openjdk8/target/test-classes/structure.yaml']
+  args: ['--image', '${IMAGE_LONG}', '-v', '--config', '/workspace/openjdk8/target/test-classes/structure.yaml']
 
-images: ['${IMAGE}']
+images: ['${IMAGE_SHORT}', '${IMAGE_LONG}']
