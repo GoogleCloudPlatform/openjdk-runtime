@@ -28,5 +28,11 @@ echo "IMAGE: $IMAGE"
 mkdir -p $projectRoot/target
 envsubst < $projectRoot/cloudbuild.yaml.in > $projectRoot/target/cloudbuild.yaml
 
-gcloud container builds submit --config=$projectRoot/target/cloudbuild.yaml .
-
+if [ "$1" == "--local" ]
+then
+  export PROJECT_ID=test
+  curl -s https://raw.githubusercontent.com/GoogleCloudPlatform/python-runtime/master/scripts/local_cloudbuild.py | \
+  python3 - --config=$projectRoot/target/cloudbuild.yaml --output_script=$projectRoot/target/cloudbuild_local.sh
+else
+  gcloud container builds submit --config=$projectRoot/target/cloudbuild.yaml .
+fi
