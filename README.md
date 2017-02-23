@@ -18,7 +18,7 @@ To build using the [Google Cloud Container Builder](https://cloud.google.com/con
 $ ./scripts/cloudbuild.sh
 ```
 
-If you would like to simulate the cloud build locally pass in the `--local` argument.
+If you would like to simulate the cloud build locally, pass in the `--local` argument.
 ```
 $ PROJECT_ID=my-project
 $ ./scripts/cloudbuild.sh --local
