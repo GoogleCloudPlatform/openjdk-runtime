@@ -20,13 +20,10 @@ projectRoot=`dirname $0`/..
 
 DOCKER_NAMESPACE='gcr.io/$PROJECT_ID'
 RUNTIME_NAME="openjdk"
-export DOCKER_TAG_SHORT="8"
 export DOCKER_TAG_LONG="8-`date +%Y-%m-%d-%H-%M`"
 
-export IMAGE_SHORT="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${DOCKER_TAG_SHORT}"
-export IMAGE_LONG="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${DOCKER_TAG_LONG}"
-echo "IMAGE_SHORT: $IMAGE_SHORT"
-echo "IMAGE_LONG: $IMAGE_LONG"
+export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${DOCKER_TAG_LONG}"
+echo "IMAGE: $IMAGE"
 
 mkdir -p $projectRoot/target
 envsubst < $projectRoot/cloudbuild.yaml.in > $projectRoot/target/cloudbuild.yaml
