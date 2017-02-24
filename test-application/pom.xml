@@ -65,6 +65,7 @@
         <version>2.3.1</version>
         <configuration>
           <outputDirectory>${project.build.directory}/docker</outputDirectory>
+          <finalName>app.jar</finalName>
         </configuration>
       </plugin>
 		</plugins>
