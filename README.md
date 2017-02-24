@@ -18,6 +18,12 @@ To build using the [Google Cloud Container Builder](https://cloud.google.com/con
 $ ./scripts/cloudbuild.sh
 ```
 
+If you would like to simulate the cloud build locally pass in the `--local` argument.
+```
+$ PROJECT_ID=my-project
+$ ./scripts/cloudbuild.sh --local
+```
+
 ## The Default Entry Point
 Any arguments passed to the entry point that are not executable are treated as arguments to the java command:
 ```
