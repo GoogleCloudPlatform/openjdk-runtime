@@ -17,11 +17,19 @@
 set -e
 
 projectRoot=`dirname $0`/..
+buildProperties=$projectRoot/target/build.properties
+
+# reads a property value from a .properties file
+function read_prop {
+  grep "${1}" $buildProperties | cut -d'=' -f2
+}
+
+# invoke local maven to generate build properties file
+mvn generate-resources
 
 DOCKER_NAMESPACE='gcr.io/$PROJECT_ID'
 RUNTIME_NAME="openjdk"
-export DOCKER_TAG_LONG="8-`date -u +%Y-%m-%d-%H-%M`"
-
+DOCKER_TAG_LONG=$(read_prop "docker.tag.long")
 export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${DOCKER_TAG_LONG}"
 echo "IMAGE: $IMAGE"
 
