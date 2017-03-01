@@ -212,7 +212,7 @@
         <version>1.0.0</version>
         <executions>
           <execution>
-            <phase>generate-resources</phase>
+            <id>build-properties</id>
             <goals>
               <goal>write-project-properties</goal>
             </goals>

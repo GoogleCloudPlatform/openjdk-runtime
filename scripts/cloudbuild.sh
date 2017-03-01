@@ -25,11 +25,11 @@ function read_prop {
 }
 
 # invoke local maven to generate build properties file
-mvn generate-resources
+mvn properties:write-project-properties@build-properties
 
 DOCKER_NAMESPACE='gcr.io/$PROJECT_ID'
 RUNTIME_NAME="openjdk"
-DOCKER_TAG_LONG=$(read_prop "docker.tag.long")
+export DOCKER_TAG_LONG=$(read_prop "docker.tag.long")
 export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${DOCKER_TAG_LONG}"
 echo "IMAGE: $IMAGE"
 

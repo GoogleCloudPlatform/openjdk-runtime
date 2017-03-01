@@ -11,6 +11,9 @@ commandTests:
 - name: 'OPENJDK_VERSION env variable is set correctly'
   command: ['env']
   expectedOutput: ['OPENJDK_VERSION=${openjdk.version}']
+- name: 'GAE_IMAGE_LABEL env variable is set correctly'
+  command: ['env']
+  expectedOutput: ['GAE_IMAGE_LABEL=${docker.tag.long}']
 
 fileExistenceTests:
 - name: 'ssl certificates are present'
