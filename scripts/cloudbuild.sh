@@ -24,7 +24,7 @@ function read_prop {
   grep "${1}" $buildProperties | cut -d'=' -f2
 }
 
-# invoke local maven to generate build properties file
+# invoke local maven to output build properties file
 mvn properties:write-project-properties@build-properties
 
 DOCKER_NAMESPACE='gcr.io/$PROJECT_ID'
