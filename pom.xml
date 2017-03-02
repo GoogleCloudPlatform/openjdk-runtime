@@ -206,6 +206,24 @@
           </dependency>
         </dependencies>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>1.0.0</version>
+        <executions>
+          <execution>
+            <id>build-properties</id>
+            <goals>
+              <goal>write-project-properties</goal>
+            </goals>
+            <configuration>
+              <outputFile>
+                ${project.build.directory}/build.properties
+              </outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
