@@ -62,8 +62,12 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/docker</outputDirectory>
+							<outputDirectory>${project.build.directory}/deploy</outputDirectory>
 							<resources>
+								<resource>
+									<directory>${basedir}/src/main/appengine</directory>
+									<filtering>false</filtering>
+								</resource>
 								<resource>
                   <directory>${basedir}/src/main/docker</directory>
 									<filtering>false</filtering>
@@ -78,8 +82,8 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.3.1</version>
         <configuration>
-          <outputDirectory>${project.build.directory}/docker</outputDirectory>
-          <finalName>app.jar</finalName>
+          <outputDirectory>${project.build.directory}/deploy</outputDirectory>
+          <finalName>app</finalName>
         </configuration>
       </plugin>
 		</plugins>

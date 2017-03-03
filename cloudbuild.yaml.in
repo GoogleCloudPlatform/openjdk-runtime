@@ -5,9 +5,11 @@ steps:
 # Build the maven project, omitting the docker build step
 - name: 'maven:3.3.9-jdk-8'
   args: ['mvn', '-P-local-docker-build', '-Ddocker.tag.long=${DOCKER_TAG_LONG}', 'clean', 'install']
+  id: 'MAVEN'
 # Execute the docker build
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '--tag=${IMAGE}', '--no-cache', 'openjdk8/target/docker']
+  id: 'DOCKER'
 
 # Test the built image
 
@@ -15,10 +17,14 @@ steps:
 # See https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/structure_tests
 - name: 'gcr.io/gcp-runtimes/structure_test'
   args: ['--image', '${IMAGE}', '-v', '--config', '/workspace/openjdk8/target/test-classes/structure.yaml']
+  id: 'STRUCTURE_TEST'
+  waitFor: 'DOCKER'
 
 # Runtimes-common integration tests
 # See https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/integration_tests
 - name: 'gcr.io/gcp-runtimes/integration_test'
-  args: ['--image', '${IMAGE}', '--directory', '/workspace/test-application/target/']
+  args: ['--image', '${IMAGE}', '--directory', '/workspace/test-application/target/deploy']
+  id: 'INTEGRATION_TEST'
+  waitFor: 'DOCKER'
 
 images: ['${IMAGE}']
