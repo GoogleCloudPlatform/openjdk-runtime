@@ -17,25 +17,21 @@ public class LoggingController {
 
   private final static Logger logger = Logger.getLogger(LoggingController.class.getName());
 
-  public static class LoggingRequest {
+  static class LoggingRequest {
     public String log_name;
     public String token;
   }
 
   @RequestMapping(path = "/logging", method = POST)
-  public void post(@RequestBody LoggingRequest payload) {
-
-    System.out.println(System.getenv("GAE_INSTANCE"));
-    System.out.println(System.getenv("GAE_SERVICE"));
-    System.out.println(System.getenv("GAE_VERSION"));
+  public void logging(@RequestBody LoggingRequest request) {
 
     // create log handler for the given log_name
-    LoggingHandler loggingHandler = new LoggingHandler(payload.log_name, null, null,
+    LoggingHandler loggingHandler = new LoggingHandler(request.log_name, null, null,
         Collections.singletonList(new GaeFlexLoggingEnhancer()));
     LoggingHandler.addHandler(logger, loggingHandler);
 
     // send the token to stackdriver logging
-    logger.severe("payload.token: " + payload.token);
+    logger.severe("payload.token: " + request.token);
 
     // remove the handler
     logger.removeHandler(loggingHandler);
