@@ -2,7 +2,7 @@
 
 This repository contains the source for the Google-maintained OpenJDK [docker](https://docker.com) image. This image can be used as the base image for running Java applications on [Google App Engine Flexible Environment](https://cloud.google.com/appengine/docs/flexible/java/) and [Google Container Engine](https://cloud.google.com/container-engine).
 
-This image can be found at `l.gcr.io/google/openjdk8`, or at `gcr.io/google-appengine/openjdk` if you're building an application to deploy on Google App Engine Flex.
+This image is mirrored at both `launcher.gcr.io/google/openjdk8` and `gcr.io/google-appengine/openjdk`.
 
 ## The Default Entry Point
 Any arguments passed to the entry point that are not executable are treated as arguments to the java command:
