@@ -15,7 +15,7 @@ write the Dockerfile like this:
 
 ```dockerfile
 FROM gcr.io/google-appengine/openjdk
-ADD your-application.jar app.jar
+COPY your-application.jar app.jar
 ```
       
 That will add the JAR in the correct location for the Docker container.
