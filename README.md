@@ -4,6 +4,39 @@ This repository contains the source for the Google-maintained OpenJDK [docker](h
 
 This image is mirrored at both `launcher.gcr.io/google/openjdk8` and `gcr.io/google-appengine/openjdk`.
 
+## App Engine Flexible Environment
+When using App Engine Flexible, you can use the runtime without worrying about Docker by specifying `runtime: java` in your `app.yaml`:
+```yaml
+runtime: java
+env: flex
+```
+The runtime image `gcr.io/google-appenine/openjdk` will be automatically selected if you are attempting to deploy a JAR (`*.jar` file).
+
+If you want to use the image as a base for a custom runtime, you can specify `runtime: custom` in your `app.yaml` and then
+write the Dockerfile like this:
+
+```dockerfile
+FROM gcr.io/google-appengine/openjdk
+COPY your-application.jar app.jar
+```
+      
+That will add the JAR in the correct location for the Docker container.
+      
+Once you have this configuration, you can use the Google Cloud SDK to deploy this directory containing the 2 configuration files and the JAR using:
+```
+gcloud app deploy app.yaml
+```
+
+##Container Engine & other Docker hosts
+For other Docker hosts, you'll need to create a Dockerfile based on this image that copies your application code and installs dependencies. For example:
+
+```dockerfile
+FROM gcr.io/google-appengine/openjdk
+COPY your-application.jar app.jar
+```
+You can then build the docker container using `docker build` or [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/).
+By default, the CMD is set to run the application JAR. You can change this by specifying your own `CMD` or `ENTRYPOINT`.
+
 ## The Default Entry Point
 Any arguments passed to the entry point that are not executable are treated as arguments to the java command:
 ```
