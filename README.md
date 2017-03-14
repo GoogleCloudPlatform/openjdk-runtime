@@ -1,6 +1,8 @@
 # Google Cloud Platform OpenJDK Docker Image
 
-This repository contains the source for the `gcr.io/google-appengine/openjdk` [docker](https://docker.com) image. This image can be used as the base image for running Java applications on [Google App Engine Flexible Environment](https://cloud.google.com/appengine/docs/flexible/java/) and [Google Container Engine](https://cloud.google.com/container-engine).
+This repository contains the source for the Google-maintained OpenJDK [docker](https://docker.com) image. This image can be used as the base image for running Java applications on [Google App Engine Flexible Environment](https://cloud.google.com/appengine/docs/flexible/java/) and [Google Container Engine](https://cloud.google.com/container-engine).
+
+This image is mirrored at both `launcher.gcr.io/google/openjdk8` and `gcr.io/google-appengine/openjdk`.
 
 ## App Engine Flexible Environment
 When using App Engine Flexible, you can use the runtime without worrying about Docker by specifying `runtime: java` in your `app.yaml`:
