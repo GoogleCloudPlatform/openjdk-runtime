@@ -10,7 +10,7 @@ commandTests:
   expectedError: ['openjdk version "1\.${openjdk.version.major}.*${openjdk.version.minor}"']
 - name: 'correct javac version is installed'
   command: ['javac', '-version']
-  expectedError: ['javac version "1\.${openjdk.version.major}.*${openjdk.version.minor}"']
+  expectedError: ['javac 1\.${openjdk.version.major}.*${openjdk.version.minor}']
 - name: 'OPENJDK_VERSION env variable is set correctly'
   command: ['env']
   expectedOutput: ['OPENJDK_VERSION=${openjdk.version}']
