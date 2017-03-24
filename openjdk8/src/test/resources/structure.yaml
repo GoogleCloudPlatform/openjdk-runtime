@@ -35,9 +35,9 @@ fileExistenceTests:
   path: '/docker-entrypoint.bash'
   isDirectory: false
   shouldExist: true
-- name: 'Env setup script exists'
-  path: '/setup-env.bash'
-  isDirectory: false
+- name: 'Env setup scripts exists'
+  path: '/setup-env.d'
+  isDirectory: true
   shouldExist: true
 
 licenseTests:
