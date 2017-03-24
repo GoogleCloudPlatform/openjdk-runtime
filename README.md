@@ -94,6 +94,59 @@ The error is normal because the default command is designed for child containers
 FROM openjdk
 ADD my_app_0.0.1.jar app.jar
 ```
+
+# Stackdriver Logging
+The [Google Cloud Stackdrive Logging](https://cloud.google.com/logging/) service may be used
+by applications running in this image either from Google Cloud Platforms or any other platform with network access to the Google Cloud services. 
+
+## Stackdriver Logging Dependencies
+The application deployed on this image must provide the stackdriver logging classes and their 
+dependencies.  This can be done easily in maven or gradle following [these instructions](https://cloud.google.com/logging/docs/reference/libraries#client-libraries-install-java).
+
+## Stackdriver Logging Authentication
+### Local Development
+When running locally, the [Google Cloud SDK](https://cloud.google.com/sdk/) along with [Application Default Credentials](https://developers.google.com/identity/protocols/application-default-credentials) can be used to authenticate the logging client library with stackdriver logging service.  This ultimately means that after the SDK is installed, the following command is all that is required prior to running the logging client library:
+```shell
+gcloud auth application-default login
+```
+### Google Cloud Platforms
+No additional authentication is required when the stackdriver logging mechanism is deployed on a Google Cloud Platform.
+
+### Other environments
+To use the stackdriver logging client from other platforms see the [Google Cloud Platform Authentication Guide](https://cloud.google.com/docs/authentication#getting_credentials_for_server-centric_flow)
+
+## Stackdriver Configuration
+The Stackdriver API may be [used directly](https://cloud.google.com/logging/docs/reference/libraries#using_the_client_library) by the application, however it is often more convenient to use the [Java Util Logging](https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html) handler that is provided by the libraries.
+
+To enable Java Util Logging, a `logging.properties` file must be provided and configured in the `java.util.logging.config.file` system property. This can be either added to a custom image or bound onto the standard image using the `-v` option:
+```shell 
+docker run -it --rm \
+-v /mylocaldir/logging.properties:/etc/logging.properties \
+-e JAVA_USER_OPTS="-Djava.util.logging.config.file=/etc/logging.properties" \
+...
+```
+
+To use the stackdriver logging client, the `logging.properties` file must declare and configure the [LoggingHandler](http://googlecloudplatform.github.io/google-cloud-java/0.10.0/apidocs/com/google/cloud/logging/LoggingHandler.html) as one of the `handlers`:
+```properties
+.level=INFO
+
+handlers=com.google.cloud.logging.LoggingHandler
+com.google.cloud.logging.LoggingHandler.level=FINE
+com.google.cloud.logging.LoggingHandler.log=my_app.log
+com.google.cloud.logging.LoggingHandler.formatter=java.util.logging.SimpleFormatter
+java.util.logging.SimpleFormatter.format=%3$s: %5$s%6$s
+```
+
+If the image is to be deployed on a Google Cloud Platform, then the integration of the logging console can be enhanced by adding the following lines to the configuration:
+
+```
+com.google.cloud.logging.LoggingHandler.resourceType=gae_app
+com.google.cloud.logging.LoggingHandler.enhancers=com.google.cloud.logging.GaeFlexLoggingEnhancer
+```
+This enables the [GaeFlexLoggingEnhancer](http://googlecloudplatform.github.io/google-cloud-java/0.10.0/apidocs/com/google/cloud/logging/GaeFlexLoggingEnhancer.html).  The logging generated can then be linked to the `nginx` request log in the logging console by calling [setCurrentTraceId](http://googlecloudplatform.github.io/google-cloud-java/0.10.0/apidocs/com/google/cloud/logging/GaeFlexLoggingEnhancer.html#setCurrentTraceId-java.lang.String-) for any thread handling a request.  The traceId for a request on a Google Cloud Platform is obtained from the `setCurrentTraceId` HTTP header as the first field of the `'/'` delimited value.
+
+
+
 # Development Guide
 
 * See [instructions](DEVELOPING.md) on how to build and test this image.
