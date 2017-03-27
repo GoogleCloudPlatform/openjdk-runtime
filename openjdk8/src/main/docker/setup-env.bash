@@ -13,7 +13,7 @@ if [ -z "$PLATFORM" ]; then
   if [ -n "$GAE_INSTANCE" ]; then
     PLATFORM=gae
   else
-    PLATFORM=unkown
+    PLATFORM=unknown
   fi
 fi
 export PLATFORM
