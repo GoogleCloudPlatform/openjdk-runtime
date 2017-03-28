@@ -47,5 +47,5 @@ else
   # invoke cloud container builder to build the image
   gcloud container builds submit --config=$projectRoot/target/cloudbuild.yaml .
   # run integration tests on the built image
-  $dir/integration_test.sh $IMAGE
+  source $dir/integration_test.sh $IMAGE
 fi
