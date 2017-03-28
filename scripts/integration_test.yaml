@@ -6,7 +6,7 @@ steps:
   - name: 'gcr.io/gcp-runtimes/integration_test'
     args:
       - '--no-deploy'
-      - '--url'
-      - '${_DEPLOYED_APP_URL}'
-      - '--skip-monitoring-tests'
+      - '--url=${_DEPLOYED_APP_URL}'
+      - '--skip-logging-tests' # blocked by b/33415496
+      - '--skip-monitoring-tests' # not yet implemented
 

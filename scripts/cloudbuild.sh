@@ -16,7 +16,8 @@
 
 set -e
 
-projectRoot=`dirname $0`/..
+dir=`dirname $0`
+projectRoot=$dir/..
 buildProperties=$projectRoot/target/build.properties
 
 # reads a property value from a .properties file
@@ -43,5 +44,8 @@ then
   curl -s https://raw.githubusercontent.com/GoogleCloudPlatform/python-runtime/master/scripts/local_cloudbuild.py | \
   python3 - --config=$projectRoot/target/cloudbuild_local.yaml --output_script=$projectRoot/target/cloudbuild_local.sh
 else
+  # invoke cloud container builder to build the image
   gcloud container builds submit --config=$projectRoot/target/cloudbuild.yaml .
+  # run integration tests on the built image
+  $dir/integration_test.sh $IMAGE
 fi
