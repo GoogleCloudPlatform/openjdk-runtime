@@ -20,6 +20,13 @@ dir=`dirname $0`
 projectRoot=$dir/..
 buildProperties=$projectRoot/target/build.properties
 
+RUNTIME_NAME="openjdk"
+DOCKER_NAMESPACE=$1
+if [ -z "${DOCKER_NAMESPACE}" ]; then
+  echo "Usage: ${0} <docker_namespace>"
+  exit 1
+fi
+
 # reads a property value from a .properties file
 function read_prop {
   grep "${1}" $buildProperties | cut -d'=' -f2
@@ -28,8 +35,6 @@ function read_prop {
 # invoke local maven to output build properties file
 mvn clean --non-recursive properties:write-project-properties@build-properties
 
-DOCKER_NAMESPACE='gcr.io/$PROJECT_ID'
-RUNTIME_NAME="openjdk"
 export DOCKER_TAG_LONG=$(read_prop "docker.tag.long")
 export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${DOCKER_TAG_LONG}"
 echo "IMAGE: $IMAGE"
