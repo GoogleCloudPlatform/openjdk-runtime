@@ -42,6 +42,11 @@
         </exclusion>
       </exclusions>
 		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-monitoring</artifactId>
+			<version>0.9.4-alpha</version>
+		</dependency>
 	</dependencies>
 
 	<build>
