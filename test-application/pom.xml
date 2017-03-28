@@ -49,6 +49,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <finalName>app</finalName>
+          <outputDirectory>${project.build.directory}/deploy</outputDirectory>
+        </configuration>
 			</plugin>
       <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -77,15 +81,6 @@
 					</execution>
 				</executions>
 			</plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.1</version>
-        <configuration>
-          <outputDirectory>${project.build.directory}/deploy</outputDirectory>
-          <finalName>app</finalName>
-        </configuration>
-      </plugin>
 		</plugins>
 	</build>
 

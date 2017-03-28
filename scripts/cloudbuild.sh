@@ -25,7 +25,7 @@ function read_prop {
 }
 
 # invoke local maven to output build properties file
-mvn --non-recursive properties:write-project-properties@build-properties
+mvn clean --non-recursive properties:write-project-properties@build-properties
 
 DOCKER_NAMESPACE='gcr.io/$PROJECT_ID'
 RUNTIME_NAME="openjdk"
