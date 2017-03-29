@@ -30,7 +30,6 @@ if [ "$2" == "--local" ]; then
   LOCAL_BUILD=true
 fi
 
-
 # reads a property value from a .properties file
 function read_prop {
   grep "${1}" $buildProperties | cut -d'=' -f2
@@ -49,9 +48,7 @@ envsubst < $projectRoot/cloudbuild.yaml.in > $projectRoot/target/cloudbuild.yaml
 # build and test the runtime image
 if [ "$LOCAL_BUILD" = "true" ]; then
   source $dir/cloudbuild_local.sh --config=$projectRoot/target/cloudbuild.yaml
-  source $dir/integration_test.sh $IMAGE --local
 else
   gcloud container builds submit --config=$projectRoot/target/cloudbuild.yaml .
-  source $dir/integration_test.sh $IMAGE
 fi
 
