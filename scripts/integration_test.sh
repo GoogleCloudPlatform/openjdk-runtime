@@ -42,8 +42,7 @@ popd
 pushd $deployDir
 export STAGING_IMAGE=$imageUnderTest
 envsubst < Dockerfile.in > Dockerfile
-echo "Deploying to App Engine with dockerfile:"
-cat Dockerfile
+echo "Deploying to App Engine..."
 gcloud app deploy -q
 popd
 
