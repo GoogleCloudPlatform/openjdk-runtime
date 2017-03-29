@@ -29,14 +29,11 @@ $ ./scripts/cloudbuild.sh gcr.io/$PROJECT_ID/openjdk --local
 # Running Tests
 Integration tests can be run via [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/overview).
 These tests deploy a sample test application to App Engine using the provided runtime image, and 
-exercise various integrations with other GCP services.
+exercise various integrations with other GCP services. Note that the image under test must be pushed 
+to a gcr.io repository before the integration tests can run.
 ```bash
-$ PROJECT_ID=my-project
-$ ./scripts/integration_test.sh gcr.io/$PROJECT_ID/openjdk
+$ RUNTIME_IMAGE=gcr.io/my-project-id/openjdk:my-tag
+$ gcloud docker -- push $RUNTIME_IMAGE
+$ ./scripts/integration_test.sh $RUNTIME_IMAGE
 ```
 
-To drive the integration tests using local cloud build, pass in the `--local` argument.
-```bash
-$ PROJECT_ID=my-project
-$ ./scripts/integration_test.sh gcr.io/$PROJECT_ID/openjdk --local
-```

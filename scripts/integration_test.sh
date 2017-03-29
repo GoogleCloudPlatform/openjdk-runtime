@@ -24,12 +24,8 @@ testAppDir=$projectRoot/test-application
 deployDir=$testAppDir/target/deploy
 
 imageUnderTest=$1
-if [ "$2" == "--local" ]; then
-  LOCAL_BUILD=true
-fi
-
 if [ -z "${imageUnderTest}" ]; then
-  echo "Usage: ${0} <image_under_test> [--local]"
+  echo "Usage: ${0} <image_under_test>"
   exit 1
 fi
 
@@ -49,16 +45,9 @@ popd
 DEPLOYED_APP_URL="http://$(gcloud app describe | grep defaultHostname | awk '{print $2}')"
 echo "Running integration tests on application that is deployed at $DEPLOYED_APP_URL"
 
-if [ "$LOCAL_BUILD" == "true" ]; then
-  # run local container build
-  $dir/cloudbuild_local.sh \
-    --config $dir/integration_test.yaml \
-    --substitutions "_DEPLOYED_APP_URL=$DEPLOYED_APP_URL"
-else
-  # run in cloud container builder
-  gcloud container builds submit \
-    --config $dir/integration_test.yaml \
-    --substitutions "_DEPLOYED_APP_URL=$DEPLOYED_APP_URL" \
-    $dir
-fi
+# run in cloud container builder
+gcloud container builds submit \
+  --config $dir/integration_test.yaml \
+  --substitutions "_DEPLOYED_APP_URL=$DEPLOYED_APP_URL" \
+  $dir
 
