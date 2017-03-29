@@ -31,23 +31,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.google.cloud</groupId>
-      <artifactId>google-cloud-logging</artifactId>
-      <version>0.9.3-beta</version>
-      <exclusions>
-        <!-- TODO remove once https://github.com/google/google-oauth-java-client/issues/145 is fixed -->
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.google.cloud</groupId>
-      <artifactId>google-cloud-monitoring</artifactId>
-      <version>0.9.4-alpha</version>
-    </dependency>
   </dependencies>
 
   <build>
