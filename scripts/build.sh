@@ -16,7 +16,7 @@
 
 set -e
 
-dir=`dirname $0`
+dir=$(dirname $0)
 projectRoot=$dir/..
 
 RUNTIME_NAME="openjdk"
