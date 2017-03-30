@@ -14,16 +14,20 @@ $ mvn clean install
 The resulting image is called openjdk
 
 ### Cloud build
-To build using the [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/overview), you need to have the [Google Cloud SDK](https://cloud.google.com/sdk/) installed locally.
+To build using the [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/overview), 
+you need to have the [Google Cloud SDK](https://cloud.google.com/sdk/) installed locally. We provide a script to make this more convenient.
 ```
+# the following commands will build and push an image named "gcr.io/my-project/openjdk:tag"
 $ PROJECT_ID=my-project
-$ ./scripts/cloudbuild.sh gcr.io/$PROJECT_ID/openjdk
+$ TAG_NAME=tag
+$ ./scripts/build.sh gcr.io/$PROJECT_ID $TAG
 ```
 
 If you would like to simulate the cloud build locally, pass in the `--local` argument.
 ```
 $ PROJECT_ID=my-project
-$ ./scripts/cloudbuild.sh gcr.io/$PROJECT_ID/openjdk --local
+$ TAG_NAME=tag
+$ ./scripts/build.sh gcr.io/$PROJECT_ID $TAG --local
 ```
 
 # Running Tests
