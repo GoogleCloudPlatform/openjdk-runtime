@@ -4,7 +4,7 @@
 steps:
 # Build the maven project, omitting the docker build step
 - name: 'maven:3.3.9-jdk-8'
-  args: ['mvn', '-P-local-docker-build', '-Ddocker.tag.long=${_DOCKER_TAG_LONG}', 'clean', 'install']
+  args: ['mvn', '-P-local-docker-build', '-Ddocker.tag.long=${_DOCKER_TAG}', 'clean', 'install']
   id: 'MAVEN'
 # Execute the docker build
 - name: 'gcr.io/cloud-builders/docker'
