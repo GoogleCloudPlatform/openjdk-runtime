@@ -18,39 +18,31 @@ set -e
 
 dir=`dirname $0`
 projectRoot=$dir/..
-buildProperties=$projectRoot/target/build.properties
 
 RUNTIME_NAME="openjdk"
 DOCKER_NAMESPACE=$1
-if [ -z "${DOCKER_NAMESPACE}" ]; then
-  echo "Usage: ${0} <docker_namespace> [--local]"
+DOCKER_TAG=$2
+
+if [ -z "${DOCKER_NAMESPACE}" -o -z "${DOCKER_TAG}" ]; then
+  echo "Usage: ${0} <docker_namespace> <docker_tag> [--local]"
   exit 1
 fi
-if [ "$2" == "--local" ]; then
+if [ "$3" == "--local" ]; then
   LOCAL_BUILD=true
 fi
 
-# reads a property value from a .properties file
-function read_prop {
-  grep "${1}" $buildProperties | cut -d'=' -f2
-}
-
-# invoke local maven to output build properties file
-mvn clean --non-recursive properties:write-project-properties@build-properties
-
-export DOCKER_TAG_LONG=$(read_prop "docker.tag.long")
-export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${DOCKER_TAG_LONG}"
+IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${DOCKER_TAG}"
 echo "IMAGE: $IMAGE"
 
 # build and test the runtime image
 if [ "$LOCAL_BUILD" = "true" ]; then
   source $dir/cloudbuild_local.sh \
     --config=$projectRoot/cloudbuild.yaml \
-    --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG_LONG=$DOCKER_TAG_LONG"
+    --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG=$DOCKER_TAG"
 else
   gcloud container builds submit \
     --config=$projectRoot/cloudbuild.yaml \
-    --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG_LONG=$DOCKER_TAG_LONG" \
+    --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG=$DOCKER_TAG" \
     .
 fi
 
