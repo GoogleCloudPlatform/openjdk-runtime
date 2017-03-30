@@ -16,8 +16,19 @@
 
 set -e
 
-projectRoot=`dirname $0`/..
+dir=`dirname $0`
+projectRoot=$dir/..
 buildProperties=$projectRoot/target/build.properties
+
+RUNTIME_NAME="openjdk"
+DOCKER_NAMESPACE=$1
+if [ -z "${DOCKER_NAMESPACE}" ]; then
+  echo "Usage: ${0} <docker_namespace> [--local]"
+  exit 1
+fi
+if [ "$2" == "--local" ]; then
+  LOCAL_BUILD=true
+fi
 
 # reads a property value from a .properties file
 function read_prop {
@@ -25,23 +36,21 @@ function read_prop {
 }
 
 # invoke local maven to output build properties file
-mvn properties:write-project-properties@build-properties
+mvn clean --non-recursive properties:write-project-properties@build-properties
 
-DOCKER_NAMESPACE='gcr.io/$PROJECT_ID'
-RUNTIME_NAME="openjdk"
 export DOCKER_TAG_LONG=$(read_prop "docker.tag.long")
 export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${DOCKER_TAG_LONG}"
 echo "IMAGE: $IMAGE"
 
-mkdir -p $projectRoot/target
-envsubst < $projectRoot/cloudbuild.yaml.in > $projectRoot/target/cloudbuild.yaml
-
-if [ "$1" == "--local" ]
-then
-  export PROJECT_ID=${PROJECT_ID:-"local-test-project"}
-  envsubst < $projectRoot/target/cloudbuild.yaml > $projectRoot/target/cloudbuild_local.yaml
-  curl -s https://raw.githubusercontent.com/GoogleCloudPlatform/python-runtime/master/scripts/local_cloudbuild.py | \
-  python3 - --config=$projectRoot/target/cloudbuild_local.yaml --output_script=$projectRoot/target/cloudbuild_local.sh
+# build and test the runtime image
+if [ "$LOCAL_BUILD" = "true" ]; then
+  source $dir/cloudbuild_local.sh \
+    --config=$projectRoot/cloudbuild.yaml \
+    --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG_LONG=$DOCKER_TAG_LONG"
 else
-  gcloud container builds submit --config=$projectRoot/target/cloudbuild.yaml .
+  gcloud container builds submit \
+    --config=$projectRoot/cloudbuild.yaml \
+    --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG_LONG=$DOCKER_TAG_LONG" \
+    .
 fi
+
