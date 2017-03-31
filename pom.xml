@@ -49,6 +49,7 @@
 
   <modules>
     <module>openjdk8</module>
+    <module>test-application</module>
   </modules>
 
   <dependencyManagement>
