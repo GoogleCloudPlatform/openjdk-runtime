@@ -43,6 +43,6 @@ else
   gcloud container builds submit \
     --config=$projectRoot/cloudbuild.yaml \
     --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG=$DOCKER_TAG" \
-    .
+    $projectRoot
 fi
 
