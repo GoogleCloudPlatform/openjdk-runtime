@@ -2,7 +2,10 @@
 
 # source the supported feature JVM arguments
 source /setup-env.bash
-  
+if [ -x /app-env.bash ] ; then
+  source /app-env.bash
+fi
+
 # If the first argument is the java command
 if [ "java" = "$1" -o "$(which java)" = "$1" ] ; then
   # ignore it as java is the default command
