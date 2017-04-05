@@ -20,13 +20,19 @@ dir=$(dirname $0)
 projectRoot=$dir/..
 
 RUNTIME_NAME="openjdk"
+DOCKER_TAG_PREFIX="8"
 DOCKER_NAMESPACE=$1
 DOCKER_TAG=$2
 
-if [ -z "${DOCKER_NAMESPACE}" -o -z "${DOCKER_TAG}" ]; then
+if [ -z "${DOCKER_NAMESPACE}" ]; then
   echo "Usage: ${0} <docker_namespace> <docker_tag> [--local]"
   exit 1
 fi
+
+if [ -z "${DOCKER_TAG}" ]; then
+  DOCKER_TAG="${DOCKER_TAG_PREFIX}-$(date +%Y-%m-%d-%H_%M_%S)"
+fi
+
 if [ "$3" == "--local" ]; then
   LOCAL_BUILD=true
 fi
@@ -43,6 +49,6 @@ else
   gcloud container builds submit \
     --config=$projectRoot/cloudbuild.yaml \
     --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG=$DOCKER_TAG" \
-    .
+    $projectRoot
 fi
 
