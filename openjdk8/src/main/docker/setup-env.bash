@@ -8,6 +8,7 @@ isTrue() {
   fi 
 }
 
+export GAE_ZONE=${GAE_ZONE:-${GAE_INSTANCE:+$( curl -s -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/zone | cut -d/ -f4)}}
 export DBG_AGENT=
 export DBG_ENABLE=${DBG_ENABLE:-$( if [[ -z "${CDBG_DISABLE}" && -x /opt/cdbg/format-env-appengine-vm.sh ]] ; then echo true; else echo false ; fi )}
 if isTrue "${DBG_ENABLE}" ; then

@@ -30,6 +30,7 @@ RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/a
     netbase \
     wget \ 
     unzip \
+    curl \
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
 
