@@ -25,7 +25,7 @@ DOCKER_NAMESPACE=$1
 DOCKER_TAG=$2
 
 if [ -z "${DOCKER_NAMESPACE}" ]; then
-  echo "Usage: ${0} <docker_namespace> <docker_tag> [--local]"
+  echo "Usage: ${0} <docker_namespace> [docker_tag] [--local]"
   exit 1
 fi
 
