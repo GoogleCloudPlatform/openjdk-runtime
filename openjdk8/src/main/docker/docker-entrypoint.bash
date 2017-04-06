@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source the supported feature JVM arguments
+# scan the setup-env.d directory for scripts to source for additional setup
 if [ -d "${SETUP_ENV:=/setup-env.d}" ]; then
   for SCRIPT in $( ls "${SETUP_ENV}/"[0-9]*.bash | sort ) ; do
     source ${SCRIPT}
