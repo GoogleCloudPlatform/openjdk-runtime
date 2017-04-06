@@ -19,14 +19,14 @@ you need to have the [Google Cloud SDK](https://cloud.google.com/sdk/) installed
 ```
 # the following commands will build and push an image named "gcr.io/my-project/openjdk:tag"
 $ PROJECT_ID=my-project
-$ TAG_NAME=tag
+$ TAG=tag
 $ ./scripts/build.sh gcr.io/$PROJECT_ID $TAG
 ```
 
 If you would like to simulate the cloud build locally, pass in the `--local` argument.
 ```
 $ PROJECT_ID=my-project
-$ TAG_NAME=tag
+$ TAG=tag
 $ ./scripts/build.sh gcr.io/$PROJECT_ID $TAG --local
 ```
 
