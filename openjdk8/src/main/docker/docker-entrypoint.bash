@@ -1,8 +1,12 @@
 #!/bin/bash
 
-# source the supported feature JVM arguments
-source /setup-env.bash
-  
+# scan the setup-env.d directory for scripts to source for additional setup
+if [ -d "${SETUP_ENV:=/setup-env.d}" ]; then
+  for SCRIPT in $( ls "${SETUP_ENV}/"[0-9]*.bash | sort ) ; do
+    source ${SCRIPT}
+  done
+fi
+
 # If the first argument is the java command
 if [ "java" = "$1" -o "$(which java)" = "$1" ] ; then
   # ignore it as java is the default command
