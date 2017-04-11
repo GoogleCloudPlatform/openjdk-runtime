@@ -30,7 +30,7 @@ if [ -z "${DOCKER_NAMESPACE}" ]; then
 fi
 
 if [ -z "${DOCKER_TAG}" ]; then
-  DOCKER_TAG="${DOCKER_TAG_PREFIX}-$(date +%Y-%m-%d-%H_%M_%S)"
+  DOCKER_TAG="${DOCKER_TAG_PREFIX}-$(date -u +%Y-%m-%d_%H_%M)"
 fi
 
 if [ "$3" == "--local" ]; then
