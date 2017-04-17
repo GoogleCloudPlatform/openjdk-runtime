@@ -14,11 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Build script for CI-like environments, where jobs are configured via environment variables.
+# Build script for CI-like environments. Sets up local dependencies required for performing a
+# continuous-integration build.
 set -e
 
 dir=$(dirname $0)
 
+# downloads, unpacks, installs the cloud SDK
+source $dir/gcloud-init.sh
+
+cd github/openjdk-runtime
+export TAG=$(git rev-parse --short HEAD)
+
 echo "Invoking build.sh with DOCKER_NAMESPACE=$DOCKER_NAMESPACE, TAG=$TAG"
-source $dir/build.sh $DOCKER_NAMESPACE $TAG
+./scripts/build.sh $DOCKER_NAMESPACE $TAG
 
