@@ -17,6 +17,31 @@ commandTests:
 - name: 'GAE_IMAGE_LABEL env variable is set correctly'
   command: ['env']
   expectedOutput: ['GAE_IMAGE_LABEL=${docker.tag.long}']
+- name: 'check entrypoint default'
+  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/entrypoint-default.bash' ]]
+  command: [ '/workspace/openjdk8/src/test/workspace/entrypoint-default.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
+- name: 'check entrypoint args only'
+  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/entrypoint-args-only.bash' ]]
+  command: [ '/workspace/openjdk8/src/test/workspace/entrypoint-args-only.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
+- name: 'check entrypoint setup'
+  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/entrypoint-setup.bash' ]]
+  command: [ '/workspace/openjdk8/src/test/workspace/entrypoint-setup.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
+- name: 'check setup platform'
+  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/setup-platform.bash' ]]
+  command: [ '/workspace/openjdk8/src/test/workspace/setup-platform.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
+- name: 'check setup java'
+  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/setup-java.bash' ]]
+  command: [ '/workspace/openjdk8/src/test/workspace/setup-java.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
 
 fileExistenceTests:
 - name: 'ssl certificates are present'
