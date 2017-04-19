@@ -91,6 +91,8 @@
               <arguments>
                 <argument>--image</argument>
                 <argument>openjdk:${docker.tag.long}</argument>
+                <argument>--workspace</argument>
+                <argument>${project.basedir}/..</argument>
                 <argument>--config</argument>
                 <argument>${project.build.testOutputDirectory}/structure.yaml</argument>
               </arguments>

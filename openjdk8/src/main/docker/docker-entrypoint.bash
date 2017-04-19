@@ -1,11 +1,13 @@
 #!/bin/bash
 
-# If the first argument is the java command
-if [ "java" = "$1" -o "$(which java)" = "$1" ] ; then
-  # The default command java is added below, so remove java here before
-  # setup customization.  It will be added below if the resulting 
-  # command line is not executable
+# If the first argument is the if full java command
+if [ "$(which java)" = "$1" ] ; then
+  #normalize it
   shift
+  set -- java "$@"
+# else if the first argument is not executable assume java
+elif ! type "$1" &>/dev/null; then
+  set -- java "$@"
 fi
 
 # scan the setup-env.d directory for scripts to source for additional setup
@@ -15,11 +17,9 @@ if [ -d "${SETUP_ENV:=/setup-env.d}" ]; then
   done
 fi
 
-# If the first argument is not executable
-if ! type "$1" &>/dev/null; then
-  # then treat all arguments as arguments to the java command
-  
-  # set the command line to java with the feature arguments and passed arguments
+# Do we have JAVA_OPTS for a java command?
+if [ "$1" = "java" -a -n "$JAVA_OPTS" ]; then
+  shift
   set -- java $JAVA_OPTS "$@"
 fi
 
