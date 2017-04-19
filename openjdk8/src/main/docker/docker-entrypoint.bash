@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# If the first argument is the if full java command
+# If the first argument is the full java command
 if [ "$(which java)" = "$1" ] ; then
   #normalize it
   shift
