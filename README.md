@@ -27,7 +27,7 @@ Once you have this configuration, you can use the Google Cloud SDK to deploy thi
 gcloud app deploy app.yaml
 ```
 
-##Container Engine & other Docker hosts
+## Container Engine & other Docker hosts
 For other Docker hosts, you'll need to create a Dockerfile based on this image that copies your application code and installs dependencies. For example:
 
 ```dockerfile
