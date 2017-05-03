@@ -1,3 +1,5 @@
+![Build Status](http://storage.googleapis.com/java-runtimes-kokoro-build-badges/openjdk-runtime-master.png)
+
 # Google Cloud Platform OpenJDK Docker Image
 
 This repository contains the source for the Google-maintained OpenJDK [docker](https://docker.com) image. This image can be used as the base image for running Java applications on [Google App Engine Flexible Environment](https://cloud.google.com/appengine/docs/flexible/java/) and [Google Container Engine](https://cloud.google.com/container-engine).
