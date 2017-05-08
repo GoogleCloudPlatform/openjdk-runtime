@@ -105,12 +105,11 @@ fi
 #test GKE envrionment
 unset JAVA_OPTS TMPDIR GAE_MEMORY_MB HEAP_SIZE_MB JAVA_HEAP_OPTS JAVA_GC_OPTS JAVA_OPTS DBG_AGENT
 TMPDIR=/var/tmp
-MEMORY_LIMIT=20000000
-
+KUBERNETES_MEMORY_LIMIT=20000000
 source /setup-env.d/30-java-env.bash
 
-TEST_MIN_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xms16.*/OK/')
-TEST_MAX_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xmx16.*/OK/')
+TEST_MIN_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xms15.*/OK/')
+TEST_MAX_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xmx15.*/OK/')
 
 if [ "$TEST_MIN_HEAP" != "OK" -o "$TEST_MAX_HEAP" != "OK" ]; then
   echo "Memory limit set by kubernetes is not considered in JAVA_OPTS='$(echo $JAVA_OPTS | xargs)'"

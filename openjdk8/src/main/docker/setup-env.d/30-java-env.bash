@@ -1,12 +1,31 @@
 #!/bin/bash
 
 GetAvailableMemory () {
-  if [ -n "$MEMORY_LIMIT" ]; then
-    # As Kubernetes give the memory in byte we have to convert it to MB
-    echo $((MEMORY_LIMIT / 1000000))
-  else
-    echo "$(awk '/MemTotal/{ print int($2/1024-400) }' /proc/meminfo)"
+  local default_memory="$(awk '/MemTotal/{ print int($2/1024-400) }' /proc/meminfo)"
+  local memory=""
+
+  # Search for a memory limit set by kubernetes
+  if [ -n "$KUBERNETES_MEMORY_LIMIT" ]; then
+    memory=$((KUBERNETES_MEMORY_LIMIT / (1024 * 1024)))
   fi
+
+  # Search for a memory limit set by cgroup
+  local cgroup_mem_file="/sys/fs/cgroup/memory/memory.limit_in_bytes"
+  if [ -z $memory ] && [ -r "$cgroup_mem_file" ]; then
+    local cgroup_memory="$(cat ${cgroup_mem_file})"
+    cgroup_memory=$((cgroup_memory / (1024 * 1024)))
+    # Cgroup memory can be unbound, in which case we use the default limit
+    if [ ${cgroup_memory} -lt ${default_memory} ]; then
+      memory=$cgroup_memory
+    fi
+  fi
+
+  # Fallback to default memory limit
+  if [ -z $memory ]; then
+    memory=$default_memory
+  fi
+
+  echo $memory
 }
 
 # Setup default Java Options
