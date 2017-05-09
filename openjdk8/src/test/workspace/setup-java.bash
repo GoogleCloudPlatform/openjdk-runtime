@@ -87,4 +87,18 @@ if [ "$(echo $JAVA_OPTS | xargs)" != "-XX:options" ]; then
 fi
 
 
+# test heap size ratio
+unset JAVA_OPTS TMPDIR GAE_MEMORY_MB HEAP_SIZE_MB JAVA_HEAP_OPTS JAVA_GC_OPTS JAVA_OPTS DBG_AGENT
+GAE_MEMORY_MB=1000
+HEAP_SIZE_RATIO=50
+source /setup-env.d/30-java-env.bash
+
+TEST_MIN_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xms500.*/OK/')
+TEST_MAX_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xmx500.*/OK/')
+
+if [ "$TEST_MIN_HEAP" != "OK" -o "$TEST_MAX_HEAP" != "OK" ]; then
+  echo "Bad values JAVA_OPTS='$(echo $JAVA_OPTS | xargs)'"
+  exit 1
+fi
+
 echo OK
