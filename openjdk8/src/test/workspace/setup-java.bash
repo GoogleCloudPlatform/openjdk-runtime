@@ -93,8 +93,8 @@ GAE_MEMORY_MB=1000
 HEAP_SIZE_RATIO=50
 source /setup-env.d/30-java-env.bash
 
-TEST_MIN_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xms500.*/OK/')
-TEST_MAX_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xmx500.*/OK/')
+TEST_MIN_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xms500M .*/OK/')
+TEST_MAX_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xmx500M .*/OK/')
 
 if [ "$TEST_MIN_HEAP" != "OK" -o "$TEST_MAX_HEAP" != "OK" ]; then
   echo "Bad values JAVA_OPTS='$(echo $JAVA_OPTS | xargs)'"
@@ -109,8 +109,8 @@ KUBERNETES_MEMORY_LIMIT=20000000
 HEAP_SIZE_RATIO=30
 source /setup-env.d/30-java-env.bash
 
-TEST_MIN_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xms5.*/OK/')
-TEST_MAX_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xmx5.*/OK/')
+TEST_MIN_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xms5M .*/OK/')
+TEST_MAX_HEAP=$(echo $JAVA_OPTS | sed 's/.*-Xmx5M .*/OK/')
 
 if [ "$TEST_MIN_HEAP" != "OK" -o "$TEST_MAX_HEAP" != "OK" ]; then
   echo "Memory limit set by kubernetes is not considered in JAVA_OPTS='$(echo $JAVA_OPTS | xargs)'"
