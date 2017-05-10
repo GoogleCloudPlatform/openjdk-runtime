@@ -40,7 +40,7 @@ By default, the CMD is set to run the application JAR. You can change this by sp
 ### Container Memory Limits
 To help the runtime compute accurate JVM memory defaults when running on Kubernetes, you can indicate memory limit through the [Downward API](https://kubernetes.io/docs/tasks/configure-pod-container/environment-variable-expose-pod-information).
 
-To do so add an environment variable named `KUBERNETES_MEMORY_LIMIT` with the value `limits.memory` and the name of your container.
+To do so add an environment variable named `KUBERNETES_MEMORY_LIMIT` *(This name is subject to change)* with the value `limits.memory` and the name of your container.
 For example:
 
 ```yaml
