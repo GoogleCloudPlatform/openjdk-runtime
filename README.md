@@ -38,7 +38,7 @@ You can then build the docker container using `docker build` or [Google Cloud Co
 By default, the CMD is set to run the application JAR. You can change this by specifying your own `CMD` or `ENTRYPOINT`.
 
 ### Container Memory Limits
-In order to have an optimal usage of the container memory you can indicate a memory limit through the [Downward API](https://kubernetes.io/docs/tasks/configure-pod-container/environment-variable-expose-pod-information).
+To help the runtime compute accurate JVM memory defaults when running on Kubernetes, you can indicate memory limit through the [Downward API](https://kubernetes.io/docs/tasks/configure-pod-container/environment-variable-expose-pod-information).
 
 To do so add an environment variable named `KUBERNETES_MEMORY_LIMIT` with the value `limits.memory` and the name of your container.
 For example:
