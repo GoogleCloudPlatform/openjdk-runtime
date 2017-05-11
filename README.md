@@ -37,6 +37,34 @@ COPY your-application.jar app.jar
 You can then build the docker container using `docker build` or [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/).
 By default, the CMD is set to run the application JAR. You can change this by specifying your own `CMD` or `ENTRYPOINT`.
 
+### Container Memory Limits
+To help the runtime compute accurate JVM memory defaults when running on Kubernetes, you can indicate memory limit through the [Downward API](https://kubernetes.io/docs/tasks/configure-pod-container/environment-variable-expose-pod-information).
+
+To do so add an environment variable named `KUBERNETES_MEMORY_LIMIT` *(This name is subject to change)* with the value `limits.memory` and the name of your container.
+For example:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dapi-envars-resourcefieldref
+spec:
+  containers:
+    - name: java-kubernetes-container
+      image: gcr.io/google-appengine/openjdk
+      resources:
+        requests:
+          memory: "32Mi"
+        limits:
+          memory: "64Mi"
+      env:
+        - name: KUBERNETES_MEMORY_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: java-kubernetes-container
+              resource: limits.memory
+```
+
 ## The Default Entry Point
 Any arguments passed to the entry point that are not executable are treated as arguments to the java command:
 ```
