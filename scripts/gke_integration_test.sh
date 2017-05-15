@@ -47,17 +47,17 @@ pushd ${testAppDir}
 mvn clean install
 popd
 
-# deploy to app engine
+# deploy to Google Container Engine
 pushd ${deployDir}
 export STAGING_IMAGE=${imageUnderTest}
 envsubst < "Dockerfile.in" > "Dockerfile"
 export TESTED_IMAGE=${imageUrl}
 envsubst < "openjdk-spring-boot.yaml.in" > "openjdk-spring-boot.yaml"
 
-echo "Deploying image to Google Container Engine..."
-docker build -t "$imageName" .
-docker tag "$imageName" "$imageUrl"
-gcloud docker -- push gcr.io/${projectName}/openjdk-gke-integration
+echo "Deploying image to Google Container Registry..."
+gcloud docker -- build -t "$imageName" .
+gcloud docker -- tag "$imageName" "$imageUrl"
+gcloud docker -- push gcr.io/${projectName}/${imageName}
 
 echo "Creating or searching for a Kubernetes cluster..."
 TEST_CLUSTER_EXISTENCE=$(gcloud container clusters list | awk "/$clusterName/")

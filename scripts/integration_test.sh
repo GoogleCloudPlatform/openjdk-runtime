@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 Google Inc. All rights reserved.
+# Copyright 2017 Google Inc. All rights reserved.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Setup environment for CI.
 set -e
 
-# Runs integration tests on a given runtime image
-
 dir=`dirname $0`
-projectRoot=$dir/..
-testAppDir=$projectRoot/test-application
-deployDir=$testAppDir/target/deploy
 
 imageUnderTest=$1
 if [ -z "${imageUnderTest}" ]; then
@@ -29,25 +25,6 @@ if [ -z "${imageUnderTest}" ]; then
   exit 1
 fi
 
-# build the test app
-pushd $testAppDir
-mvn clean install
-popd
-
-# deploy to app engine
-pushd $deployDir
-export STAGING_IMAGE=$imageUnderTest
-envsubst < Dockerfile.in > Dockerfile
-echo "Deploying to App Engine..."
-gcloud app deploy -q
-popd
-
-DEPLOYED_APP_URL="http://$(gcloud app describe | grep defaultHostname | awk '{print $2}')"
-echo "Running integration tests on application that is deployed at $DEPLOYED_APP_URL"
-
-# run in cloud container builder
-gcloud container builds submit \
-  --config $dir/integration_test.yaml \
-  --substitutions "_DEPLOYED_APP_URL=$DEPLOYED_APP_URL" \
-  $dir
+${dir}/ae_integration_test.sh ${imageUnderTest}
+${dir}/gke_integration_test.sh ${imageUnderTest}
 
