@@ -44,4 +44,4 @@ export PATH=$DIR/google-cloud-sdk/bin:$PATH
 
 gcloud auth activate-service-account --key-file=$KEYFILE
 gcloud config set project $GCP_PROJECT
-gcloud components install beta -q
+gcloud components install beta kubectl -q
