@@ -19,14 +19,6 @@ set -e
 
 readonly dir=`dirname $0`
 
-GetStatusOfContainerBuild () {
-  if [ "$1" -eq 0  ]; then
-    echo "PASSED"
-  else
-    echo "FAILED"
-  fi
-}
-
 imageUnderTest=$1
 if [ -z "${imageUnderTest}" ]; then
   echo "Usage: ${0} <image_under_test>"
@@ -34,13 +26,5 @@ if [ -z "${imageUnderTest}" ]; then
 fi
 
 ${dir}/ae_integration_test.sh ${imageUnderTest}
-AE_OUTPUT=$?
-AE_STATUS=$(GetStatusOfContainerBuild "$AE_OUTPUT")
 
 ${dir}/gke_integration_test.sh ${imageUnderTest}
-GKE_OUTPUT=$?
-GKE_STATUS=$(GetStatusOfContainerBuild "$GKE_OUTPUT")
-
-echo "App Engine integration tests: $AE_STATUS"
-echo "Container Engine integration tests: $GKE_STATUS"
-
