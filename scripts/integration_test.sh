@@ -15,6 +15,8 @@
 # limitations under the License.
 
 # Setup environment for CI.
+# This script exits as soon as any of the commands in the integration scripts fail
+# (including remote failure from Google Cloud Container Builder)
 set -e
 
 readonly dir=`dirname $0`
