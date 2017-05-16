@@ -32,7 +32,7 @@ $ ./scripts/build.sh gcr.io/$PROJECT_ID $TAG --local
 
 # Running Tests
 Integration tests can be run via [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/overview).
-These tests deploy a sample test application to App Engine using the provided runtime image, and 
+These tests deploy a sample test application to App Engine and to Google Container Engine using the provided runtime image, and
 exercise various integrations with other GCP services. Note that the image under test must be pushed 
 to a gcr.io repository before the integration tests can run.
 ```bash
@@ -41,3 +41,14 @@ $ gcloud docker -- push $RUNTIME_IMAGE
 $ ./scripts/integration_test.sh $RUNTIME_IMAGE
 ```
 
+You also have the possibility to run the tests only on App Engine or only on Google Container Engine.
+
+* For App Engine:
+```bash
+$ ./scripts/ae_integration_test.sh $RUNTIME_IMAGE
+```
+
+* For Google Container Engine:
+```bash
+$ ./scripts/gke_integration_test.sh $RUNTIME_IMAGE
+```
