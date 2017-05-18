@@ -8,5 +8,5 @@ fi
 
 if [ "$DBG_ENABLE" = "true" ]; then
   unset CDBG_DISABLE
-  DBG_AGENT="$( RUNTIME_DIR=$JETTY_BASE /opt/cdbg/format-env-appengine-vm.sh )"
+  DBG_AGENT="$(/opt/cdbg/format-env-appengine-vm.sh)"
 fi
