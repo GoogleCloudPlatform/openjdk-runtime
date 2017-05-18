@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openjdk-spring-boot
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: openjdk-spring-boot-app
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: openjdk-spring-boot
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: openjdk-spring-boot
+      labels:
+        app: openjdk-spring-boot-app
+    spec:
+      containers:
+      - name: openjdk-spring-boot
+        image: ${TESTED_IMAGE}
+        resources:
+          requests:
+            cpu: 100m
+            memory: "512Mi"
+          limits:
+            cpu: 200m
+            memory: "1024Mi"
+        env:
+        - name: HEAP_SIZE_RATIO
+          value: "50"
+        ports:
+        - containerPort: 8080
