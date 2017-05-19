@@ -78,6 +78,12 @@ while [[ -z "$DEPLOYED_APP_URL" ]]; do
                              | awk '/LoadBalancer Ingress/ { print $3 }')
 done
 
+# The load balancer service may take some time to expose the application
+# (~ 2 min on the cluster creation)
+until $(curl --output /dev/null --silent --head --fail "http://${DEPLOYED_APP_URL}"); do
+  sleep 2
+done
+
 # run in cloud container builder
 echo "Running integration tests on application that is deployed at $DEPLOYED_APP_URL"
 gcloud container builds submit \
