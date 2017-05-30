@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # If the first argument is the full java command
-if [ "$(which java)" = "$1" ] ; then
-  #normalize it
+if [ "$(which java)" = "$1" -o "$(readlink -f $(which java))" = "$1" ] ; then
+  # normalize it
   shift
   set -- java "$@"
 # else if the first argument is not executable assume java
