@@ -33,5 +33,6 @@ if [ "$1" = "java" -a -n "$JAVA_OPTS" ]; then
 fi
 
 # exec the entry point arguments as a command
+echo "Start command: $@"
 exec "$@"
 
