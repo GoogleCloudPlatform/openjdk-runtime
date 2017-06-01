@@ -1,8 +1,11 @@
 #!/bin/bash
 
-# If the first argument is the full java command
-if [ "$(which java)" = "$1" -o "$(readlink -f $(which java))" = "$1" ] ; then
-  # normalize it
+is_java_cmd() {
+  [ "$(which java)" = "$1" -o "$(readlink -f $(which java))" = "$1" ]
+}
+
+# Normalize invocations of "java" so that other scripts can more easily detect it
+if is_java_cmd "$1"; then
   shift
   set -- java "$@"
 # else if the first argument is not executable assume java
@@ -17,6 +20,12 @@ if [ -d "${SETUP_ENV:=/setup-env.d}" ]; then
   done
 fi
 
+# Normalize invocations of "java" again in case other scripts have modified it
+if is_java_cmd "$1"; then
+  shift
+  set -- java "$@"
+fi
+
 # Do we have JAVA_OPTS for a java command?
 if [ "$1" = "java" -a -n "$JAVA_OPTS" ]; then
   shift
@@ -24,5 +33,6 @@ if [ "$1" = "java" -a -n "$JAVA_OPTS" ]; then
 fi
 
 # exec the entry point arguments as a command
+echo "Start command: $@"
 exec "$@"
 
