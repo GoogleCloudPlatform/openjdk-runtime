@@ -3,7 +3,8 @@
 # configure Cloud Debugger
 
 is_true() {
-  if [[ ${1,,*} = "true" ]]; then
+  # case insensitive check for "true"
+  if [[ ${1,,} = "true" ]]; then
     return ${true}
   else
     return ${false}
