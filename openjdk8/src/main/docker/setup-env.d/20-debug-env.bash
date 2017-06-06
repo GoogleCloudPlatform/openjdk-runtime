@@ -1,12 +1,24 @@
 #!/bin/bash
 
 # configure Cloud Debugger
+
+is_true() {
+  # case insensitive check for "true"
+  if [[ ${1,,} = "true" ]]; then
+    return ${true}
+  else
+    return ${false}
+  fi
+}
+
+export DBG_SCRIPT_PATH=${DBG_SCRIPT_PATH:-"/opt/cdbg/format-env-appengine-vm.sh"}
+
 if [ "$PLATFORM" = "gae" ]; then
   export DBG_AGENT=
-  export DBG_ENABLE=${DBG_ENABLE:-$( if [[ -z "${CDBG_DISABLE}" && -x /opt/cdbg/format-env-appengine-vm.sh ]] ; then echo true; else echo false ; fi )}
+  export DBG_ENABLE=${DBG_ENABLE:-$( if [[ -z "${CDBG_DISABLE}" && -x "${DBG_SCRIPT_PATH}" ]] ; then echo true; else echo false ; fi )}
 fi
 
-if [ "$DBG_ENABLE" = "true" ]; then
+if is_true "$DBG_ENABLE"; then
   unset CDBG_DISABLE
-  DBG_AGENT="$(/opt/cdbg/format-env-appengine-vm.sh)"
+  DBG_AGENT="$($DBG_SCRIPT_PATH)"
 fi

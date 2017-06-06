@@ -42,6 +42,11 @@ commandTests:
   command: [ '/workspace/openjdk8/src/test/workspace/setup-java.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
+- name: 'check setup cloud debugger'
+  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/setup-debug.bash' ]]
+  command: [ '/workspace/openjdk8/src/test/workspace/setup-debug.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
 
 fileExistenceTests:
 - name: 'ssl certificates are present'
