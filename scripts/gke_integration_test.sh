@@ -57,7 +57,7 @@ envsubst < "openjdk-spring-boot.yaml.in" > "openjdk-spring-boot.yaml"
 echo "Deploying image to Google Container Registry..."
 gcloud docker -- build -t "$imageName" .
 gcloud docker -- tag "$imageName" "$imageUrl"
-gcloud docker -- push gcr.io/${projectName}/${imageName}
+gcloud docker -- push $imageUrl
 
 echo "Creating or searching for a Kubernetes cluster..."
 TEST_CLUSTER_EXISTENCE=$(gcloud container clusters list | awk "/$clusterName/")

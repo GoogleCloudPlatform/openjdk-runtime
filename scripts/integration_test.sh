@@ -32,3 +32,5 @@ ${dir}/local_integration_test.sh ${imageUnderTest}
 ${dir}/ae_integration_test.sh ${imageUnderTest}
 
 ${dir}/gke_integration_test.sh ${imageUnderTest}
+
+${dir}/gce_integration_test.sh ${imageUnderTest}

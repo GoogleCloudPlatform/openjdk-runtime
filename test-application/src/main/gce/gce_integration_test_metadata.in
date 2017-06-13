@@ -1,0 +1,26 @@
+#cloud-config
+
+users:
+- name: ${CONTAINER_USER_NAME}
+  uid: 2000
+
+write_files:
+- path: /etc/systemd/system/${CONTAINER_USER_NAME}.service
+  permissions: 0644
+  owner: root
+  content: |
+    [Unit]
+    Description=Start a simple docker container
+    After=gcr-online.target
+    Wants=gcr-online.target
+
+    [Service]
+    Environment="HOME=/home/${CONTAINER_USER_NAME}"
+    ExecStartPre=/usr/share/google/dockercfg_update.sh
+    ExecStart=/usr/bin/docker run --rm -u 2000 -p 80:8080 --name=${CONTAINER_USER_NAME} ${APPLICATION_IMAGE}:latest ${COMMAND}
+    ExecStop=/usr/bin/docker stop ${CONTAINER_USER_NAME}
+    ExecStopPost=/usr/bin/docker rm ${CONTAINER_USER_NAME}
+
+runcmd:
+- systemctl daemon-reload
+- systemctl start ${CONTAINER_USER_NAME}.service
