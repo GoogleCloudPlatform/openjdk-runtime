@@ -83,20 +83,23 @@ root@c7b35e88ff93:/#
 ## Entry Point Features
 The entry point for the openjdk8 image is [docker-entrypoint.bash](https://github.com/GoogleCloudPlatform/openjdk-runtime/blob/master/openjdk8/src/main/docker/docker-entrypoint.bash), which does the processing of the passed command line arguments to look for an executable alternative or arguments to the default command (java).
 
-If the default command (java) is used, then the entry point sources the [setup-env.bash](https://github.com/GoogleCloudPlatform/openjdk-runtime/blob/master/openjdk8/src/main/docker/setup-env.bash), which looks for supported features to be enabled and/or configured.  The following table indicates the environment variables that may be used to enable/disable/configure features, any default values if they are not set: 
+If the default command (java) is used, then the entry point sources the [setup-env.d/](https://github.com/GoogleCloudPlatform/openjdk-runtime/blob/master/openjdk8/src/main/docker/setup-env.d/), which looks for supported features to be enabled and/or configured.  The following table indicates the environment variables that may be used to enable/disable/configure features, any default values if they are not set:
 
-|Env Var           | Description         | Type     | Default                                     |
-|------------------|---------------------|----------|---------------------------------------------|
-|`DBG_ENABLE`      | Stackdriver Debugger| boolean  | `true`                                      |
-|`TMPDIR`          | Temporary Directory | dirname  |                                             |
-|`JAVA_TMP_OPTS`   | JVM tmpdir args     | JVM args | `-Djava.io.tmpdir=${TMPDIR}`                |
-|`GAE_MEMORY_MB`   | Available memory    | size     | Set by GAE or `/proc/meminfo`-400M          |
-|`HEAP_SIZE_RATIO` | Memory for the heap | percent  | 80                                          |
-|`HEAP_SIZE_MB`    | Available heap      | size     | `${HEAP_SIZE_RATIO}`% of `${GAE_MEMORY_MB}` |
-|`JAVA_HEAP_OPTS`  | JVM heap args       | JVM args | `-Xms${HEAP_SIZE_MB}M -Xmx${HEAP_SIZE_MB}M` |
-|`JAVA_GC_OPTS`    | JVM GC args         | JVM args | `-XX:+UseG1GC` plus configuration           |
-|`JAVA_USER_OPTS`  | JVM other args      | JVM args |                                             |
-|`JAVA_OPTS`       | JVM args            | JVM args | See below                                   |
+|Env Var                             | Description         | Type     | Default                                     |
+|------------------------------------|---------------------|----------|---------------------------------------------|
+|`DBG_ENABLE`                        | Stackdriver Debugger| boolean  | `true`                                      |
+|`TMPDIR`                            | Temporary Directory | dirname  |                                             |
+|`JAVA_TMP_OPTS`                     | JVM tmpdir args     | JVM args | `-Djava.io.tmpdir=${TMPDIR}`                |
+|`GAE_MEMORY_MB`                     | Available memory    | size     | Set by GAE or `/proc/meminfo`-400M          |
+|`HEAP_SIZE_RATIO`                   | Memory for the heap | percent  | 80                                          |
+|`HEAP_SIZE_MB`                      | Available heap      | size     | `${HEAP_SIZE_RATIO}`% of `${GAE_MEMORY_MB}` |
+|`JAVA_HEAP_OPTS`                    | JVM heap args       | JVM args | `-Xms${HEAP_SIZE_MB}M -Xmx${HEAP_SIZE_MB}M` |
+|`JAVA_GC_OPTS`                      | JVM GC args         | JVM args | `-XX:+UseG1GC` plus configuration           |
+|`JAVA_USER_OPTS`                    | JVM other args      | JVM args |                                             |
+|`JAVA_OPTS`                         | JVM args            | JVM args | See below                                   |
+|`SHUTDOWN_LOGGING_THREAD_DUMP`      | Shutdown thread dump| boolean  | `false`                                     |
+|`SHUTDOWN_LOGGING_HEAP_INFO`        | Shutdown heap info  | boolean  | `false`                                     |
+|`SHUTDOWN_LOGGING_SAMPLE_THRESHOLD` | Shutdown sampling   | percent  | 100                                         |
 
 If not explicitly set, `JAVA_OPTS` is defaulted to 
 ```
@@ -112,6 +115,30 @@ The command line executed is effectively (where $@ are the args passed into the 
 ```
 java $JAVA_OPTS "$@"
 ```
+
+### JVM Shutdown Diagnostics
+
+This feature is not enabled by default.
+
+Sometimes it's necessary to obtain diagnostic information when the JVM is stopped using `SIGTERM` or `docker stop`.
+This may happen on App Engine Flexible, when the autohealer decides to kill unhealthy VMs that have
+an app that is unresponsive due to a deadlock or high load and stopped returning requests, including health checks.
+
+To help diagnose such situations the runtime provides support for outputting a thread dump and/or
+heap info upon JVM shutdown forced by the `TERM` signal.
+
+The following environment variables should be used to enable app container shutdown reporting (must be set to `true` or `false`):
+
+`SHUTDOWN_LOGGING_THREAD_DUMP` - output thread dump
+
+`SHUTDOWN_LOGGING_HEAP_INFO` - output heap information
+
+If enabled, the runtime provides a wrapper for the JVM that traps `SIGTERM`, and runs debugging tools on the JVM
+to emit the thread dump and heap information to stdout.
+
+If you're running many VMs, sampling is supported by using the environment variable `SHUTDOWN_LOGGING_SAMPLE_THRESHOLD`
+which is an integer between 0 and 100. 0 means no VMs report logs, 100 means all VMs report logs.
+(If this env var is not set, we default to reporting for all VMs).
 
 ## The Default Command
 The default command will attempt to run `app.jar` in the current working directory.
