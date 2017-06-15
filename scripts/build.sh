@@ -16,7 +16,7 @@
 
 set -e
 
-dir=$(dirname $0)
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 projectRoot=$dir/..
 
 RUNTIME_NAME="openjdk"
