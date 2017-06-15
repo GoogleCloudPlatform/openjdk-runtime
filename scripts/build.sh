@@ -20,7 +20,7 @@ dir=$(dirname $0)
 projectRoot=$dir/..
 
 RUNTIME_NAME="openjdk"
-DOCKER_TAG_PREFIX="8"
+TAG_PREFIX="8"
 DOCKER_NAMESPACE=$1
 TAG=$2
 
@@ -30,7 +30,7 @@ if [ -z "${DOCKER_NAMESPACE}" ]; then
 fi
 
 if [ -z "${TAG}" ]; then
-  export TAG="${DOCKER_TAG_PREFIX}-$(date -u +%Y-%m-%d_%H_%M)"
+  export TAG="${TAG_PREFIX}-$(date -u +%Y-%m-%d_%H_%M)"
 fi
 
 if [ "$3" == "--local" ]; then
