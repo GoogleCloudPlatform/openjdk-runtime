@@ -48,8 +48,8 @@ commandTests:
   expectedOutput: ['OK']
   exitCode: 0
 - name: 'check shutdown logging wrapper setup'
-  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/entrypoint-shutdown-logging.bash' ]]
-  command: [ '/workspace/openjdk8/src/test/workspace/entrypoint-shutdown-logging.bash' ]
+  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/shutdown-env.bash' ]]
+  command: [ '/workspace/openjdk8/src/test/workspace/shutdown-env.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
 

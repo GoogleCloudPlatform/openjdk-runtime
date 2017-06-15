@@ -28,7 +28,7 @@ fi
 if is_true "${SHUTDOWN_LOGGING_HEAP_INFO}"; then
   # output abbreviated heap info to stdout
   echo '~~~~~~~~~~~~~~~~~~~~~~~ HEAP INFO ~~~~~~~~~~~~~~~~~~~~~~~'
-  heap_total_lines=`wc -l < $HEAP_INFO_FILE`
+  heap_total_lines=`wc -l < "$HEAP_INFO_FILE"`
   HEAP_SHOW_LINES_COUNT=${HEAP_SHOW_LINES_COUNT:-54}
   head -"$HEAP_SHOW_LINES_COUNT" $HEAP_INFO_FILE
   echo "[$(( heap_total_lines - HEAP_SHOW_LINES_COUNT - 1 )) lines omitted]"

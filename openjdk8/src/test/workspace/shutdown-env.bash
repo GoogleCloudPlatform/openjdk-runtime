@@ -1,8 +1,6 @@
 #!/bin/bash
 
-sed 's/exec /# /' /docker-entrypoint.bash > /tmp/entrypoint.bash
-
-wrapper="/shutdown-wrapper.bash"
+wrapper="/shutdown/shutdown-wrapper.bash"
 
 function doTest() {
   test_setup="testing SHUTDOWN_LOGGING_THREAD_DUMP=$SHUTDOWN_LOGGING_THREAD_DUMP, " \
@@ -11,7 +9,7 @@ function doTest() {
   expected=$1
   set - java
   JAVA_OPTS=" "
-  source /tmp/entrypoint.bash > /dev/null
+  source /shutdown/shutdown-env.bash > /dev/null
   if [ "$(echo $@ | xargs)" != "$expected" ]; then
     echo $test_setup
     echo "command='$(echo $@ | xargs)' rather than expected '$expected'"

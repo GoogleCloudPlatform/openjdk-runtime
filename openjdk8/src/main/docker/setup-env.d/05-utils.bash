@@ -8,4 +8,3 @@ is_true() {
     return ${false}
   fi
 }
-export -f is_true

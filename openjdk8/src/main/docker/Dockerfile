@@ -37,10 +37,10 @@ RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/a
 ADD https://storage.googleapis.com/cloud-debugger/appengine-java/current/cdbg_java_agent.tar.gz /opt/cdbg/
 COPY docker-entrypoint.bash /
 COPY setup-env.d /setup-env.d/
-COPY shutdown-wrapper.bash /
+COPY shutdown/ /shutdown/
 RUN tar Cxfvz /opt/cdbg /opt/cdbg/cdbg_java_agent.tar.gz --no-same-owner \
  && rm /opt/cdbg/cdbg_java_agent.tar.gz \
- && chmod +x /docker-entrypoint.bash /shutdown-wrapper.bash /setup-env.d/*.bash \
+ && chmod +x /docker-entrypoint.bash /shutdown/*.bash /setup-env.d/*.bash \
  && mkdir /var/log/app_engine \
  && chmod go+rwx /var/log/app_engine
 
