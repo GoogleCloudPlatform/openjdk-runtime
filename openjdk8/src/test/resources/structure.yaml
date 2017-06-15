@@ -47,6 +47,11 @@ commandTests:
   command: [ '/workspace/openjdk8/src/test/workspace/setup-debug.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
+- name: 'check shutdown logging wrapper setup'
+  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/entrypoint-shutdown-logging.bash' ]]
+  command: [ '/workspace/openjdk8/src/test/workspace/entrypoint-shutdown-logging.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
 
 fileExistenceTests:
 - name: 'ssl certificates are present'
