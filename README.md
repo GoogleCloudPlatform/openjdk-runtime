@@ -121,7 +121,7 @@ java $JAVA_OPTS "$@"
 This feature is not enabled by default.
 
 Sometimes it's necessary to obtain diagnostic information when the JVM is stopped using `SIGTERM` or `docker stop`.
-This may happen on App Engine Flexible, when the autohealer decides to kill unhealthy VMs that have
+This may happen on App Engine flexible environment, when the autohealer decides to kill unhealthy VMs that have
 an app that is unresponsive due to a deadlock or high load and stopped returning requests, including health checks.
 
 To help diagnose such situations the runtime provides support for outputting a thread dump and/or
