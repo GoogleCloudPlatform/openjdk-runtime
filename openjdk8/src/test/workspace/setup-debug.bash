@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /setup-env.d/05-utils-env.bash
+source /setup-env.d/05-utils.bash
 
 # create dummy cloud debugger script
 DBG_SCRIPT_PATH=$(mktemp)

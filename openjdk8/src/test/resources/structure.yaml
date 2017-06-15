@@ -74,6 +74,10 @@ fileExistenceTests:
   path: '/setup-env.d'
   isDirectory: true
   shouldExist: true
+- name: 'Utils script exists'
+  path: '/setup-env.d/05-utils.bash'
+  isDirectory: false
+  shouldExist: true
 - name: 'Platform setup script exists'
   path: '/setup-env.d/10-platform-env.bash'
   isDirectory: false
