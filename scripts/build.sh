@@ -20,35 +20,35 @@ dir=$(dirname $0)
 projectRoot=$dir/..
 
 RUNTIME_NAME="openjdk"
-DOCKER_TAG_PREFIX="8"
+TAG_PREFIX="8"
 DOCKER_NAMESPACE=$1
-DOCKER_TAG=$2
+TAG=$2
 
 if [ -z "${DOCKER_NAMESPACE}" ]; then
   echo "Usage: ${0} <docker_namespace> [docker_tag] [--local]"
   exit 1
 fi
 
-if [ -z "${DOCKER_TAG}" ]; then
-  DOCKER_TAG="${DOCKER_TAG_PREFIX}-$(date -u +%Y-%m-%d_%H_%M)"
+if [ -z "${TAG}" ]; then
+  export TAG="${TAG_PREFIX}-$(date -u +%Y-%m-%d_%H_%M)"
 fi
 
 if [ "$3" == "--local" ]; then
   LOCAL_BUILD=true
 fi
 
-IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${DOCKER_TAG}"
+IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${TAG}"
 echo "IMAGE: $IMAGE"
 
 # build and test the runtime image
 if [ "$LOCAL_BUILD" = "true" ]; then
   source $dir/cloudbuild_local.sh \
     --config=$projectRoot/cloudbuild.yaml \
-    --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG=$DOCKER_TAG"
+    --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG=$TAG"
 else
   gcloud container builds submit \
     --config=$projectRoot/cloudbuild.yaml \
-    --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG=$DOCKER_TAG" \
+    --substitutions="_IMAGE=$IMAGE,_DOCKER_TAG=$TAG" \
     $projectRoot
 fi
 
