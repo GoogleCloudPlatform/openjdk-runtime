@@ -1,16 +1,23 @@
 #!/bin/bash
 
+source /setup-env.d/05-utils.bash
+
 function java_shutdown_hook {
+  JAVA_PID=`ps -C java -o pid --no-headers`
+  PUSER=`ps -o ruser --no-headers -p $JAVA_PID`
+
   # send thread dump to a file
   if is_true "${SHUTDOWN_LOGGING_THREAD_DUMP}"; then
     export THREAD_DUMP_FILE=${THREAD_DUMP_FILE:-/app.shutdown.threads}
-    jcmd $PID Thread.print  >> $THREAD_DUMP_FILE 2>&1
+    # run jcmd under JVM process owner and skip first 3 lines of output
+    su $PUSER -c "jcmd $JAVA_PID Thread.print" | tail -n +3 &> $THREAD_DUMP_FILE
   fi
 
   # send heap info to a file
   if is_true "${SHUTDOWN_LOGGING_HEAP_INFO}"; then
     export HEAP_INFO_FILE=${HEAP_INFO_FILE:-/app.shutdown.heap}
-    jcmd $PID GC.class_histogram >> $HEAP_INFO_FILE 2>&1
+    # run jcmd under JVM process owner and skip first 3 lines of output
+    su $PUSER -c "jcmd $JAVA_PID GC.class_histogram" | tail -n +3 &> $HEAP_INFO_FILE
   fi
 }
 
