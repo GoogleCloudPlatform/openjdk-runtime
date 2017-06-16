@@ -35,7 +35,7 @@ fi
 
 # build the test app
 pushd ${testAppDir}
-mvn clean install
+mvn clean install -DskipTests
 popd
 
 # build app container locally
@@ -49,17 +49,30 @@ docker build -t $APP_IMAGE .
 echo "Starting app container..."
 docker run --rm --name $CONTAINER -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" -e "SHUTDOWN_LOGGING_HEAP_INFO=true" $APP_IMAGE &> $OUTPUT_FILE &
 
-timeout 10 grep -q 'Started Application' <(tail -f $OUTPUT_FILE 2> /dev/null)
+function waitForOutput() {
+  found_output='false'
+  for run in {1..10}
+  do
+    grep "$1" $OUTPUT_FILE && found_output='true' && break
+    sleep 1
+  done
+
+  if [ "$found_output" == "false" ]; then
+    echo "did not match '$1' in '$OUTPUT_FILE'"
+  fi
+}
+
+waitForOutput 'Started Application'
 
 docker stop $CONTAINER
 
 docker rmi $APP_IMAGE
 
 echo 'verify thread dump'
-grep 'Full thread dump OpenJDK 64-Bit Server VM' $OUTPUT_FILE &> /dev/null
+waitForOutput 'Full thread dump OpenJDK 64-Bit Server VM'
 
 echo 'verify heap info'
-grep 'num.*instances.*bytes.*class name' $OUTPUT_FILE &> /dev/null
+waitForOutput 'num.*instances.*bytes.*class name'
 
 popd
 
