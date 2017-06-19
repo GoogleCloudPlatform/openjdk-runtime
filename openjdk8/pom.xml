@@ -83,20 +83,34 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
+                <configuration>
+                  <executable>../../scripts/structure_test.sh</executable>
+                  <workingDirectory>${project.build.directory}</workingDirectory>
+                  <arguments>
+                    <argument>--image</argument>
+                    <argument>openjdk:${docker.tag.long}</argument>
+                    <argument>--workspace</argument>
+                    <argument>${project.basedir}/..</argument>
+                    <argument>--config</argument>
+                    <argument>${project.build.testOutputDirectory}/structure.yaml</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>integration-test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>../../scripts/local_integration_test.sh</executable>
+                  <workingDirectory>${project.build.directory}</workingDirectory>
+                  <arguments>
+                    <argument>openjdk:${docker.tag.long}</argument>
+                  </arguments>
+                </configuration>
               </execution>
             </executions>
-            <configuration>
-              <executable>../../scripts/structure_test.sh</executable>
-              <workingDirectory>${project.build.directory}</workingDirectory>
-              <arguments>
-                <argument>--image</argument>
-                <argument>openjdk:${docker.tag.long}</argument>
-                <argument>--workspace</argument>
-                <argument>${project.basedir}/..</argument>
-                <argument>--config</argument>
-                <argument>${project.build.testOutputDirectory}/structure.yaml</argument>
-              </arguments>
-            </configuration>
           </plugin>
         </plugins>
       </build>

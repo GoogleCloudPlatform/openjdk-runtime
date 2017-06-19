@@ -19,14 +19,14 @@ you need to have the [Google Cloud SDK](https://cloud.google.com/sdk/) installed
 ```
 # the following commands will build and push an image named "gcr.io/my-project/openjdk:tag"
 $ PROJECT_ID=my-project
-$ TAG=tag
+$ TAG=tag                     #optional
 $ ./scripts/build.sh gcr.io/$PROJECT_ID $TAG
 ```
 
 If you would like to simulate the cloud build locally, pass in the `--local` argument.
 ```
 $ PROJECT_ID=my-project
-$ TAG=tag
+$ TAG=tag                     #optional
 $ ./scripts/build.sh gcr.io/$PROJECT_ID $TAG --local
 ```
 
@@ -35,20 +35,28 @@ Integration tests can be run via [Google Cloud Container Builder](https://cloud.
 These tests deploy a sample test application to App Engine and to Google Container Engine using the provided runtime image, and
 exercise various integrations with other GCP services. Note that the image under test must be pushed 
 to a gcr.io repository before the integration tests can run.
+
 ```bash
 $ RUNTIME_IMAGE=gcr.io/my-project-id/openjdk:my-tag
 $ gcloud docker -- push $RUNTIME_IMAGE
+```
+
+**Run ALL integration tests (Local Docker, App Engine, Google Container Engine):**
+```bash
 $ ./scripts/integration_test.sh $RUNTIME_IMAGE
 ```
 
-You also have the possibility to run the tests only on App Engine or only on Google Container Engine.
+**Run ONLY Local Docker integration tests:**
+```bash
+$ ./scripts/local_integration_test.sh $RUNTIME_IMAGE
+```
 
-* For App Engine:
+**Run ONLY App Engine flexible environment integration tests:**
 ```bash
 $ ./scripts/ae_integration_test.sh $RUNTIME_IMAGE
 ```
 
-* For Google Container Engine:
+**Run ONLY Container Engine (GKE) integration tests:**
 ```bash
 $ ./scripts/gke_integration_test.sh $RUNTIME_IMAGE
 ```

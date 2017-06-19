@@ -47,6 +47,11 @@ commandTests:
   command: [ '/workspace/openjdk8/src/test/workspace/setup-debug.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
+- name: 'check shutdown logging wrapper setup'
+  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/shutdown-env.bash' ]]
+  command: [ '/workspace/openjdk8/src/test/workspace/shutdown-env.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
 
 fileExistenceTests:
 - name: 'ssl certificates are present'
@@ -68,6 +73,10 @@ fileExistenceTests:
 - name: 'Env setup script dir exists'
   path: '/setup-env.d'
   isDirectory: true
+  shouldExist: true
+- name: 'Utils script exists'
+  path: '/setup-env.d/05-utils.bash'
+  isDirectory: false
   shouldExist: true
 - name: 'Platform setup script exists'
   path: '/setup-env.d/10-platform-env.bash'
