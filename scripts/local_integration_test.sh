@@ -35,7 +35,7 @@ fi
 
 # build the test app
 pushd ${testAppDir}
-mvn clean install -DskipTests
+mvn clean install -DskipTests --batch-mode
 popd
 
 # build app container locally
