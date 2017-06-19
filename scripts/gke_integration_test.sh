@@ -44,7 +44,7 @@ fi
 
 # build the test app
 pushd ${testAppDir}
-mvn clean install
+mvn clean install -DskipTests --batch-mode
 popd
 
 # deploy to Google Container Engine
