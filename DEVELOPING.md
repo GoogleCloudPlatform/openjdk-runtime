@@ -41,22 +41,22 @@ $ RUNTIME_IMAGE=gcr.io/my-project-id/openjdk:my-tag
 $ gcloud docker -- push $RUNTIME_IMAGE
 ```
 
-*Run ALL integration tests (Local Docker, App Engine, Google Container Engine):*
+**Run ALL integration tests (Local Docker, App Engine, Google Container Engine):**
 ```bash
 $ ./scripts/integration_test.sh $RUNTIME_IMAGE
 ```
 
-*Run ONLY Local Docker integration tests:*
+**Run ONLY Local Docker integration tests:**
 ```bash
 $ ./scripts/local_integration_test.sh $RUNTIME_IMAGE
 ```
 
-*Run ONLY App Engine flexible environment integration tests:*
+**Run ONLY App Engine flexible environment integration tests:**
 ```bash
 $ ./scripts/ae_integration_test.sh $RUNTIME_IMAGE
 ```
 
-*Run ONLY Container Engine (GKE) integration tests:*
+**Run ONLY Container Engine (GKE) integration tests:**
 ```bash
 $ ./scripts/gke_integration_test.sh $RUNTIME_IMAGE
 ```
