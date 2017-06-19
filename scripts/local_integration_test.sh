@@ -43,7 +43,7 @@ pushd $deployDir
 export STAGING_IMAGE=$imageUnderTest
 envsubst < Dockerfile.in > Dockerfile
 echo "Building app container..."
-docker build -t $APP_IMAGE .
+gcloud docker -- build -t $APP_IMAGE .
 
 # run app container locally to test shutdown logging
 echo "Starting app container..."
