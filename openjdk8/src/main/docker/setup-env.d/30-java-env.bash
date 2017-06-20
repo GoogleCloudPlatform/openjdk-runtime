@@ -14,8 +14,8 @@ GetAvailableMemory () {
   if [ -z $memory ] && [ -r "$cgroup_mem_file" ]; then
     local cgroup_memory="$(cat ${cgroup_mem_file})"
     cgroup_memory=$((cgroup_memory / (1024 * 1024)))
-    # Cgroup memory can be unbound, in which case we use the default limit
-    if [ ${cgroup_memory} -lt ${default_memory} ]; then
+    # Cgroup memory can be 0 or unbound, in which case we use the default limit
+    if [ ${cgroup_memory} -gt 0 ] && [ ${cgroup_memory} -lt ${default_memory} ]; then
       memory=$cgroup_memory
     fi
   fi

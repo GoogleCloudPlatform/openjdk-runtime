@@ -58,6 +58,7 @@ function waitForOutput() {
   done
 
   if [ "$found_output" == "false" ]; then
+    cat $OUTPUT_FILE
     echo "did not match '$1' in '$OUTPUT_FILE'"
     exit 1
   fi
