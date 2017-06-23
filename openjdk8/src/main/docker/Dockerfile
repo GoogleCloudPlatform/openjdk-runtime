@@ -20,7 +20,7 @@ ENV OPENJDK_VERSION ${openjdk.version}
 ENV GAE_IMAGE_NAME ${project.artifactId}
 ENV GAE_IMAGE_LABEL ${docker.tag.long}
 
-# Update debian 
+# Update debian
 RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list \
  && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
@@ -28,7 +28,7 @@ RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/a
     openjdk-8-jre-headless=${openjdk.version}'-*' \
     openjdk-8-jdk-headless=${openjdk.version}'-*' \
     netbase \
-    wget \ 
+    wget \
     unzip \
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
@@ -37,9 +37,10 @@ RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/a
 ADD https://storage.googleapis.com/cloud-debugger/appengine-java/current/cdbg_java_agent.tar.gz /opt/cdbg/
 COPY docker-entrypoint.bash /
 COPY setup-env.d /setup-env.d/
+COPY shutdown/ /shutdown/
 RUN tar Cxfvz /opt/cdbg /opt/cdbg/cdbg_java_agent.tar.gz --no-same-owner \
  && rm /opt/cdbg/cdbg_java_agent.tar.gz \
- && chmod +x /docker-entrypoint.bash /setup-env.d/*.bash \
+ && chmod +x /docker-entrypoint.bash /shutdown/*.bash /setup-env.d/*.bash \
  && mkdir /var/log/app_engine \
  && chmod go+rwx /var/log/app_engine
 

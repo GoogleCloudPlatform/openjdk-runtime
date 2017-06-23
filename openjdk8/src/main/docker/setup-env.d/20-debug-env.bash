@@ -2,15 +2,6 @@
 
 # configure Cloud Debugger
 
-is_true() {
-  # case insensitive check for "true"
-  if [[ ${1,,} = "true" ]]; then
-    return ${true}
-  else
-    return ${false}
-  fi
-}
-
 export DBG_SCRIPT_PATH=${DBG_SCRIPT_PATH:-"/opt/cdbg/format-env-appengine-vm.sh"}
 
 if [ "$PLATFORM" = "gae" ]; then

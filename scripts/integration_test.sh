@@ -27,6 +27,8 @@ if [ -z "${imageUnderTest}" ]; then
   exit 1
 fi
 
+${dir}/local_integration_test.sh ${imageUnderTest}
+
 ${dir}/ae_integration_test.sh ${imageUnderTest}
 
 ${dir}/gke_integration_test.sh ${imageUnderTest}
