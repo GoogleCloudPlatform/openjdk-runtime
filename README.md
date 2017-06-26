@@ -19,11 +19,11 @@ write the Dockerfile like this:
 
 ```dockerfile
 FROM gcr.io/google-appengine/openjdk
-COPY your-application.jar app.jar
+COPY your-application.jar $APP_DESTINATION
 ```
-      
+
 That will add the JAR in the correct location for the Docker container.
-      
+
 Once you have this configuration, you can use the Google Cloud SDK to deploy this directory containing the 2 configuration files and the JAR using:
 ```
 gcloud app deploy app.yaml
@@ -34,7 +34,7 @@ For other Docker hosts, you'll need to create a Dockerfile based on this image t
 
 ```dockerfile
 FROM gcr.io/google-appengine/openjdk
-COPY your-application.jar app.jar
+COPY your-application.jar $APP_DESTINATION
 ```
 You can then build the docker container using `docker build` or [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/).
 By default, the CMD is set to run the application JAR. You can change this by specifying your own `CMD` or `ENTRYPOINT`.

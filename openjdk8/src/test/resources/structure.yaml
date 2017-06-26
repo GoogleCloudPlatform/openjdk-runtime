@@ -47,6 +47,9 @@ commandTests:
   command: [ '/workspace/openjdk8/src/test/workspace/setup-debug.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
+- name: 'APP_DESTINATION env variable is set'
+  command: ['env']
+  expectedOutput: ['APP_DESTINATION=app.jar']
 - name: 'check shutdown logging wrapper setup'
   setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/shutdown-env.bash' ]]
   command: [ '/workspace/openjdk8/src/test/workspace/shutdown-env.bash' ]

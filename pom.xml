@@ -37,6 +37,7 @@
     <docker.tag.short>${docker.tag.prefix}${openjdk.version.major}</docker.tag.short>
     <docker.tag.long>${docker.tag.prefix}${openjdk.version.major}-${maven.build.timestamp}</docker.tag.long>
     <docker.appengine.image>gcr.io/google_appengine/debian8</docker.appengine.image>
+    <docker.application.destination>app.jar</docker.application.destination>
   </properties>
 
   <licenses>
