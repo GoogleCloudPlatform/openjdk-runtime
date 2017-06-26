@@ -47,4 +47,4 @@ RUN tar Cxfvz /opt/cdbg /opt/cdbg/cdbg_java_agent.tar.gz --no-same-owner \
 ENV APP_DESTINATION app.jar
 
 ENTRYPOINT ["/docker-entrypoint.bash"]
-CMD ["java", "-jar", $APP_DESTINATION]
+CMD ["java", "-jar", "app.jar"]
