@@ -17,7 +17,7 @@ write_files:
     [Service]
     Environment="HOME=/home/${CONTAINER_USER_NAME}"
     ExecStartPre=/usr/share/google/dockercfg_update.sh
-    ExecStart=/usr/bin/docker run --rm -u 2000 -p 80:8080 --name=${CONTAINER_USER_NAME} ${APPLICATION_IMAGE}:latest ${COMMAND}
+    ExecStart=/usr/bin/docker run --rm -u 2000 -p 80:8080 --name=${CONTAINER_USER_NAME} ${APPLICATION_IMAGE}:latest
     ExecStop=/usr/bin/docker stop ${CONTAINER_USER_NAME}
     ExecStopPost=/usr/bin/docker rm ${CONTAINER_USER_NAME}
 

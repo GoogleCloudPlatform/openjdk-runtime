@@ -50,7 +50,6 @@ pushd ${deployDir}
 export STAGING_IMAGE=${imageUnderTest}
 envsubst < "Dockerfile.in" > "Dockerfile"
 export APPLICATION_IMAGE=${imageUrl}
-export COMMAND="java -jar app.jar"
 
 echo "Deploying image to Google Container Registry..."
 gcloud docker -- build -t "$imageName" .
@@ -69,6 +68,7 @@ gcloud compute instances create ${imageName} \
   --image cos-beta-60-9592-31-0 \
   --image-project cos-cloud \
   --metadata-from-file user-data=${deployDir}/gce_integration_test_metadata \
+  --tags=http-server \
   --zone us-east1-b
 
 DEPLOYED_APP_URL=$(gcloud compute instances list ${imageName} \
