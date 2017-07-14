@@ -80,4 +80,4 @@ gcloud container builds submit \
   --substitutions "_DEPLOYED_APP_URL=http://$DEPLOYED_APP_URL" \
   ${dir}
 
-gcloud compute instances delete ${imageName} --zone us-east1-b
+gcloud compute instances delete -q ${imageName} --zone us-east1-b
