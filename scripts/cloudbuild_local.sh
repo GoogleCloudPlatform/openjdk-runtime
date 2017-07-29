@@ -16,5 +16,5 @@
 
 set -e
 
-cloudBuildScript="https://raw.githubusercontent.com/GoogleCloudPlatform/python-runtime/master/scripts/local_cloudbuild.py"
+cloudBuildScript="https://raw.githubusercontent.com/GoogleCloudPlatform/python-runtime/b9aaae5d441a8e63698d6a101191545183278362/scripts/local_cloudbuild.py"
 curl -s $cloudBuildScript | python3 - "$@" --output_script=`mktemp`

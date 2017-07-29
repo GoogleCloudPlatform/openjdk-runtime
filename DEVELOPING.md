@@ -5,7 +5,7 @@ This document contains instructions on how to build and test this image.
 # Building the image
 
 ### Local build
-To build the image you need git, docker and maven installed:
+To build the image you need git, docker (your user needs to be part of the ``docker`` group to run docker without sudo) and maven installed:
 ```
 $ git clone https://github.com/GoogleCloudPlatform/openjdk-runtime.git
 $ cd openjdk-runtime
