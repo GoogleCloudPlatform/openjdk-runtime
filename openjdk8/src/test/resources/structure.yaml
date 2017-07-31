@@ -11,8 +11,7 @@ commandTests:
 - name: 'ensure java7 is not installed as a dependency accidentally'
   setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/test-no-java-7.bash' ]]
   command: [ '/workspace/openjdk8/src/test/workspace/test-no-java-7.bash' ]
-  expectedError: ['WARNING.*apt does not have a stable CLI interface yet.']
-  expectedOutput: ['OK.* is not installed']
+  excludedOutput: ['NOT OK.* is installed']
 - name: 'correct javac version is installed'
   command: ['javac', '-version']
   expectedError: ['javac 1\.${openjdk.version.major}.*${openjdk.version.minor}']
