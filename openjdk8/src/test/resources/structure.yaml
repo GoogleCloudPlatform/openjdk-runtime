@@ -8,9 +8,9 @@ commandTests:
 - name: 'correct java version is installed'
   command: ['java', '-version']
   expectedError: ['openjdk version "1\.${openjdk.version.major}.*${openjdk.version.minor}"']
-- name: 'ensure java7 is not installed as a dependency accidentally'
-  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/test-no-java-7.bash' ]]
-  command: [ '/workspace/openjdk8/src/test/workspace/test-no-java-7.bash' ]
+- name: 'ensure blacklisted packages are not installed as a dependency accidentally'
+  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/test-blacklisted-pkgs.bash' ]]
+  command: [ '/workspace/openjdk8/src/test/workspace/test-blacklisted-pkgs.bash' ]
   excludedOutput: ['NOT OK.* is installed']
 - name: 'correct javac version is installed'
   command: ['javac', '-version']
