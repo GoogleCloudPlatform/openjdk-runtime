@@ -28,11 +28,20 @@ readonly projectRoot="$dir/.."
 readonly testAppDir="$projectRoot/test-application"
 readonly deployDir="$testAppDir/target/deploy"
 
+
+# The $TAG was introduced to be able to reuse the existing cluster but force redeployment.
+# Kubernetes' "kubectl apply -f" doesn't trigger a new deployment rollout unless there is a change in the yaml spec.
+# See https://github.com/kubernetes/kubernetes/issues/33664 for the debate around this behavior.
+
+if [ -z "${TAG}" ]; then
+  export TAG="$(date -u +%Y-%m-%d_%H_%M)"
+fi
+
 readonly projectName=$(gcloud info \
                 | awk '/^Project: / { print $2 }' \
                 | sed 's/\[//'  \
                 | sed 's/\]//')
-readonly imageName="openjdk-gke-integration"
+readonly imageName="openjdk-gke-integration:$TAG"
 readonly imageUrl="gcr.io/$projectName/$imageName"
 readonly clusterName="openjdk-gke-integration"
 
