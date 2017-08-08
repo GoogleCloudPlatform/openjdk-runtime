@@ -46,7 +46,7 @@
     <module>openjdk-test-common</module>
     <module>openjdk8</module>
     <module>openjdk9</module>
-    <module>test-application</module>
+    <module>java-runtimes-common/test-application</module>
   </modules>
 
   <dependencyManagement>
