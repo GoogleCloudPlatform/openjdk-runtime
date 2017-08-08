@@ -42,7 +42,7 @@ DEPLOYMENT_VERSION_URL_PREFIX="$gaeDeploymentVersion-dot-"
 
 # build the test app
 pushd $testAppDir
-mvn clean package -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
+mvn clean install -Pint-test -Dpackaging.type=jar -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
 popd
 
 # deploy to app engine

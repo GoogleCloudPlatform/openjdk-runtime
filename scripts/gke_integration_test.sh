@@ -25,7 +25,7 @@ set -e
 
 readonly dir=$(dirname $0)
 readonly projectRoot="$dir/.."
-readonly testAppDir="$projectRoot/test-application"
+readonly testAppDir="$projectRoot/java-runtimes-common/test-application"
 readonly deployDir="$testAppDir/target/deploy"
 readonly DEPLOYMENT_TOKEN=$(uuidgen)
 
@@ -60,7 +60,7 @@ fi
 
 # build the test app
 pushd ${testAppDir}
-mvn clean package -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
+mvn clean install -Pint-test -Dpackaging.type=jar -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
 popd
 
 # deploy to Google Container Engine

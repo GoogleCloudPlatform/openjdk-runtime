@@ -20,7 +20,7 @@ set -e
 
 readonly dir=$(dirname $0)
 readonly projectRoot="$dir/.."
-readonly testAppDir="$projectRoot/test-application"
+readonly testAppDir="$projectRoot/java-runtimes-common/test-application"
 readonly deployDir="$testAppDir/target/deploy"
 
 APP_IMAGE='openjdk-local-integration'
@@ -36,7 +36,7 @@ fi
 
 
 pushd ${testAppDir}
-mvn clean package -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
+mvn clean install -Pint-test -Dpackaging.type=jar -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
 popd
 
 # build app container locally
