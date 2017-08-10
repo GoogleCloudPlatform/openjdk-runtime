@@ -25,7 +25,7 @@ set -e
 
 readonly dir=$(dirname $0)
 readonly projectRoot="$dir/.."
-readonly testAppDir="$projectRoot/java-runtimes-common/test-application"
+readonly testAppDir="$projectRoot/java-runtimes-common/test-spring-application"
 readonly deployDir="$testAppDir/target/deploy"
 readonly DEPLOYMENT_TOKEN=$(uuidgen)
 

@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.google.cloud.runtimes</groupId>
-  <artifactId>test-application</artifactId>
+  <artifactId>test-spring-application</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>Test application for openjdk runtimes</name>
+  <name>Test Spring application for java runtimes</name>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
