@@ -88,5 +88,54 @@
     </plugins>
   </build>
 
-
+  <profiles>
+    <profile>
+      <!-- this profile stages the application for integration tests -->
+      <id>int-test</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <app.yaml.file>app.int-test.yaml</app.yaml.file>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.0.2</version>
+            <executions>
+              <execution>
+                <id>copy-resources</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/deploy</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${basedir}/src/main/docker</directory>
+                      <filtering>false</filtering>
+                    </resource>
+                    <resource>
+                      <directory>${basedir}/src/main/kubernetes</directory>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- this profile stages the application for deployment tests -->
+      <id>deployment-test</id>
+      <properties>
+        <app.yaml.file>app.deploy-check.yaml</app.yaml.file>
+      </properties>
+    </profile>
+  </profiles>
 </project>

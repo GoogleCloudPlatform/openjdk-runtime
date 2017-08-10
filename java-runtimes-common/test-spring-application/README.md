@@ -16,7 +16,7 @@ mvn install -Pint-test
 - **Deploy check profile** - stages the application for deployment directly to App Engine.
 Invoke with: 
 ```bash
-mvn install -Pdeploy-check
+mvn install -Pdeployment-test
 ```
 
 ## Supported packaging types
