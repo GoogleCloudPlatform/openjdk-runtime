@@ -9,25 +9,33 @@ To build the image you need git, docker (your user needs to be part of the ``doc
 ```
 $ git clone https://github.com/GoogleCloudPlatform/openjdk-runtime.git
 $ cd openjdk-runtime
+
+# build all images
 $ mvn clean install
+
+# only build the openjdk8 image
+$ mvn clean install -am -pl openjdk8
+
+# only build the openjdk9 image
+$ mvn clean install -am -pl openjdk9
 ```
-The resulting image is called openjdk
+The resulting image(s) are called openjdk.
 
 ### Cloud build
 To build using the [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/overview), 
 you need to have the [Google Cloud SDK](https://cloud.google.com/sdk/) installed locally. We provide a script to make this more convenient.
 ```
-# the following commands will build and push an image named "gcr.io/my-project/openjdk:tag"
+# the following commands will build and push an image named "gcr.io/my-project/openjdk:8"
 $ PROJECT_ID=my-project
-$ TAG=tag                     #optional
-$ ./scripts/build.sh gcr.io/$PROJECT_ID $TAG
+$ MODULE_TO_BUILD=openjdk8 # only builds the openjdk:8 image
+$ ./scripts/build.sh -d gcr.io/$PROJECT_ID -m $MODULE_TO_BUILD
 ```
 
 If you would like to simulate the cloud build locally, pass in the `--local` argument.
 ```
 $ PROJECT_ID=my-project
-$ TAG=tag                     #optional
-$ ./scripts/build.sh gcr.io/$PROJECT_ID $TAG --local
+$ MODULE_TO_BUILD=openjdk8 # only builds the openjdk:8 image
+$ ./scripts/build.sh -d gcr.io/$PROJECT_ID -m $MODULE_TO_BUILD --local
 ```
 
 # Running Tests
