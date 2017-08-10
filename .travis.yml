@@ -22,7 +22,8 @@ services:
 jdk:
   - oraclejdk8
 
-install: mvn dependency:resolve
+# skip the install step
+install: true
 script: mvn --batch-mode clean verify
 
 branches:
