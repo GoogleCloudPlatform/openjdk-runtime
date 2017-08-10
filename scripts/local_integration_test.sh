@@ -42,10 +42,11 @@ fi
 
 # build app container locally
 pushd $deployDir
-export STAGING_IMAGE=$imageUnderTest
-envsubst < Dockerfile.in > Dockerfile
+# escape special characters in docker image name
+STAGING_IMAGE=$(echo $imageUnderTest | sed -e 's/\//\\\//g')
+sed -e "s/FROM .*/FROM $STAGING_IMAGE/" Dockerfile.in > Dockerfile
 echo "Building app container..."
-docker build -t $APP_IMAGE . || gcloud docker -- build -t $APP_IMAGE .
+docker build -t $APP_IMAGE . || docker -- build -t $APP_IMAGE .
 
 # run app container locally to test shutdown logging
 echo "Starting app container..."
