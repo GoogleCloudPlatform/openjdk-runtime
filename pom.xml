@@ -13,10 +13,7 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.google.cloud.runtimes</groupId>
@@ -29,15 +26,11 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.build.timestamp.format>yyyy-MM-dd-HH-mm</maven.build.timestamp.format>
-    <appengine.api.version>1.9.40</appengine.api.version>
-    <openjdk.version.major>8</openjdk.version.major>
-    <openjdk.version.minor>131</openjdk.version.minor>
-    <openjdk.version>${openjdk.version.major}u${openjdk.version.minor}</openjdk.version>
-    <docker.tag.prefix></docker.tag.prefix>
-    <docker.tag.short>${docker.tag.prefix}${openjdk.version.major}</docker.tag.short>
-    <docker.tag.long>${docker.tag.prefix}${openjdk.version.major}-${maven.build.timestamp}</docker.tag.long>
-    <docker.appengine.image>gcr.io/google_appengine/debian8</docker.appengine.image>
+    <docker.tag.short>${openjdk.version.major}</docker.tag.short>
+    <docker.tag.long>${openjdk.version.major}-${maven.build.timestamp}</docker.tag.long>
+    <docker.image.baseName>openjdk</docker.image.baseName>
     <docker.application.destination>app.jar</docker.application.destination>
+    <docker.staging.dir>${project.build.outputDirectory}/docker</docker.staging.dir>
   </properties>
 
   <licenses>
@@ -49,7 +42,10 @@
   </licenses>
 
   <modules>
+    <module>openjdk-common</module>
+    <module>openjdk-test-common</module>
     <module>openjdk8</module>
+    <module>openjdk9</module>
     <module>test-application</module>
   </modules>
 
@@ -92,15 +88,124 @@
         </plugin>
 
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-dependency-plugin</artifactId>
-          <version>2.10</version>
+          <groupId>io.fabric8</groupId>
+          <artifactId>docker-maven-plugin</artifactId>
+          <version>0.21.0</version>
+          <configuration>
+            <verbose>true</verbose>
+            <autoPull>always</autoPull>
+            <images>
+              <image>
+                <name>${docker.image.name}</name>
+                <build>
+                  <dockerFileDir>${docker.staging.dir}</dockerFileDir>
+                  <nocache>true</nocache>
+                  <tags>
+                    <tag>${docker.tag.short}</tag>
+                  </tags>
+                </build>
+              </image>
+            </images>
+          </configuration>
+          <executions>
+            <execution>
+              <id>docker-build</id>
+              <phase>none</phase>
+              <goals>
+                <goal>build</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.1</version>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.10</version>
+          <!-- Configure executions for adding common dependencies to child modules -->
+          <executions>
+            <execution>
+              <id>unpack-openjdk-common</id>
+              <phase>none</phase>
+              <goals>
+                <goal>unpack</goal>
+              </goals>
+              <configuration>
+                <artifactItems>
+                  <artifactItem>
+                    <groupId>com.google.cloud.runtimes</groupId>
+                    <artifactId>openjdk-common</artifactId>
+                    <version>${project.version}</version>
+                    <type>tar.gz</type>
+                    <overWrite>true</overWrite>
+                    <outputDirectory>${docker.staging.dir}</outputDirectory>
+                  </artifactItem>
+                </artifactItems>
+              </configuration>
+            </execution>
+            <execution>
+              <id>unpack-openjdk-test-common</id>
+              <phase>none</phase>
+              <goals>
+                <goal>unpack</goal>
+              </goals>
+              <configuration>
+                <artifactItems>
+                  <artifactItem>
+                    <groupId>com.google.cloud.runtimes</groupId>
+                    <artifactId>openjdk-test-common</artifactId>
+                    <version>${project.version}</version>
+                    <type>tar.gz</type>
+                    <overWrite>true</overWrite>
+                    <outputDirectory>${project.build.testOutputDirectory}/openjdk-test-common</outputDirectory>
+                  </artifactItem>
+                </artifactItems>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.4.0</version>
+          <executions>
+            <execution>
+              <id>common-structure-test</id>
+              <!-- Do not bind to a phase, so that child modules can explicitly choose the phase for
+              this execution -->
+              <phase>none</phase>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <configuration>
+                <executable>${project.parent.basedir}/scripts/structure_test.sh</executable>
+                <workingDirectory>${project.build.outputDirectory}</workingDirectory>
+                <arguments>
+                  <argument>--image</argument>
+                  <argument>${docker.image.name}</argument>
+                  <argument>--workspace</argument>
+                  <argument>${project.build.testOutputDirectory}/openjdk-test-common-out/workspace</argument>
+                  <argument>--config</argument>
+                  <argument>${project.build.testOutputDirectory}/openjdk-test-common-out/structure.yaml</argument>
+                </arguments>
+              </configuration>
+            </execution>
+            <execution>
+              <id>local-integration-test</id>
+              <phase>none</phase>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <configuration>
+                <executable>${project.parent.basedir}/scripts/local_integration_test.sh</executable>
+                <workingDirectory>${project.build.directory}</workingDirectory>
+                <arguments>
+                  <argument>${docker.image.name}</argument>
+                </arguments>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
 
         <plugin>
@@ -114,15 +219,9 @@
         </plugin>
 
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>exec-maven-plugin</artifactId>
-          <version>1.4.0</version>
-        </plugin>
-
-        <plugin>
-          <groupId>com.spotify</groupId>
-          <artifactId>docker-maven-plugin</artifactId>
-          <version>0.4.13</version>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.0.1</version>
         </plugin>
 
         <plugin>
@@ -157,9 +256,9 @@
           <artifactId>maven-deploy-plugin</artifactId>
           <version>2.8.2</version>
         </plugin>
-
       </plugins>
     </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
