@@ -34,9 +34,11 @@ if [[ -z "$imageUnderTest" ]]; then
 fi
 
 # build the test app
-pushd ${testAppDir}
-mvn clean install -DskipTests --batch-mode
-popd
+if [ ! -d $deployDir ]; then
+  echo "Deploy dir $deployDir does not exist. Please build the test application before running\
+ this test."
+  exit 1
+fi
 
 # build app container locally
 pushd $deployDir
@@ -51,9 +53,9 @@ docker run --rm --name $CONTAINER -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" -e "SHU
 
 function waitForOutput() {
   found_output='false'
-  for run in {1..10}
+  for run in {1..20}
   do
-    grep "$1" $OUTPUT_FILE && found_output='true' && break
+    grep -P "$1" $OUTPUT_FILE && found_output='true' && break
     sleep 1
   done
 
@@ -74,7 +76,7 @@ echo 'verify thread dump'
 waitForOutput 'Full thread dump OpenJDK 64-Bit Server VM'
 
 echo 'verify heap info'
-waitForOutput 'num.*instances.*bytes.*class name'
+waitForOutput '\d+:\s+\d+\s+\d+\s+java.lang.Class'
 
 popd
 
