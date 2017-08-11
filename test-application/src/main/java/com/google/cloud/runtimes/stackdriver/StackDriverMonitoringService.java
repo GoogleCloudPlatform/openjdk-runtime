@@ -56,7 +56,7 @@ public class StackDriverMonitoringService {
                 .build();
         TimeSeries timeSeries = TimeSeries.newBuilder()
                 .setMetric(metric)
-                .setMetricKind(MetricDescriptor.MetricKind.DELTA)
+                .setMetricKind(MetricDescriptor.MetricKind.GAUGE)
                 .setResource(MonitoredResource.newBuilder().setType("global").build())
                 .addPoints(point)
                 .build();
