@@ -87,6 +87,8 @@ while [[ -z "$DEPLOYED_APP_URL" ]]; do
                              | awk '/LoadBalancer Ingress/ { print $3 }')
 done
 
+echo "App deployed to URL: $DEPLOYED_APP_URL, making sure it accepts connections..."
+
 # The load balancer service may take some time to expose the application
 # (~ 2 min on the cluster creation)
 until $(curl --output /dev/null --silent --head --fail "http://${DEPLOYED_APP_URL}"); do
