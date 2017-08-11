@@ -13,13 +13,13 @@ $ cd openjdk-runtime
 # build all images
 $ mvn clean install
 
-# only build the openjdk8 image
-$ mvn clean install -am -pl openjdk8
+# only build the openjdk:8 image
+$ mvn clean install --also-make --projects openjdk8
 
-# only build the openjdk9 image
-$ mvn clean install -am -pl openjdk9
+# only build the openjdk:9 image
+$ mvn clean install --also-make --projects openjdk9
 ```
-The resulting image(s) are called openjdk.
+These commands build the `openjdk` image with tags for each JDK version (`openjdk:8` and `openjdk:9`).
 
 ### Cloud build
 To build using the [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/overview), 
