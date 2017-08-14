@@ -27,7 +27,7 @@ readonly dir=$(dirname $0)
 readonly projectRoot="$dir/.."
 readonly testAppDir="$projectRoot/test-application"
 readonly deployDir="$testAppDir/target/deploy"
-
+readonly DEPLOYMENT_TOKEN=$(uuidgen)
 
 # The $TAG was introduced to be able to reuse the existing cluster but force redeployment.
 # Kubernetes' "kubectl apply -f" doesn't trigger a new deployment rollout unless there is a change in the yaml spec.
@@ -53,7 +53,7 @@ fi
 
 # build the test app
 pushd ${testAppDir}
-mvn clean install -DskipTests --batch-mode
+mvn clean package -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
 popd
 
 # deploy to Google Container Engine
@@ -80,19 +80,14 @@ kubectl apply -f "openjdk-spring-boot.yaml"
 popd
 
 echo "Waiting for the application to be accessible (expected time: ~1min)"
-DEPLOYED_APP_URL=""
-while [[ -z "$DEPLOYED_APP_URL" ]]; do
-  sleep 5
-  DEPLOYED_APP_URL=$(kubectl describe services openjdk-spring-boot \
-                             | awk '/LoadBalancer Ingress/ { print $3 }')
-done
-
-echo "App deployed to URL: $DEPLOYED_APP_URL, making sure it accepts connections..."
 
 # The load balancer service may take some time to expose the application
 # (~ 2 min on the cluster creation)
-until $(curl --output /dev/null --silent --head --fail "http://${DEPLOYED_APP_URL}"); do
-  sleep 2
+until [[ $(curl --silent --fail "http://$DEPLOYED_APP_URL/deployment.token" | grep "$DEPLOYMENT_TOKEN") ]]; do
+  sleep 5
+  DEPLOYED_APP_URL=$(kubectl describe services openjdk-spring-boot \
+                             | awk '/LoadBalancer Ingress/ { print $3 }')
+  echo "Current URL for app: $DEPLOYED_APP_URL, deployment token: $DEPLOYMENT_TOKEN. Making sure it accepts connections..."
 done
 
 # run in cloud container builder
