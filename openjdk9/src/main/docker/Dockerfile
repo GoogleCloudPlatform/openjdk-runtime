@@ -22,7 +22,7 @@ ENV GAE_IMAGE_LABEL ${docker.tag.long}
 
 RUN \
  # add debian 'sid' repo in order to install openjdk-9
- echo 'deb http://httpredir.debian.org/debian sid main' > /etc/apt/sources.list.d/unstable.list \
+ echo 'deb http://httpredir.debian.org/debian buster main' > /etc/apt/sources.list.d/buster.list \
  # add debian jessie, jessie-backports repo in order to install downgraded libcups2 dependency
  && echo 'deb http://httpredir.debian.org/debian jessie main' > /etc/apt/sources.list.d/jessie.list \
  && echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list \
