@@ -1,4 +1,7 @@
-![Build Status](http://storage.googleapis.com/java-runtimes-kokoro-build-badges/openjdk-runtime-master.png)
+![Build Status](http://storage.googleapis.com/java-runtimes-kokoro-build-badges/openjdk-runtime-master.png) 
+
+![Stability](https://img.shields.io/badge/gcr.io/google--appengine/openjdk:8-stable-green.svg)
+![Stability](https://img.shields.io/badge/gcr.io/google--appengine/openjdk:9-unstable-red.svg)
 
 # Google Cloud Platform OpenJDK Docker Image
 
