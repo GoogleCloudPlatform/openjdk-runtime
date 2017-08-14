@@ -23,12 +23,17 @@ readonly dir=`dirname $0`
 
 imageUnderTest=$1
 if [ -z "${imageUnderTest}" ]; then
-  echo "Usage: ${0} <image_under_test>"
+  echo "Usage: ${0} <image_under_test> [gae_deployment_version]"
   exit 1
 fi
 
+# for local tests it makes sense sometimes to pin the deployment to an
+# active version as that will speed up the deployment, for CI/CD this feature
+# is not recommended
+readonly gaeDeploymentVersion=$2
+
 ${dir}/local_integration_test.sh ${imageUnderTest}
 
-${dir}/ae_integration_test.sh ${imageUnderTest}
+${dir}/ae_integration_test.sh ${imageUnderTest} ${gaeDeploymentVersion}
 
 ${dir}/gke_integration_test.sh ${imageUnderTest}
