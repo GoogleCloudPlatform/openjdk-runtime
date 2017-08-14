@@ -25,8 +25,18 @@ deployDir=$testAppDir/target/deploy
 
 imageUnderTest=$1
 if [ -z "${imageUnderTest}" ]; then
-  echo "Usage: ${0} <image_under_test>"
+  echo "Usage: ${0} <image_under_test> [gae_deployment_version]"
   exit 1
+fi
+
+# for local tests it makes sense sometimes to pin the deployment to an
+# active version as that will speed up the deployment, for CI/CD this feature
+# is not recommended
+gaeDeploymentVersion=$2
+if [ "${gaeDeploymentVersion}" ]; then
+    DEPLOYMENT_OPTS="-v $gaeDeploymentVersion --no-promote"
+    DEPLOYMENT_VERSION_URL_PREFIX="$gaeDeploymentVersion-dot-"
+
 fi
 
 # build the test app
@@ -38,11 +48,24 @@ popd
 pushd $deployDir
 export STAGING_IMAGE=$imageUnderTest
 envsubst < Dockerfile.in > Dockerfile
-echo "Deploying to App Engine..."
-gcloud app deploy -q
+echo "Deploying to App Engine: gcloud app deploy -q ${DEPLOYMENT_OPTS}"
+gcloud app deploy -q ${DEPLOYMENT_OPTS}
 popd
 
-DEPLOYED_APP_URL="http://$(gcloud app describe | grep defaultHostname | awk '{print $2}')"
+DEPLOYED_APP_URL="http://${DEPLOYMENT_VERSION_URL_PREFIX}$(gcloud app describe | grep defaultHostname | awk '{print $2}')"
+
+echo "App deployed to URL: $DEPLOYED_APP_URL, making sure it accepts connections..."
+# sometimes AppEngine deploys, returns the URL and then serves 502 errors, this was introduced to wait for that to be resolved
+until $(curl --output /dev/null --silent --head --fail "${DEPLOYED_APP_URL}"); do
+  sleep 2
+done
+
+echo "Success pinging app! Output: "
+echo "-----"
+curl -s "${DEPLOYED_APP_URL}"
+echo ""
+echo "-----"
+
 echo "Running integration tests on application that is deployed at $DEPLOYED_APP_URL"
 
 # run in cloud container builder
