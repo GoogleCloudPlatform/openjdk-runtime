@@ -6,6 +6,7 @@ import com.google.api.MonitoredResource;
 import com.google.cloud.monitoring.v3.MetricServiceClient;
 import com.google.monitoring.v3.*;
 import com.google.protobuf.util.Timestamps;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,10 @@ public class StackDriverMonitoringService {
     private int maxRetries;
     private static Logger LOG = Logger.getLogger(StackDriverMonitoringService.class.getName());
 
+    @Autowired
+    private MetricServiceClient metricServiceClient;
+
     public void createMetricAndInsertTestToken(String projectId, String metricType, long metricValue) throws IOException {
-        MetricServiceClient metricServiceClient = MetricServiceClient.create();
         int retries = maxRetries;
         while (retries > 0) {
             try {
