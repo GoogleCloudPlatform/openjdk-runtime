@@ -18,12 +18,13 @@ set -e
 
 # Runs integration tests on a given runtime image
 
-dir=`dirname $0`
-projectRoot=$dir/..
-testAppDir=$projectRoot/test-application
-deployDir=$testAppDir/target/deploy
+readonly dir=`dirname $0`
+readonly projectRoot=$dir/..
+readonly testAppDir=$projectRoot/test-application
+readonly deployDir=$testAppDir/target/deploy
+readonly DEPLOYMENT_TOKEN=$(uuidgen)
 
-imageUnderTest=$1
+readonly imageUnderTest=$1
 if [ -z "${imageUnderTest}" ]; then
   echo "Usage: ${0} <image_under_test> [gae_deployment_version]"
   exit 1
@@ -32,7 +33,7 @@ fi
 # for local tests it makes sense sometimes to pin the deployment to an
 # active version as that will speed up the deployment, for CI/CD this feature
 # is not recommended
-gaeDeploymentVersion=$2
+readonly gaeDeploymentVersion=$2
 if [ "${gaeDeploymentVersion}" ]; then
     DEPLOYMENT_OPTS="-v $gaeDeploymentVersion --no-promote"
     DEPLOYMENT_VERSION_URL_PREFIX="$gaeDeploymentVersion-dot-"
@@ -41,7 +42,7 @@ fi
 
 # build the test app
 pushd $testAppDir
-mvn clean install
+mvn clean package -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
 popd
 
 # deploy to app engine
@@ -56,14 +57,16 @@ DEPLOYED_APP_URL="http://${DEPLOYMENT_VERSION_URL_PREFIX}$(gcloud app describe |
 
 echo "App deployed to URL: $DEPLOYED_APP_URL, making sure it accepts connections..."
 # sometimes AppEngine deploys, returns the URL and then serves 502 errors, this was introduced to wait for that to be resolved
-until $(curl --output /dev/null --silent --head --fail "${DEPLOYED_APP_URL}"); do
+until [[ $(curl --silent --fail "$DEPLOYED_APP_URL/deployment.token" | grep "$DEPLOYMENT_TOKEN") ]]; do
   sleep 2
 done
+
 
 echo "Success pinging app! Output: "
 echo "-----"
 curl -s "${DEPLOYED_APP_URL}"
 echo ""
+echo "Deployment token: $DEPLOYMENT_TOKEN"
 echo "-----"
 
 echo "Running integration tests on application that is deployed at $DEPLOYED_APP_URL"

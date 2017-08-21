@@ -26,6 +26,7 @@ readonly deployDir="$testAppDir/target/deploy"
 APP_IMAGE='openjdk-local-integration'
 CONTAINER=${APP_IMAGE}-container
 OUTPUT_FILE=${CONTAINER}-output.txt
+DEPLOYMENT_TOKEN=$(uuidgen)
 
 readonly imageUnderTest=$1
 if [[ -z "$imageUnderTest" ]]; then
@@ -33,12 +34,10 @@ if [[ -z "$imageUnderTest" ]]; then
   exit 1
 fi
 
-# build the test app
-if [ ! -d $deployDir ]; then
-  echo "Deploy dir $deployDir does not exist. Please build the test application before running\
- this test."
-  exit 1
-fi
+
+pushd ${testAppDir}
+mvn clean package -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
+popd
 
 # build app container locally
 pushd $deployDir
@@ -48,9 +47,11 @@ sed -e "s/FROM .*/FROM $STAGING_IMAGE/" Dockerfile.in > Dockerfile
 echo "Building app container..."
 docker build -t $APP_IMAGE . || gcloud docker -- build -t $APP_IMAGE .
 
+docker rm -f $CONTAINER || echo "Integration-test-app container is not running, ready to start a new instance."
+
 # run app container locally to test shutdown logging
 echo "Starting app container..."
-docker run --rm --name $CONTAINER -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" -e "SHUTDOWN_LOGGING_HEAP_INFO=true" $APP_IMAGE &> $OUTPUT_FILE &
+docker run --rm --name $CONTAINER -p 8080 -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" -e "SHUTDOWN_LOGGING_HEAP_INFO=true" $APP_IMAGE &> $OUTPUT_FILE &
 
 function waitForOutput() {
   found_output='false'
@@ -68,6 +69,20 @@ function waitForOutput() {
 }
 
 waitForOutput 'Started Application'
+
+getPort() {
+   docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}}{{(index $conf 0).HostPort}}{{end}}' ${CONTAINER}
+}
+
+
+PORT=`getPort`
+
+echo port is $PORT
+
+until [[ $(curl --silent --fail "http://localhost:$PORT/deployment.token" | grep "$DEPLOYMENT_TOKEN") ]]; do
+  sleep 2
+done
+
 
 docker stop $CONTAINER
 
