@@ -7,7 +7,10 @@
 
 This repository contains the source for the Google-maintained OpenJDK [docker](https://docker.com) image. This image can be used as the base image for running Java applications on [Google App Engine Flexible Environment](https://cloud.google.com/appengine/docs/flexible/java/) and [Google Container Engine](https://cloud.google.com/container-engine).
 
-This image is mirrored at both `launcher.gcr.io/google/openjdk8` and `gcr.io/google-appengine/openjdk`.
+## Repository/Tag Details
+Supported images/tags include:
+* `gcr.io/google-appengine/openjdk:8`, also mirrored at `launcher.gcr.io/google/openjdk8` 
+* `gcr.io/google-appengine/openjdk:9` (currently in beta)
 
 ## App Engine Flexible Environment
 When using App Engine Flexible, you can use the runtime without worrying about Docker by specifying `runtime: java` in your `app.yaml`:
@@ -15,7 +18,15 @@ When using App Engine Flexible, you can use the runtime without worrying about D
 runtime: java
 env: flex
 ```
-The runtime image `gcr.io/google-appenine/openjdk` will be automatically selected if you are attempting to deploy a JAR (`*.jar` file).
+The runtime image `gcr.io/google-appenine/openjdk:8` will be automatically selected if you are attempting to deploy a JAR (`*.jar` file).
+
+To select a jdk version, use the `runtime_config.jdk` field in app.yaml. Supported JDK versions include `openjdk8` and `openjdk9`.
+```yaml
+runtime: java
+env: flex
+runtime_config:
+  jdk: openjdk8
+```
 
 If you want to use the image as a base for a custom runtime, you can specify `runtime: custom` in your `app.yaml` and then
 write the Dockerfile like this:
