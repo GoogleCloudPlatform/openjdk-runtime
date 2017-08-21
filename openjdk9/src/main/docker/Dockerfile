@@ -21,22 +21,26 @@ ENV GAE_IMAGE_NAME ${project.artifactId}
 ENV GAE_IMAGE_LABEL ${docker.tag.long}
 
 RUN \
- # add debian 'sid' repo in order to install openjdk-9
+ # add debian buster repo in order to install openjdk-9
+ # See also https://wiki.debian.org/DebianBuster
  echo 'deb http://httpredir.debian.org/debian buster main' > /etc/apt/sources.list.d/buster.list \
- # add debian jessie, jessie-backports repo in order to install downgraded libcups2 dependency
- && echo 'deb http://httpredir.debian.org/debian jessie main' > /etc/apt/sources.list.d/jessie.list \
- && echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list \
 
  && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
-    # jdk and its dependencies
+    # install the jdk and its dependencies
     ca-certificates-java=20170531'*' \
-    openjdk-9-jdk-headless=${openjdk.version}'*' \
-    libcups2=2.2.1-8~bpo8+1 \
-    # system utilities
+    openjdk-9-jdk-headless=${openjdk.version}'~*' \
+    # procps is used in the jvm shutdown hook
     procps \
+    # other system utilities
     netbase \
     unzip \
+
+ # Remove libgnutls30 dependency brought in by openjdk-9 package. One of its dependencies uses
+ # the AGPL license, so we cannot use it.
+ && dpkg --remove --force-depends libgnutls30 \
+
+ # cleanup package manager caches
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
 
