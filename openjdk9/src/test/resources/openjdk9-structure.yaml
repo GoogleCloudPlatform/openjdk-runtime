@@ -12,6 +12,6 @@ commandTests:
   command: ['javac', '-version']
   expectedOut: ['javac ${openjdk.version.major}-Debian']
 - name: 'compilation of openjdk9 code works'
-  setup: [['chmod', '+x', '/workspace/test-app/compile-and-run.sh']]
-  command: ['/workspace/test-app/compile-and-run.sh', '/workspace/test-app']
+  setup: [['chmod', '+x', '/workspace/jdk9-compilation-test/compile-and-run.sh']]
+  command: ['/workspace/jdk9-compilation-test/compile-and-run.sh', '/workspace/jdk9-compilation-test']
   expectedOut: ['Greetings World!']
