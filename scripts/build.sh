@@ -21,6 +21,7 @@ usage() {
   echo "  where <args> include:"
   echo "             -d|--docker-namespace <docker_namespace> - a docker repository beginning with gcr.io"
   echo "             -m|--module           <module_to_build>  - one of {openjdk8, openjdk9}"
+  echo "           [ -s|--tag-suffix ]                        - suffix for the tag that is applied to the built image"
   echo "           [ -l|--local ]                             - runs the build locally"
   exit 1
 }
@@ -37,6 +38,10 @@ while [[ $# -gt 0 ]]; do
     MODULE="$2"
     shift # past argument
     ;;
+    -s|--tag-suffix)
+    TAG_SUFFIX="$2"
+    shift # past argument
+    ;;
     -l|--local)
     LOCAL_BUILD="true"
     ;;
@@ -51,7 +56,6 @@ done
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT=$DIR/..
 RUNTIME_NAME="openjdk"
-BUILD_TIMESTAMP="$(date -u +%Y-%m-%d_%H_%M)"
 
 if [ -z "${DOCKER_NAMESPACE}" -o -z "${MODULE}" ]; then
   usage
@@ -66,10 +70,13 @@ else
   usage
 fi
 
-# export TAG for use in downstream scripts
-export TAG="${TAG_PREFIX}-${BUILD_TIMESTAMP}"
+if [ -z "$TAG_SUFFIX" ]; then
+  TAG_SUFFIX="$(date -u +%Y-%m-%d_%H_%M)"
+fi
 
-IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${TAG}"
+# export TAG, IMAGE for use in downstream scripts
+export TAG="${TAG_PREFIX}-${TAG_SUFFIX}"
+export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${TAG}"
 echo "IMAGE: $IMAGE"
 
 # build and test the runtime image
