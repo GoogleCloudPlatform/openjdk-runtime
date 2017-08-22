@@ -22,7 +22,7 @@ readonly dir=`dirname $0`
 readonly projectRoot=$dir/..
 readonly testAppDir=$projectRoot/test-application
 readonly deployDir=$testAppDir/target/deploy
-readonly DEPLOYMENT_TOKEN=$(uuidgen)
+readonly DEPLOYMENT_TOKEN=$(date -u +%Y-%m-%d-%H-%M)
 
 readonly imageUnderTest=$1
 if [ -z "${imageUnderTest}" ]; then
