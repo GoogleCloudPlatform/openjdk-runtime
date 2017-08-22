@@ -1,7 +1,7 @@
-![Build Status](http://storage.googleapis.com/java-runtimes-kokoro-build-badges/openjdk-runtime-master.png) 
-
-![Stability](https://img.shields.io/badge/gcr.io/google--appengine/openjdk:8-stable-green.svg)
-![Stability](https://img.shields.io/badge/gcr.io/google--appengine/openjdk:9-unstable-red.svg)
+| Image     | Build Status  |
+| :---      | :---:         |
+| ![Stability](https://img.shields.io/badge/openjdk:8-stable-green.svg) | ![Build Status](http://storage.googleapis.com/java-runtimes-kokoro-build-badges/openjdk8-master.png) |
+| ![Stability](https://img.shields.io/badge/openjdk:9-unstable-orange.svg) | ![Build Status](http://storage.googleapis.com/java-runtimes-kokoro-build-badges/openjdk9-master.png) |
 
 # Google Cloud Platform OpenJDK Docker Image
 
