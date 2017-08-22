@@ -191,20 +191,6 @@
                 </arguments>
               </configuration>
             </execution>
-            <execution>
-              <id>local-integration-test</id>
-              <phase>none</phase>
-              <goals>
-                <goal>exec</goal>
-              </goals>
-              <configuration>
-                <executable>${project.parent.basedir}/scripts/local_integration_test.sh</executable>
-                <workingDirectory>${project.build.directory}</workingDirectory>
-                <arguments>
-                  <argument>${docker.image.name}</argument>
-                </arguments>
-              </configuration>
-            </execution>
           </executions>
         </plugin>
 
