@@ -14,11 +14,12 @@ import static com.google.cloud.ServiceOptions.getDefaultProjectId;
 
 @Configuration
 @Profile("gcp")
-public class GCPConfiguration {
+public class GcpConfiguration {
 
     @Bean
     public Logging getLogging() {
         LoggingOptions options = LoggingOptions.getDefaultInstance();
+
         return options.getService();
     }
 

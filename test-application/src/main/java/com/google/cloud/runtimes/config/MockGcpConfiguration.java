@@ -1,11 +1,9 @@
 package com.google.cloud.runtimes.config;
 
-import com.google.api.gax.core.CredentialsProvider;
 import com.google.auth.Credentials;
 import com.google.cloud.logging.Logging;
 import com.google.cloud.monitoring.v3.MetricServiceClient;
 import com.google.cloud.monitoring.v3.MetricServiceSettings;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,12 +18,13 @@ import static org.mockito.Mockito.mock;
 
 @Configuration
 @Profile("mock-gcp")
-public class MockGCPConfiguration {
+public class MockGcpConfiguration {
 
-    private final static Logger LOG = Logger.getLogger(MockGCPConfiguration.class.getName());
+    private final static Logger LOG = Logger.getLogger(MockGcpConfiguration.class.getName());
 
     @Bean
     public Logging getLogging() {
+
         Logging loggingMock = mock(Logging.class);
         doAnswer(invocationOnMock -> {
             LOG.warning("Mock-GCP setup, Logging.write will result in no side-effects!");

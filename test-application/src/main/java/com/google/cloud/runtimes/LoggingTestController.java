@@ -5,22 +5,17 @@ import com.google.cloud.logging.LogEntry;
 import com.google.cloud.logging.Logging;
 import com.google.cloud.logging.Payload;
 import com.google.cloud.logging.Severity;
-import com.google.cloud.runtimes.stackdriver.StackDriverMonitoringService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sun.util.logging.resources.logging;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
-import static com.google.cloud.ServiceOptions.getDefaultProjectId;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
@@ -63,7 +58,7 @@ public class LoggingTestController {
     }
 
     @RequestMapping(path = "/logging_custom", method = POST)
-    public String handleMonitoringRequest(@RequestBody LoggingTestRequest loggingTestRequest) throws IOException, InterruptedException {
+    public String handleLoggingTestRequest(@RequestBody LoggingTestRequest loggingTestRequest) throws IOException, InterruptedException {
         LOG.info(String.valueOf(loggingTestRequest));
 
         List<LogEntry> entries = new ArrayList<>();
