@@ -2,19 +2,15 @@
 # https://cloud.google.com/container-builder/docs/overview
 
 steps:
-# Build the maven project, omitting the docker build step
 - name: 'gcr.io/cloud-builders/java/mvn:3.3.9-jdk-8'
-  args: ['-P-local-docker-build', '-Ddocker.tag.long=${_DOCKER_TAG}', 'clean', 'install']
-  id: 'MAVEN'
-# Execute the docker build
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=${_IMAGE}', '--no-cache', 'openjdk8/target/docker']
-  id: 'DOCKER'
-
-# Runtimes-common structure tests
-# See https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/structure_tests
-- name: 'gcr.io/gcp-runtimes/structure_test'
-  args: ['--image', '${_IMAGE}', '-v', '--config', '/workspace/openjdk8/target/test-classes/structure.yaml']
-  id: 'STRUCTURE_TEST'
+  args:
+  - 'clean'
+  - 'install'
+  - '--batch-mode'
+  - '-Ddocker.image.name=${_IMAGE}'
+  # only build the specified module
+  - '--projects=${_MODULE}'
+  - '--also-make'
+  id: 'MVN_PACKAGE'
 
 images: ['${_IMAGE}']

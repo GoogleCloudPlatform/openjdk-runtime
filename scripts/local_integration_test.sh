@@ -34,15 +34,16 @@ if [[ -z "$imageUnderTest" ]]; then
   exit 1
 fi
 
-# build the test app
+
 pushd ${testAppDir}
 mvn clean package -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
 popd
 
 # build app container locally
 pushd $deployDir
-export STAGING_IMAGE=$imageUnderTest
-envsubst < Dockerfile.in > Dockerfile
+# escape special characters in docker image name
+STAGING_IMAGE=$(echo $imageUnderTest | sed -e 's/\//\\\//g')
+sed -e "s/FROM .*/FROM $STAGING_IMAGE/" Dockerfile.in > Dockerfile
 echo "Building app container..."
 docker build -t $APP_IMAGE . || gcloud docker -- build -t $APP_IMAGE .
 
@@ -54,9 +55,9 @@ docker run --rm --name $CONTAINER -p 8080 -e "SHUTDOWN_LOGGING_THREAD_DUMP=true"
 
 function waitForOutput() {
   found_output='false'
-  for run in {1..10}
+  for run in {1..20}
   do
-    grep "$1" $OUTPUT_FILE && found_output='true' && break
+    grep -P "$1" $OUTPUT_FILE && found_output='true' && break
     sleep 1
   done
 
@@ -91,7 +92,7 @@ echo 'verify thread dump'
 waitForOutput 'Full thread dump OpenJDK 64-Bit Server VM'
 
 echo 'verify heap info'
-waitForOutput 'num.*instances.*bytes.*class name'
+waitForOutput '\d+:\s+\d+\s+\d+\s+java.lang.Class'
 
 popd
 

@@ -5,16 +5,6 @@
 schemaVersion: 1.0.0
 
 commandTests:
-- name: 'correct java version is installed'
-  command: ['java', '-version']
-  expectedError: ['openjdk version "1\.${openjdk.version.major}.*${openjdk.version.minor}"']
-- name: 'ensure blacklisted packages are not installed as a dependency accidentally'
-  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/test-blacklisted-pkgs.bash' ]]
-  command: [ '/workspace/openjdk8/src/test/workspace/test-blacklisted-pkgs.bash' ]
-  excludedOutput: ['NOT OK.* is installed']
-- name: 'correct javac version is installed'
-  command: ['javac', '-version']
-  expectedError: ['javac 1\.${openjdk.version.major}.*${openjdk.version.minor}']
 - name: 'OPENJDK_VERSION env variable is set correctly'
   command: ['env']
   expectedOutput: ['OPENJDK_VERSION=${openjdk.version}']
@@ -22,43 +12,47 @@ commandTests:
   command: ['env']
   expectedOutput: ['GAE_IMAGE_LABEL=${docker.tag.long}']
 - name: 'check entrypoint default'
-  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/entrypoint-default.bash' ]]
-  command: [ '/workspace/openjdk8/src/test/workspace/entrypoint-default.bash' ]
+  setup: [[ 'chmod', '+x', '/workspace/entrypoint-default.bash' ]]
+  command: [ '/workspace/entrypoint-default.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
 - name: 'check entrypoint args only'
-  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/entrypoint-args-only.bash' ]]
-  command: [ '/workspace/openjdk8/src/test/workspace/entrypoint-args-only.bash' ]
+  setup: [[ 'chmod', '+x', '/workspace/entrypoint-args-only.bash' ]]
+  command: [ '/workspace/entrypoint-args-only.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
 - name: 'check entrypoint setup'
-  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/entrypoint-setup.bash' ]]
-  command: [ '/workspace/openjdk8/src/test/workspace/entrypoint-setup.bash' ]
+  setup: [[ 'chmod', '+x', '/workspace/entrypoint-setup.bash' ]]
+  command: [ '/workspace/entrypoint-setup.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
 - name: 'check setup platform'
-  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/setup-platform.bash' ]]
-  command: [ '/workspace/openjdk8/src/test/workspace/setup-platform.bash' ]
+  setup: [[ 'chmod', '+x', '/workspace/setup-platform.bash' ]]
+  command: [ '/workspace/setup-platform.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
 - name: 'check setup java'
-  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/setup-java.bash' ]]
-  command: [ '/workspace/openjdk8/src/test/workspace/setup-java.bash' ]
+  setup: [[ 'chmod', '+x', '/workspace/setup-java.bash' ]]
+  command: [ '/workspace/setup-java.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
 - name: 'check setup cloud debugger'
-  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/setup-debug.bash' ]]
-  command: [ '/workspace/openjdk8/src/test/workspace/setup-debug.bash' ]
+  setup: [[ 'chmod', '+x', '/workspace/setup-debug.bash' ]]
+  command: [ '/workspace/setup-debug.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
 - name: 'APP_DESTINATION env variable is set'
   command: ['env']
   expectedOutput: ['APP_DESTINATION=app.jar']
 - name: 'check shutdown logging wrapper setup'
-  setup: [[ 'chmod', '+x', '/workspace/openjdk8/src/test/workspace/shutdown-env.bash' ]]
-  command: [ '/workspace/openjdk8/src/test/workspace/shutdown-env.bash' ]
+  setup: [[ 'chmod', '+x', '/workspace/shutdown-env.bash' ]]
+  command: [ '/workspace/shutdown-env.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
+- name: 'ensure blacklisted packages are not installed as a dependency accidentally'
+  setup: [[ 'chmod', '+x', '/workspace/test-blacklisted-pkgs.bash' ]]
+  command: [ '/workspace/test-blacklisted-pkgs.bash' ]
+  excludedOutput: ['NOT OK.* is installed']
 
 fileExistenceTests:
 - name: 'ssl certificates are present'
