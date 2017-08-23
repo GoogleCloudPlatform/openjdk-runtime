@@ -3,6 +3,7 @@ package com.google.cloud.runtimes;
 import com.google.cloud.runtimes.stackdriver.StackDriverMonitoringService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class MonitoringTestController {
 
     @Autowired
+    @Lazy
     private StackDriverMonitoringService stackDriverMonitoringService;
 
     @Autowired

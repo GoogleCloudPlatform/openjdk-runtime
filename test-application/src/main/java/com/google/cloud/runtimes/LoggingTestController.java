@@ -6,7 +6,7 @@ import com.google.cloud.logging.Logging;
 import com.google.cloud.logging.Payload;
 import com.google.cloud.logging.Severity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,10 +22,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class LoggingTestController {
 
     @Autowired
+    @Lazy
     private Logging logging;
-    @Autowired
-    @Qualifier("projectId")
-    private String projectId;
 
     private static Logger LOG = Logger.getLogger(LoggingTestController.class.getName());
 
