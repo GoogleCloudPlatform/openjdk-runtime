@@ -30,15 +30,14 @@ if [ -z "${imageUnderTest}" ]; then
   exit 1
 fi
 
-# for local tests it makes sense sometimes to pin the deployment to an
-# active version as that will speed up the deployment, for CI/CD this feature
-# is not recommended
-readonly gaeDeploymentVersion=$2
-if [ "${gaeDeploymentVersion}" ]; then
-    DEPLOYMENT_OPTS="-v $gaeDeploymentVersion --no-promote"
-    DEPLOYMENT_VERSION_URL_PREFIX="$gaeDeploymentVersion-dot-"
-
+# If provided, pin to a specific version. Otherwise, generate a random new version ID to prevent
+# inadvertent collisions.
+gaeDeploymentVersion=$2
+if [ -z "${gaeDeploymentVersion}" ]; then
+  gaeDeploymentVersion=$(uuidgen)
 fi
+DEPLOYMENT_OPTS="-v $gaeDeploymentVersion --no-promote"
+DEPLOYMENT_VERSION_URL_PREFIX="$gaeDeploymentVersion-dot-"
 
 # build the test app
 pushd $testAppDir
@@ -76,4 +75,11 @@ gcloud container builds submit \
   --config $dir/integration_test.yaml \
   --substitutions "_DEPLOYED_APP_URL=$DEPLOYED_APP_URL" \
   $dir
+
+# run a cleanup build once tests have finished executing
+gcloud container builds submit \
+  --config $dir/integration_test_cleanup.yaml \
+  --substitutions "_VERSION=$gaeDeploymentVersion" \
+  --async \
+  --no-source
 
