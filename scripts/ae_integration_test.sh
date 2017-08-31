@@ -35,8 +35,9 @@ fi
 gaeDeploymentVersion=$2
 if [ -z "${gaeDeploymentVersion}" ]; then
   gaeDeploymentVersion=$(uuidgen)
+  readonly tearDown="true"
 fi
-DEPLOYMENT_OPTS="-v $gaeDeploymentVersion --no-promote"
+DEPLOYMENT_OPTS="-v $gaeDeploymentVersion --no-promote --no-stop-previous-version"
 DEPLOYMENT_VERSION_URL_PREFIX="$gaeDeploymentVersion-dot-"
 
 # build the test app
@@ -76,10 +77,12 @@ gcloud container builds submit \
   --substitutions "_DEPLOYED_APP_URL=$DEPLOYED_APP_URL" \
   $dir
 
-# run a cleanup build once tests have finished executing
-gcloud container builds submit \
-  --config $dir/integration_test_cleanup.yaml \
-  --substitutions "_VERSION=$gaeDeploymentVersion" \
-  --async \
-  --no-source
+if [ "$tearDown" == "true" ]; then
+  # run a cleanup build once tests have finished executing
+  gcloud container builds submit \
+    --config $dir/integration_test_cleanup.yaml \
+    --substitutions "_VERSION=$gaeDeploymentVersion" \
+    --async \
+    --no-source
+fi
 
