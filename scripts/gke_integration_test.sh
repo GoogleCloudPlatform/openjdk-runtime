@@ -53,7 +53,8 @@ if [[ -z "$imageUnderTest" ]]; then
 fi
 
 if [[ -z "$clusterName" ]]; then
- clusterName=$(uuidgen)
+ # generate random alpha string
+ clusterName=$(cat /dev/urandom | tr -dc 'a-z' | fold -w 20 | head -n 1)
  readonly tearDown="true"
 fi
 
