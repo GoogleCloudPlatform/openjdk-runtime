@@ -43,12 +43,17 @@ readonly projectName=$(gcloud info \
                 | sed 's/\]//')
 readonly imageName="openjdk-gke-integration:$TAG"
 readonly imageUrl="gcr.io/$projectName/$imageName"
-readonly clusterName="openjdk-gke-integration"
 
 readonly imageUnderTest=$1
+clusterName=$2
 if [[ -z "$imageUnderTest" ]]; then
-  echo "Usage: ${0} <image_under_test>"
+  echo "Usage: ${0} <image_under_test> [gke_cluster_name]"
   exit 1
+fi
+
+if [[ -z "$clusterName" ]]; then
+ clusterName=$(uuidgen)
+ readonly tearDown="true"
 fi
 
 # build the test app
@@ -96,3 +101,13 @@ gcloud container builds submit \
   --config ${dir}/integration_test.yaml \
   --substitutions "_DEPLOYED_APP_URL=http://$DEPLOYED_APP_URL" \
   ${dir}
+
+# teardown any resources we created
+if [ "$tearDown" == "true" ]; then
+  # run a cleanup build once tests have finished executing
+  gcloud container builds submit \
+    --config $dir/gke_cluster_cleanup.yaml \
+    --substitutions "_CLUSTER_NAME=$clusterName" \
+    --async \
+    --no-source
+fi
