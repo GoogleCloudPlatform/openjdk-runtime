@@ -43,6 +43,7 @@ readonly projectName=$(gcloud info \
                 | sed 's/\]//')
 readonly imageName="openjdk-gke-integration:$TAG"
 readonly imageUrl="gcr.io/$projectName/$imageName"
+readonly defaultZone="us-east1-c"
 
 readonly imageUnderTest=$1
 clusterName=$2
@@ -74,13 +75,13 @@ gcloud docker -- tag "$imageName" "$imageUrl"
 gcloud docker -- push gcr.io/${projectName}/${imageName}
 
 echo "Creating or searching for a Kubernetes cluster..."
-TEST_CLUSTER_EXISTENCE=$(gcloud container clusters list | awk "/$clusterName/")
+TEST_CLUSTER_EXISTENCE=$(gcloud container clusters list --zone="$defaultZone" | awk "/$clusterName/")
 if [ -z "$TEST_CLUSTER_EXISTENCE" ]; then
-  gcloud container clusters create "$clusterName" --num-nodes=1 --disk-size=10
+  gcloud container clusters create "$clusterName" --num-nodes=1 --disk-size=10 --zone="$defaultZone"
 fi
 
 echo "Deploying application to Google Container Engine..."
-gcloud container clusters get-credentials ${clusterName}
+gcloud container clusters get-credentials ${clusterName} --zone="$defaultZone"
 kubectl apply -f "openjdk-spring-boot.yaml"
 popd
 
@@ -107,7 +108,7 @@ if [ "$tearDown" == "true" ]; then
   # run a cleanup build once tests have finished executing
   gcloud container builds submit \
     --config $dir/gke_cluster_cleanup.yaml \
-    --substitutions "_CLUSTER_NAME=$clusterName" \
+    --substitutions "_CLUSTER_NAME=$clusterName,_ZONE=$defaultZone" \
     --async \
     --no-source
 fi
