@@ -16,7 +16,8 @@
 
 #
 # Fetch and execute the structure test framework run script.
-#
+set -e
+
 dir=`dirname $0`
 scriptPath=https://raw.githubusercontent.com/GoogleCloudPlatform/runtimes-common/master/structure_tests/ext_run.sh
 destDir=$dir/../target
@@ -27,5 +28,5 @@ then
   mkdir -p $destDir
 fi
 
-curl $scriptPath > $fileName
+wget -O $fileName --no-verbose $scriptPath
 bash $fileName "$@"

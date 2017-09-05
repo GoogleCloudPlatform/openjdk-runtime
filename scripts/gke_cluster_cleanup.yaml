@@ -1,0 +1,5 @@
+# Cloud Builder pipeline for tearing down integration test resources
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['--quiet', 'container', 'clusters', 'delete', '$_CLUSTER_NAME', '--zone=$_ZONE']
+

@@ -24,15 +24,15 @@
     <version>0.1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <name>Google App Engine Image for OpenJDK (openjdk8)</name>
-  <artifactId>openjdk8</artifactId>
+  <name>Google App Engine Image for OpenJDK (openjdk9)</name>
+  <artifactId>openjdk9</artifactId>
   <packaging>pom</packaging>
 
   <properties>
-    <openjdk.version.major>8</openjdk.version.major>
-    <openjdk.version.minor>131</openjdk.version.minor>
-    <openjdk.version>${openjdk.version.major}u${openjdk.version.minor}</openjdk.version>
-    <docker.appengine.image>gcr.io/google-appengine/debian8</docker.appengine.image>
+    <openjdk.version.major>9</openjdk.version.major>
+    <openjdk.version.minor></openjdk.version.minor>
+    <openjdk.version>${openjdk.version.major}${openjdk.version.minor}</openjdk.version>
+    <docker.appengine.image>gcr.io/google-appengine/debian9</docker.appengine.image>
     <docker.image.name>${docker.image.baseName}:${docker.tag.long}</docker.image.name>
   </properties>
 
@@ -87,7 +87,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <!-- Bind inherited executions from parent module -->
         <executions>
           <execution>
             <id>common-structure-test</id>
@@ -95,7 +94,7 @@
           </execution>
           <!-- Execute structure tests specific to this module -->
           <execution>
-            <id>openjdk8-structure-test</id>
+            <id>openjdk9-structure-test</id>
             <phase>integration-test</phase>
             <goals>
               <goal>exec</goal>
@@ -109,7 +108,7 @@
                 <argument>--workspace</argument>
                 <argument>${project.build.testOutputDirectory}</argument>
                 <argument>--config</argument>
-                <argument>${project.build.testOutputDirectory}/openjdk8-structure.yaml</argument>
+                <argument>${project.build.testOutputDirectory}/openjdk9-structure.yaml</argument>
               </arguments>
             </configuration>
           </execution>

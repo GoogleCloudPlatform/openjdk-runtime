@@ -1,0 +1,13 @@
+# Test spec for the Cloud Runtimes container structure testing framework.
+#
+# See https://github.com/GoogleCloudPlatform/runtimes-common/blob/master/structure_tests/README.md for more detail.
+#
+schemaVersion: 1.0.0
+
+commandTests:
+- name: 'correct java version is installed'
+  command: ['java', '-version']
+  expectedError: ['openjdk version "1\.${openjdk.version.major}.*${openjdk.version.minor}"']
+- name: 'correct javac version is installed'
+  command: ['javac', '-version']
+  expectedError: ['javac 1\.${openjdk.version.major}.*${openjdk.version.minor}']
