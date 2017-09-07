@@ -67,24 +67,16 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
           <version>1.4.1</version>
-          <executions>
-            <execution>
-              <id>enforce-maven</id>
-              <goals>
-                <goal>enforce</goal>
-              </goals>
-              <configuration>
-                <rules>
-                  <requireMavenVersion>
-                    <version>[3.0,)</version>
-                  </requireMavenVersion>
-                  <requireJavaVersion>
+          <configuration>
+            <rules>
+                <requireMavenVersion>
+                    <version>[3.3,)</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
                     <version>[1.8,)</version>
-                  </requireJavaVersion>
-                </rules>
-              </configuration>
-            </execution>
-          </executions>
+                </requireJavaVersion>
+            </rules>
+         </configuration>
         </plugin>
 
         <plugin>
