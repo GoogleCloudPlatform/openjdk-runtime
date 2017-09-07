@@ -183,6 +183,22 @@
                 </arguments>
               </configuration>
             </execution>
+            <execution>
+              <id>local-shutdown-test</id>
+              <!-- Do not bind to a phase, so that child modules can explicitly choose the phase for
+              this execution -->
+              <phase>none</phase>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <configuration>
+                <executable>${project.parent.basedir}/scripts/local_shutdown_test.sh</executable>
+                <workingDirectory>${project.build.outputDirectory}</workingDirectory>
+                <arguments>
+                  <argument>${docker.image.name}</argument>
+                </arguments>
+              </configuration>
+            </execution>
           </executions>
         </plugin>
 
