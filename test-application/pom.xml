@@ -25,7 +25,6 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <deployment.token>default_deployment_token</deployment.token>
-    <spring.profile>gcp</spring.profile>
   </properties>
 
   <dependencies>
