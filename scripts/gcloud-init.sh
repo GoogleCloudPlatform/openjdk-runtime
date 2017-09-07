@@ -46,3 +46,4 @@ gcloud auth activate-service-account --key-file=$KEYFILE
 gcloud config set project $GCP_PROJECT
 gcloud config set compute/zone us-east1-b
 gcloud components install beta kubectl -q
+gcloud components install beta container-builder-local

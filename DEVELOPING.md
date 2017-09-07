@@ -56,8 +56,14 @@ $ ./scripts/integration_test.sh $RUNTIME_IMAGE
 
 **Run ONLY Local Docker integration tests:**
 ```bash
-$ ./scripts/local_integration_test.sh $RUNTIME_IMAGE
+$ ./scripts/local_runtimes_common_integration_test.sh $RUNTIME_IMAGE
 ```
+
+**Run ONLY Local shutdown tests:**
+```bash
+$ ./scripts/local_shutdown_test.sh $RUNTIME_IMAGE
+```
+
 
 **Run ONLY App Engine flexible environment integration tests:**
 ```bash

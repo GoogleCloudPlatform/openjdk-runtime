@@ -93,6 +93,10 @@
             <id>common-structure-test</id>
             <phase>integration-test</phase>
           </execution>
+          <execution>
+            <id>local-shutdown-test</id>
+            <phase>integration-test</phase>
+          </execution>
           <!-- Execute structure tests specific to this module -->
           <execution>
             <id>openjdk8-structure-test</id>
