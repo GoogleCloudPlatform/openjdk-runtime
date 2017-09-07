@@ -34,11 +34,10 @@ if [[ -z "$imageUnderTest" ]]; then
   exit 1
 fi
 
-if [[ -z ${GOOGLE_APPLICATION_CREDENTIALS} ]]; then
-    echo "Error: GOOGLE_APPLICATION_CREDENTIALS must be set."
-    exit 1
+if [[ ! -f $HOME/.config/gcloud/application_default_credentials.json ]]; then
+    # get default application credentials
+    gcloud auth application-default login
 fi
-
 
 # build the test app
 pushd ${testAppDir}
@@ -50,7 +49,7 @@ pushd $deployDir
 export STAGING_IMAGE=$imageUnderTest
 envsubst < Dockerfile.in > Dockerfile
 echo "Building app container..."
-docker build -t $APP_IMAGE . || gcloud docker -- build -t $APP_IMAGE .
+docker build -t $APP_IMAGE . || docker build -t $APP_IMAGE .
 
 docker rm -f $CONTAINER || echo "Integration-test-app container is not running, ready to start a new instance."
 
@@ -59,8 +58,7 @@ echo "Starting app container..."
 docker run --rm --name $CONTAINER -p 8080 \
         -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" \
         -e "SHUTDOWN_LOGGING_HEAP_INFO=true" \
-        -e "GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS" \
-        -v "$GOOGLE_APPLICATION_CREDENTIALS:$GOOGLE_APPLICATION_CREDENTIALS" $APP_IMAGE &> $OUTPUT_FILE &
+        -v "$HOME/.config/gcloud/:/root/.config/gcloud" $APP_IMAGE &> $OUTPUT_FILE &
 
 function waitForOutput() {
   found_output='false'
