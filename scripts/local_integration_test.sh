@@ -36,14 +36,11 @@ fi
 
 
 pushd ${testAppDir}
-mvn clean install -Pint-test -Dpackaging.type=jar -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
+mvn clean install -Pruntime.custom -Dapp.deploy.image=$imageUnderTest -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
 popd
 
 # build app container locally
 pushd $deployDir
-# escape special characters in docker image name
-STAGING_IMAGE=$(echo $imageUnderTest | sed -e 's/\//\\\//g')
-sed -e "s/FROM .*/FROM $STAGING_IMAGE/" Dockerfile.in > Dockerfile
 echo "Building app container..."
 docker build -t $APP_IMAGE . || gcloud docker -- build -t $APP_IMAGE .
 

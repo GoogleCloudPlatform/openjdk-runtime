@@ -60,13 +60,11 @@ fi
 
 # build the test app
 pushd ${testAppDir}
-mvn clean install -Pint-test -Dpackaging.type=jar -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
+mvn clean install -Pruntime.custom -Dapp.deploy.image=$imageUnderTest -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
 popd
 
 # deploy to Google Container Engine
 pushd ${deployDir}
-export STAGING_IMAGE=${imageUnderTest}
-envsubst < "Dockerfile.in" > "Dockerfile"
 export TESTED_IMAGE=${imageUrl}
 envsubst < "openjdk-spring-boot.yaml.in" > "openjdk-spring-boot.yaml"
 
