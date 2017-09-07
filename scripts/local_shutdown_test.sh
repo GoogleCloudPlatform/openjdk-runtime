@@ -18,7 +18,6 @@
 # exit on command failure
 set -e
 
-
 readonly dir=$(dirname $0)
 readonly projectRoot="$dir/.."
 readonly testAppDir="$projectRoot/test-application"
