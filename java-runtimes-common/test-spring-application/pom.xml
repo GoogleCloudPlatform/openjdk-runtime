@@ -113,7 +113,7 @@
                     </resource>
                     <resource>
                       <directory>${basedir}/src/main/kubernetes</directory>
-                      <filtering>false</filtering> <!-- TODO -->
+                      <filtering>false</filtering>
                     </resource>
                   </resources>
                 </configuration>
