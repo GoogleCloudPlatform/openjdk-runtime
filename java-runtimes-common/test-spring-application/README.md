@@ -8,12 +8,12 @@ The test application is a simple [Spring Boot](https://projects.spring.io/spring
 which can be built in several different ways.
 
 ## Supported profiles
-**Custom runtime profile** - stages the application for deployment to a custom runtime on App Engine Flexible:
+**Custom runtime profile** - prepares files in the `target/deploy` directory for deployment to a custom runtime on App Engine Flexible:
   - When using this profile, the `app.deploy.image` property must be specified as well.
 ```bash
 mvn install -Pruntime.custom -Dapp.deploy.image=gcr.io/google-appengine/openjdk
 ```
-**Java runtime profile** - stages the application for deployment to the default Java runtime on App Engine Flexible:
+**Java runtime profile** - prepares files in the `target/deploy` directory for deployment to the default Java runtime on App Engine Flexible:
 ```bash
 mvn install -Pruntime.java
 ```
