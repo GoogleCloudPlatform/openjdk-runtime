@@ -58,6 +58,7 @@ getPort() {
    docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}}{{(index $conf 0).HostPort}}{{end}}' ${CONTAINER}
 }
 
+sleep 2
 
 PORT=`getPort`
 
