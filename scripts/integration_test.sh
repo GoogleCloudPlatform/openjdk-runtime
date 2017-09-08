@@ -32,7 +32,7 @@ fi
 # is not recommended
 readonly gaeDeploymentVersion=$2
 
-${dir}/local_integration_test.sh ${imageUnderTest}
+${dir}/local_shutdown_test.sh ${imageUnderTest}
 
 ${dir}/ae_integration_test.sh ${imageUnderTest} ${gaeDeploymentVersion}
 

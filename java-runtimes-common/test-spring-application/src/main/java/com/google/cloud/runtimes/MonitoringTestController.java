@@ -2,6 +2,8 @@ package com.google.cloud.runtimes;
 
 import com.google.cloud.runtimes.stackdriver.StackDriverMonitoringService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,14 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import static com.google.cloud.ServiceOptions.getDefaultProjectId;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 public class MonitoringTestController {
 
     @Autowired
+    @Lazy
     private StackDriverMonitoringService stackDriverMonitoringService;
+
+    @Autowired
+    @Qualifier("projectId")
+    private String projectId;
 
     private static Logger LOG = Logger.getLogger(MonitoringTestController.class.getName());
 
@@ -45,7 +51,7 @@ public class MonitoringTestController {
     public String handleMonitoringRequest(@RequestBody MonitoringTestRequest monitoringTestRequest) throws IOException, InterruptedException {
         LOG.info(String.valueOf(monitoringTestRequest));
 
-        stackDriverMonitoringService.createMetricAndInsertTestToken(getDefaultProjectId(),
+        stackDriverMonitoringService.createMetricAndInsertTestToken(projectId,
                 monitoringTestRequest.name,
                 monitoringTestRequest.token);
 
