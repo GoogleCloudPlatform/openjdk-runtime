@@ -51,7 +51,7 @@
     </dependency>
     <dependency>
       <groupId>com.google.cloud.runtimes</groupId>
-      <artifactId>test-application</artifactId>
+      <artifactId>test-spring-application</artifactId>
       <version>1.0.0</version>
     </dependency>
   </dependencies>
