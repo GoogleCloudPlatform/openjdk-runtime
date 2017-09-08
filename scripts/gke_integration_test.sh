@@ -27,7 +27,7 @@ readonly dir=$(dirname $0)
 readonly projectRoot="$dir/.."
 readonly testAppDir="$projectRoot/test-application"
 readonly deployDir="$testAppDir/target/deploy"
-readonly DEPLOYMENT_TOKEN=$(uuidgen)
+readonly DEPLOYMENT_TOKEN=$(date -u +%Y-%m-%d-%H-%M-%S-%N)
 
 # The $TAG was introduced to be able to reuse the existing cluster but force redeployment.
 # Kubernetes' "kubectl apply -f" doesn't trigger a new deployment rollout unless there is a change in the yaml spec.
