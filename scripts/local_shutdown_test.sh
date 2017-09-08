@@ -55,7 +55,7 @@ docker run --rm --name $CONTAINER -p 8080 -e "SHUTDOWN_LOGGING_THREAD_DUMP=true"
 
 function waitForOutput() {
   found_output='false'
-  for run in {1..20}
+  for run in {1..30}
   do
     grep -P "$1" $OUTPUT_FILE && found_output='true' && break
     sleep 1
@@ -63,6 +63,9 @@ function waitForOutput() {
 
   if [ "$found_output" == "false" ]; then
     cat $OUTPUT_FILE
+    echo "----------------- Docker logs --------------------"
+    docker logs $CONTAINER
+    echo "----------------- Docker logs  end--------------------"
     echo "did not match '$1' in '$OUTPUT_FILE'"
     exit 1
   fi
