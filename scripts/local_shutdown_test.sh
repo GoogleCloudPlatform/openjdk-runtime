@@ -51,7 +51,7 @@ docker rm -f $CONTAINER || echo "Integration-test-app container is not running, 
 
 # run app container locally to test shutdown logging
 echo "Starting app container..."
-docker run --rm --name $CONTAINER -p 8080 -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" -e "SHUTDOWN_LOGGING_HEAP_INFO=true" $APP_IMAGE &> $OUTPUT_FILE &
+docker run --name $CONTAINER -p 8080 -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" -e "SHUTDOWN_LOGGING_HEAP_INFO=true" $APP_IMAGE &> $OUTPUT_FILE &
 
 function waitForOutput() {
   found_output='false'
@@ -66,6 +66,8 @@ function waitForOutput() {
     echo "----------------- Docker logs --------------------"
     docker logs $CONTAINER
     echo "----------------- Docker logs  end--------------------"
+    docker ps -a
+    echo "------" 
     echo "did not match '$1' in '$OUTPUT_FILE'"
     exit 1
   fi
