@@ -80,6 +80,10 @@
                   <directory>${basedir}/src/main/kubernetes</directory>
                   <filtering>false</filtering>
                 </resource>
+                <resource>
+                  <directory>${basedir}/src/main/gce</directory>
+                  <filtering>false</filtering>
+                </resource>
               </resources>
             </configuration>
           </execution>

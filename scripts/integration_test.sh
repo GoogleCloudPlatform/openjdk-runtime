@@ -37,3 +37,5 @@ ${dir}/local_shutdown_test.sh ${imageUnderTest}
 ${dir}/ae_integration_test.sh ${imageUnderTest} ${gaeDeploymentVersion}
 
 ${dir}/gke_integration_test.sh ${imageUnderTest}
+
+${dir}/gce_integration_test.sh ${imageUnderTest}
