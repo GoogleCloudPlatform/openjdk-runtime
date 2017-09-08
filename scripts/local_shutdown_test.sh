@@ -53,27 +53,6 @@ docker rm -f $CONTAINER || echo "Integration-test-app container is not running, 
 echo "Starting app container..."
 docker run --name $CONTAINER -p 8080 -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" -e "SHUTDOWN_LOGGING_HEAP_INFO=true" $APP_IMAGE &> $OUTPUT_FILE &
 
-function waitForOutput() {
-  found_output='false'
-  for run in {1..30}
-  do
-    grep -P "$1" $OUTPUT_FILE && found_output='true' && break
-    sleep 1
-  done
-
-  if [ "$found_output" == "false" ]; then
-    cat $OUTPUT_FILE
-    echo "----------------- Docker logs --------------------"
-    docker logs $CONTAINER
-    echo "----------------- Docker logs  end--------------------"
-    docker ps -a
-    echo "------" 
-    echo "did not match '$1' in '$OUTPUT_FILE'"
-    exit 1
-  fi
-}
-
-waitForOutput 'Started Application'
 
 getPort() {
    docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}}{{(index $conf 0).HostPort}}{{end}}' ${CONTAINER}
@@ -88,6 +67,29 @@ until [[ $(curl --silent --fail "http://localhost:$PORT/deployment.token" | grep
   sleep 2
 done
 
+
+
+function waitForOutput() {
+  found_output='false'
+  for run in {1..30}
+  do
+    grep -P "$1" $OUTPUT_FILE && found_output='true' && break
+    sleep 1
+  done
+
+  if [ "$found_output" == "false" ]; then
+    cat $OUTPUT_FILE
+    echo "----------------- Docker logs --------------------"
+    docker logs $CONTAINER
+    echo "----------------- Docker logs  end--------------------"
+    docker ps -a
+    echo "------"
+    echo "did not match '$1' in '$OUTPUT_FILE'"
+    exit 1
+  fi
+}
+
+waitForOutput 'Started Application'
 
 docker stop $CONTAINER
 
