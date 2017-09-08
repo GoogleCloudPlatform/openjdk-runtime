@@ -8,15 +8,14 @@ The test application is a simple [Spring Boot](https://projects.spring.io/spring
 which can be built in several different ways.
 
 ## Supported profiles
-- **Integration test profile** - stages the application for use in the [runtimes-common integration testing framework](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/integration_tests).
-Invoke with: 
+**Custom runtime profile** - stages the application for deployment to a custom runtime on App Engine Flexible:
+  - When using this profile, the `app.deploy.image` property must be specified as well.
 ```bash
-mvn install -Pint-test
+mvn install -Pruntime.custom -Dapp.deploy.image=gcr.io/google-appengine/openjdk
 ```
-- **Deploy check profile** - stages the application for deployment directly to App Engine.
-Invoke with: 
+**Java runtime profile** - stages the application for deployment to the default Java runtime on App Engine Flexible:
 ```bash
-mvn install -Pdeployment-test
+mvn install -Pruntime.java
 ```
 
 ## Supported packaging types
