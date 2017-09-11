@@ -20,7 +20,7 @@ set -e
 
 readonly dir=`dirname $0`
 readonly projectRoot=$dir/..
-readonly testAppDir=$projectRoot/test-application
+readonly testAppDir=$projectRoot/java-runtimes-common/test-spring-application
 readonly deployDir=$testAppDir/target/deploy
 readonly DEPLOYMENT_TOKEN=$(uuidgen)
 
@@ -42,13 +42,11 @@ DEPLOYMENT_VERSION_URL_PREFIX="$gaeDeploymentVersion-dot-"
 
 # build the test app
 pushd $testAppDir
-mvn clean package -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
+mvn clean install -Pruntime.custom -Dapp.deploy.image=$imageUnderTest -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
 popd
 
 # deploy to app engine
 pushd $deployDir
-export STAGING_IMAGE=$imageUnderTest
-envsubst < Dockerfile.in > Dockerfile
 echo "Deploying to App Engine: gcloud app deploy -q ${DEPLOYMENT_OPTS}"
 gcloud app deploy -q ${DEPLOYMENT_OPTS}
 popd
