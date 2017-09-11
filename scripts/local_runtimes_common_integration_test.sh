@@ -26,7 +26,7 @@ readonly deployDir="$testAppDir/target/deploy"
 APP_IMAGE='openjdk-local-integration'
 CONTAINER=${APP_IMAGE}-container
 OUTPUT_FILE=${CONTAINER}-output.txt
-DEPLOYMENT_TOKEN=$(uuidgen)
+DEPLOYMENT_TOKEN=$(date -u +%Y-%m-%d-%H-%M-%S-%N)
 
 readonly imageUnderTest=$1
 if [[ -z "$imageUnderTest" ]]; then

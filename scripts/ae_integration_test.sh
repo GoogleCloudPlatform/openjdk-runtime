@@ -22,7 +22,7 @@ readonly dir=`dirname $0`
 readonly projectRoot=$dir/..
 readonly testAppDir=$projectRoot/java-runtimes-common/test-spring-application
 readonly deployDir=$testAppDir/target/deploy
-readonly DEPLOYMENT_TOKEN=$(uuidgen)
+readonly DEPLOYMENT_TOKEN=$(date -u +%Y-%m-%d-%H-%M-%S-%N)
 
 readonly imageUnderTest=$1
 if [ -z "${imageUnderTest}" ]; then
@@ -34,7 +34,7 @@ fi
 # inadvertent collisions.
 gaeDeploymentVersion=$2
 if [ -z "${gaeDeploymentVersion}" ]; then
-  gaeDeploymentVersion=$(uuidgen)
+  gaeDeploymentVersion=$(date -u +%Y-%m-%d-%H-%M-%S-%N)
   readonly tearDown="true"
 fi
 DEPLOYMENT_OPTS="-v $gaeDeploymentVersion --no-promote --no-stop-previous-version"
