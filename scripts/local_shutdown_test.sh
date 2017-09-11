@@ -20,7 +20,7 @@ set -e
 
 readonly dir=$(dirname $0)
 readonly projectRoot="$dir/.."
-readonly testAppDir="$projectRoot/test-application"
+readonly testAppDir="$projectRoot/java-runtimes-common/test-spring-application"
 readonly deployDir="$testAppDir/target/deploy"
 
 APP_IMAGE='openjdk-local-integration'
@@ -35,14 +35,11 @@ fi
 
 
 pushd ${testAppDir}
-mvn clean package -DskipTests --batch-mode
+mvn clean package -Pruntime.custom -Dapp.deploy.image=$imageUnderTest -DskipTests --batch-mode
 popd
 
 # build app container locally
 pushd $deployDir
-# escape special characters in docker image name
-STAGING_IMAGE=$(echo $imageUnderTest | sed -e 's/\//\\\//g')
-sed -e "s/FROM .*/FROM $STAGING_IMAGE/" Dockerfile.in > Dockerfile
 echo "Building app container..."
 docker build -t $APP_IMAGE . || gcloud docker -- build -t $APP_IMAGE .
 

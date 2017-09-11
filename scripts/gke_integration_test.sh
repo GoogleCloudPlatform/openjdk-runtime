@@ -25,7 +25,7 @@ set -e
 
 readonly dir=$(dirname $0)
 readonly projectRoot="$dir/.."
-readonly testAppDir="$projectRoot/test-application"
+readonly testAppDir="$projectRoot/java-runtimes-common/test-spring-application"
 readonly deployDir="$testAppDir/target/deploy"
 readonly DEPLOYMENT_TOKEN=$(date -u +%Y-%m-%d-%H-%M-%S-%N)
 
@@ -60,13 +60,11 @@ fi
 
 # build the test app
 pushd ${testAppDir}
-mvn clean package -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
+mvn clean install -Pruntime.custom -Dapp.deploy.image=$imageUnderTest -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
 popd
 
 # deploy to Google Container Engine
 pushd ${deployDir}
-export STAGING_IMAGE=${imageUnderTest}
-envsubst < "Dockerfile.in" > "Dockerfile"
 export TESTED_IMAGE=${imageUrl}
 envsubst < "openjdk-spring-boot.yaml.in" > "openjdk-spring-boot.yaml"
 
