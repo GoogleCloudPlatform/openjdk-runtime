@@ -24,7 +24,6 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <deployment.token>default_deployment_token</deployment.token>
-    <packaging.type>jar</packaging.type>
   </properties>
 
   <dependencies>
@@ -81,6 +80,15 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>deploy.jar</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <packaging.type>jar</packaging.type>
+      </properties>
+    </profile>
     <profile>
       <id>deploy.war</id>
       <properties>
