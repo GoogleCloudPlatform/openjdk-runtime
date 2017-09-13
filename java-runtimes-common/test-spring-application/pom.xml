@@ -26,7 +26,6 @@
     <deployment.token>default_deployment_token</deployment.token>
     <packaging.type>jar</packaging.type>
     <app.deploy.runtime>java</app.deploy.runtime>
-    <app.deploy.image></app.deploy.image>
   </properties>
 
   <dependencies>
