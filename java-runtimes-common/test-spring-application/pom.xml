@@ -82,6 +82,19 @@
 
   <profiles>
     <profile>
+      <id>deploy.war</id>
+      <properties>
+        <packaging.type>war</packaging.type>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
       <!-- stage the application for deployment to a custom runtime -->
       <id>runtime.custom</id>
       <activation>
