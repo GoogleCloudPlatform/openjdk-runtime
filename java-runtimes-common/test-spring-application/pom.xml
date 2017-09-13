@@ -24,6 +24,9 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <deployment.token>default_deployment_token</deployment.token>
+    <packaging.type>jar</packaging.type>
+    <app.deploy.runtime>java</app.deploy.runtime>
+    <app.deploy.image></app.deploy.image>
   </properties>
 
   <dependencies>
@@ -110,7 +113,6 @@
       </activation>
       <properties>
         <app.deploy.runtime>custom</app.deploy.runtime>
-        <app.deploy.image></app.deploy.image>
       </properties>
       <build>
         <plugins>

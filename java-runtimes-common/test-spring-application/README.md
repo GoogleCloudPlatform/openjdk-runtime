@@ -9,6 +9,8 @@ which can be built in several different ways.
 
 ## Supported profiles
 ### Runtime staging profiles
+Runtime staging profiles can be mixed & matched with deployment profiles.
+
 **Java runtime profile (default)** - prepares files in the `target/deploy` directory for deployment to the default Java runtime on App Engine Flexible:
 ```bash
 mvn install -Pruntime.java
@@ -20,20 +22,15 @@ mvn install -Pruntime.custom -Dapp.deploy.image=gcr.io/google-appengine/openjdk
 ```
 
 ### Deployment profiles
+Deployment profiles can be mixed & matched with runtime staging profiles.
+
 **JAR deployment profile (default)** - packages the application as an executable JAR that embeds a web server.
 ```bash
 mvn install -Pdeploy.jar
 ```
-
 **WAR deployment profile** - packages the application as a WAR file that can be deployed to a web server instance.
 ```bash
 mvn install -Pdeploy.war
 ```
-
-## Supported packaging types
-The test application can be packaged using variable packaging types. Select among them using the
-`packaging.type` maven property. These can be mixed with the various profiles above. Supported packaging types:
-- `mvn install -Dpackaging.type=jar`
-- `mvn install -Dpackaging.type=war`
 
 
