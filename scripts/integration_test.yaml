@@ -9,7 +9,6 @@ steps:
   - name: 'gcr.io/java-runtime-test/integration-test'
     args:
       - '--url=${_DEPLOYED_APP_URL}'
-      - '--skip-standard-logging-tests' # blocked by b/33415496
       - '--skip-custom-tests'
       - '--skip-monitoring-tests'
 

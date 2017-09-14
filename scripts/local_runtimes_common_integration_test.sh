@@ -18,15 +18,15 @@
 # exit on command failure
 set -e
 
+
 readonly dir=$(dirname $0)
 readonly projectRoot="$dir/.."
-readonly testAppDir="$projectRoot/test-application"
+readonly testAppDir="$projectRoot/java-runtimes-common/test-spring-application"
 readonly deployDir="$testAppDir/target/deploy"
 
 APP_IMAGE='openjdk-local-integration'
 CONTAINER=${APP_IMAGE}-container
 OUTPUT_FILE=${CONTAINER}-output.txt
-DEPLOYMENT_TOKEN=$(date -u +%Y-%m-%d-%H-%M-%S-%N)
 
 readonly imageUnderTest=$1
 if [[ -z "$imageUnderTest" ]]; then
@@ -34,22 +34,22 @@ if [[ -z "$imageUnderTest" ]]; then
   exit 1
 fi
 
+
 if [[ ! -f $HOME/.config/gcloud/application_default_credentials.json ]]; then
     # get default application credentials
     gcloud auth application-default login
 fi
 
 # build the test app
+
 pushd ${testAppDir}
-mvn clean package -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
+mvn clean package -Pruntime.custom -Dapp.deploy.image=$imageUnderTest -DskipTests --batch-mode
 popd
 
 # build app container locally
 pushd $deployDir
-export STAGING_IMAGE=$imageUnderTest
-envsubst < Dockerfile.in > Dockerfile
 echo "Building app container..."
-docker build -t $APP_IMAGE . || docker build -t $APP_IMAGE .
+docker build -t $APP_IMAGE . || gcloud docker -- build -t $APP_IMAGE .
 
 docker rm -f $CONTAINER || echo "Integration-test-app container is not running, ready to start a new instance."
 

@@ -14,31 +14,28 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-public class LoggingTestController {
+public class StandardLoggingTestController {
 
     @Autowired
     @Lazy
     private Logging logging;
 
-    private static Logger LOG = Logger.getLogger(LoggingTestController.class.getName());
+    private static Logger LOG = Logger.getLogger(StandardLoggingTestController.class.getName());
 
-    public static class LoggingTestRequest {
+    public static class StandardLoggingTestRequest {
         private String level;
-        private String log_name;
         private String token;
 
         public void setLevel(String level) {
             this.level = level;
         }
 
-        public void setLog_name(String log_name) {
-            this.log_name = log_name;
-        }
 
         public void setToken(String token) {
             this.token = token;
@@ -47,29 +44,18 @@ public class LoggingTestController {
 
         @Override
         public String toString() {
-            return "LoggingTestRequest{" +
+            return "StandardLoggingTestRequest{" +
                     "level='" + level + '\'' +
-                    ", log_name='" + log_name + '\'' +
                     ", token='" + token + '\'' +
                     '}';
         }
     }
 
-    @RequestMapping(path = "/logging_custom", method = POST)
-    public String handleLoggingTestRequest(@RequestBody LoggingTestRequest loggingTestRequest) throws IOException, InterruptedException {
-        LOG.info(String.valueOf(loggingTestRequest));
-
-        List<LogEntry> entries = new ArrayList<>();
-        Payload.StringPayload payload = Payload.StringPayload.of(loggingTestRequest.token);
-        Severity severity = Severity.valueOf(loggingTestRequest.level);
-        LogEntry entry = LogEntry.newBuilder(payload)
-                .setSeverity(severity)
-                .setLogName(loggingTestRequest.log_name)
-                .setResource(MonitoredResource.newBuilder("global").build())
-                .build();
-        entries.add(entry);
-        logging.write(entries);
-        LOG.info("Log written to StackDriver: " + entries);
+    @RequestMapping(path = "/logging_standard", method = POST)
+    public String handleStandardLoggingTestRequest(@RequestBody StandardLoggingTestRequest standardLoggingTestRequest) throws IOException, InterruptedException {
+        LOG.info(String.valueOf(standardLoggingTestRequest));
+        LOG.log(Level.parse(standardLoggingTestRequest.level), standardLoggingTestRequest.token);
+        LOG.info("Log written using standard JUL.");
         return "OK";
     }
 
