@@ -45,6 +45,10 @@ while [[ $# -gt 0 ]]; do
     -l|--local)
     LOCAL_BUILD="true"
     ;;
+    -t|--gcp-test-project)
+    GCP_TEST_PROJECT="$2"
+    shift
+    ;;
     *)
     # unknown option
     usage
@@ -74,20 +78,28 @@ if [ -z "$TAG_SUFFIX" ]; then
   TAG_SUFFIX="$(date -u +%Y-%m-%d_%H_%M)"
 fi
 
+if [ -z "${GCP_TEST_PROJECT}" ]; then
+  GCP_TEST_PROJECT="$(gcloud config list --format='value(core.project)')"
+fi
+
 # export TAG, IMAGE for use in downstream scripts
 export TAG="${TAG_PREFIX}-${TAG_SUFFIX}"
 export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${TAG}"
 echo "IMAGE: $IMAGE"
 
+STAGING_IMAGE="gcr.io/${GCP_TEST_PROJECT}/${RUNTIME_NAME}_staging:${TAG}"
+
 # build and test the runtime image
 if [ "${LOCAL_BUILD}" = "true" ]; then
-  source $DIR/cloudbuild_local.sh \
+  container-builder-local \
     --config=$PROJECT_ROOT/cloudbuild.yaml \
-    --substitutions="_IMAGE=$IMAGE,_MODULE=$MODULE"
+    --substitutions="_IMAGE=$IMAGE,_MODULE=$MODULE,_STAGING_IMAGE=$STAGING_IMAGE" \
+    --dryrun=false \
+    $PROJECT_ROOT
 else
   gcloud container builds submit \
     --config=$PROJECT_ROOT/cloudbuild.yaml \
-    --substitutions="_IMAGE=$IMAGE,_MODULE=$MODULE" \
+    --substitutions="_IMAGE=$IMAGE,_MODULE=$MODULE,_STAGING_IMAGE=$STAGING_IMAGE" \
     $PROJECT_ROOT
 fi
 

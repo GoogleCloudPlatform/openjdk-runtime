@@ -1,7 +1,7 @@
 # Dockerfile for building a test container that includes java, maven, and the Google Cloud SDK.
 # This is intended to be used as part of a Google Cloud Container Builder build.
 
-FROM maven:3.5.0-jdk-8
+FROM gcr.io/cloud-builders/java/mvn:3.3.9-jdk-8
 
 ARG CLOUD_SDK_VERSION=172.0.0
 
