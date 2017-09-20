@@ -6,7 +6,7 @@ FROM gcr.io/cloud-builders/java/mvn:3.3.9-jdk-8
 ARG CLOUD_SDK_VERSION=172.0.0
 
 RUN apt-get -y update && \
-    apt-get -y install gcc python2.7 python-dev python-setuptools curl wget ca-certificates && \
+    apt-get -y install gcc python2.7 python-dev python-setuptools curl wget ca-certificates gettext-base && \
 
     # Setup Google Cloud SDK (latest)
     mkdir -p /builder && \
