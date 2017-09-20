@@ -100,6 +100,7 @@ else
   gcloud container builds submit \
     --config=$PROJECT_ROOT/cloudbuild.yaml \
     --substitutions="_IMAGE=$IMAGE,_MODULE=$MODULE,_STAGING_IMAGE=$STAGING_IMAGE" \
+    --timeout=25m \
     $PROJECT_ROOT
 fi
 
