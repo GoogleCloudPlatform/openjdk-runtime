@@ -11,8 +11,8 @@ steps:
       - '--url=${_DEPLOYED_APP_URL}'
       - '--skip-custom-tests'
       - '--skip-monitoring-tests'
-#      - '--skip-standard-logging-tests' # this will only work in cloud settings.
-      - '--skip-exception-tests'
-      - '--skip-custom-logging-tests'
+#      - '--skip-standard-logging-tests'
+#      - '--skip-exception-tests'
+#      - '--skip-custom-logging-tests'
       - '--verbose'
 

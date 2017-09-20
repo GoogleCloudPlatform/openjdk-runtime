@@ -62,7 +62,7 @@ docker run --rm --name $CONTAINER -p 8080 \
 
 function waitForOutput() {
   found_output='false'
-  for run in {1..10}
+  for run in {1..20}
   do
     grep "$1" $OUTPUT_FILE && found_output='true' && break
     sleep 1
