@@ -22,6 +22,7 @@ usage() {
   echo "             -d|--docker-namespace <docker_namespace> - a docker repository beginning with gcr.io"
   echo "             -m|--module           <module_to_build>  - one of {openjdk8, openjdk9}"
   echo "           [ -s|--tag-suffix ]                        - suffix for the tag that is applied to the built image"
+  echo "           [ -p|--project ]                           - GCP test project to use for staging images. If not provided, the default GCP project will be used."
   echo "           [ -l|--local ]                             - runs the build locally"
   exit 1
 }
@@ -45,9 +46,9 @@ while [[ $# -gt 0 ]]; do
     -l|--local)
     LOCAL_BUILD="true"
     ;;
-    -t|--gcp-test-project)
+    -p|--project)
     GCP_TEST_PROJECT="$2"
-    shift
+    shift # past argument
     ;;
     *)
     # unknown option
