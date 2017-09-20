@@ -13,4 +13,18 @@ steps:
   - '--also-make'
   id: 'MVN_PACKAGE'
 
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '--tag=mvn-gcloud'
+  - 'java-runtimes-common/mvn-gcloud-image'
+  waitFor: ['-']
+  id: 'BUILD_MVN_GCLOUD'
+
+- name: 'mvn-gcloud'
+  entrypoint: 'scripts/integration_test.sh'
+  args:
+  - '${_IMAGE}'
+  id: 'INTEGRATION_TEST'
+
 images: ['${_IMAGE}']
