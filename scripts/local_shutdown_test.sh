@@ -51,20 +51,20 @@ docker rm -f $CONTAINER || echo "Integration-test-app container is not running, 
 # to the metadata server faster
 
 echo "Starting app container..."
-docker run --rm  --net=host --name $CONTAINER -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" -e "SHUTDOWN_LOGGING_HEAP_INFO=true" $APP_IMAGE &> $OUTPUT_FILE &
+docker run --rm  --net=host --name $CONTAINER -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" -e "SHUTDOWN_LOGGING_HEAP_INFO=true"  -v "$HOME/.config/gcloud/:/root/.config/gcloud" $APP_IMAGE &> $OUTPUT_FILE &
 
 function waitForOutput() {
   found_output='false'
-  for run in {1..20}
+  for run in {1..30}
   do
     grep -P "$1" $OUTPUT_FILE && found_output='true' && break
-    sleep 1
+    sleep 2
   done
 
   if [ "$found_output" == "false" ]; then
     cat $OUTPUT_FILE
     echo "did not match '$1' in '$OUTPUT_FILE'"
-    exit 1
+    exit 2
   fi
 }
 
