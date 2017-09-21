@@ -92,11 +92,9 @@ STAGING_IMAGE="gcr.io/${GCP_TEST_PROJECT}/${RUNTIME_NAME}_staging:${TAG}"
 
 # build and test the runtime image
 if [ "${LOCAL_BUILD}" = "true" ]; then
-  container-builder-local \
+  source $DIR/cloudbuild_local.sh \
     --config=$PROJECT_ROOT/cloudbuild.yaml \
-    --substitutions="_IMAGE=$IMAGE,_MODULE=$MODULE,_STAGING_IMAGE=$STAGING_IMAGE" \
-    --dryrun=false \
-    $PROJECT_ROOT
+    --substitutions="_IMAGE=$IMAGE,_MODULE=$MODULE,_STAGING_IMAGE=$STAGING_IMAGE"
 else
   gcloud container builds submit \
     --config=$PROJECT_ROOT/cloudbuild.yaml \
