@@ -21,9 +21,9 @@ set -e
 dir=$(dirname "$0")
 
 # downloads, unpacks, installs the cloud SDK
-#source "$dir"/gcloud-init.sh
+source "$dir"/gcloud-init.sh
 
-#cd github/openjdk-runtime
+cd github/openjdk-runtime
 TAG_SUFFIX=$(git rev-parse --short HEAD)
 
 echo "Invoking build.sh with GCP_PROJECT=$GCP_PROJECT, MODULE=$MODULE, TAG_SUFFIX=$TAG_SUFFIX"
