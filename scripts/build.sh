@@ -19,11 +19,11 @@ set -e
 usage() {
   echo "Usage: ${0} <args>"
   echo "  where <args> include:"
-  echo "             -d|--docker-namespace <docker_namespace> - a docker repository beginning with gcr.io"
-  echo "             -m|--module           <module_to_build>  - one of {openjdk8, openjdk9}"
-  echo "           [ -s|--tag-suffix ]                        - suffix for the tag that is applied to the built image"
-  echo "           [ -p|--project ]                           - GCP test project to use for staging images. If not provided, the default GCP project will be used."
-  echo "           [ -l|--local ]                             - runs the build locally"
+  echo "             -p|--publishing-project <publishing_project> - GCP project to use for publishing. Used to generate the destination docker repository name in gcr.io"
+  echo "             -m|--module             <module_to_build>    - one of {openjdk8, openjdk9}"
+  echo "           [ -t|--tag-suffix ]       <tag_suffix>         - suffix for the tag that is applied to the built image"
+  echo "           [ -s|--staging-project ]  <staging_project>    - GCP project to use for staging images. If not provided, the publishing project will be used."
+  echo "           [ -l|--local ]                                 - runs the build locally"
   exit 1
 }
 
@@ -31,24 +31,24 @@ usage() {
 while [[ $# -gt 0 ]]; do
   key="$1"
   case $key in
-    -d|--docker-namespace)
-    DOCKER_NAMESPACE="$2"
+    -p|--publishing-project)
+    PUBLISHING_PROJECT="$2"
     shift # past argument
     ;;
     -m|--module)
     MODULE="$2"
     shift # past argument
     ;;
-    -s|--tag-suffix)
+    -t|--tag-suffix)
     TAG_SUFFIX="$2"
+    shift # past argument
+    ;;
+    -s|--staging-project)
+    STAGING_PROJECT="$2"
     shift # past argument
     ;;
     -l|--local)
     LOCAL_BUILD="true"
-    ;;
-    -p|--project)
-    GCP_TEST_PROJECT="$2"
-    shift # past argument
     ;;
     *)
     # unknown option
@@ -62,7 +62,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT=$DIR/..
 RUNTIME_NAME="openjdk"
 
-if [ -z "${DOCKER_NAMESPACE}" -o -z "${MODULE}" ]; then
+if [ -z "${PUBLISHING_PROJECT}" -o -z "${MODULE}" ]; then
   usage
 fi
 
@@ -79,16 +79,16 @@ if [ -z "$TAG_SUFFIX" ]; then
   TAG_SUFFIX="$(date -u +%Y-%m-%d_%H_%M)"
 fi
 
-if [ -z "${GCP_TEST_PROJECT}" ]; then
-  GCP_TEST_PROJECT="$(gcloud config list --format='value(core.project)')"
+if [ -z "${STAGING_PROJECT}" ]; then
+  STAGING_PROJECT=$PUBLISHING_PROJECT
 fi
 
 # export TAG, IMAGE for use in downstream scripts
 export TAG="${TAG_PREFIX}-${TAG_SUFFIX}"
-export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${TAG}"
+export IMAGE="gcr.io/${PUBLISHING_PROJECT}/${RUNTIME_NAME}:${TAG}"
 echo "IMAGE: $IMAGE"
 
-STAGING_IMAGE="gcr.io/${GCP_TEST_PROJECT}/${RUNTIME_NAME}_staging:${TAG}"
+STAGING_IMAGE="gcr.io/${STAGING_PROJECT}/${RUNTIME_NAME}_staging:${TAG}"
 
 # build and test the runtime image
 if [ "${LOCAL_BUILD}" = "true" ]; then
