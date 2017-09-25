@@ -28,14 +28,14 @@ you need to have the [Google Cloud SDK](https://cloud.google.com/sdk/) installed
 # the following commands will build and push an image named "gcr.io/my-project/openjdk:8"
 $ PROJECT_ID=my-project
 $ MODULE_TO_BUILD=openjdk8 # only builds the openjdk:8 image
-$ ./scripts/build.sh -d gcr.io/$PROJECT_ID -m $MODULE_TO_BUILD
+$ ./scripts/build.sh -p $PROJECT_ID -m $MODULE_TO_BUILD
 ```
 
 If you would like to simulate the cloud build locally, pass in the `--local` argument.
 ```
 $ PROJECT_ID=my-project
 $ MODULE_TO_BUILD=openjdk8 # only builds the openjdk:8 image
-$ ./scripts/build.sh -d gcr.io/$PROJECT_ID -m $MODULE_TO_BUILD --local
+$ ./scripts/build.sh -p $PROJECT_ID -m $MODULE_TO_BUILD --local
 ```
 
 The configured Cloud Build execution will build the OpenJDK docker container, then create and teardown various GCP resources for integration testing. 
