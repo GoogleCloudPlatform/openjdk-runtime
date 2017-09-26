@@ -91,15 +91,17 @@ echo "IMAGE: $IMAGE"
 STAGING_IMAGE="gcr.io/${STAGING_PROJECT}/${RUNTIME_NAME}_staging:${TAG}"
 
 # build and test the runtime image
+BUILD_FLAGS="--config $PROJECT_ROOT/cloudbuild.yaml"
+BUILD_FLAGS="$BUILD_FLAGS --substitutions _IMAGE=$IMAGE,_MODULE=$MODULE,_STAGING_IMAGE=$STAGING_IMAGE"
+BUILD_FLAGS="$BUILD_FLAGS $PROJECT_ROOT"
+
 if [ "${LOCAL_BUILD}" = "true" ]; then
-  source $DIR/cloudbuild_local.sh \
-    --config=$PROJECT_ROOT/cloudbuild.yaml \
-    --substitutions="_IMAGE=$IMAGE,_MODULE=$MODULE,_STAGING_IMAGE=$STAGING_IMAGE"
+  if [ ! $(which container-builder-local) ]; then
+    echo "The container-builder-local tool is required to perform a local build. To install it, run 'gcloud components install container-builder-local'"
+    exit 1
+  fi
+  container-builder-local --dryrun=false $BUILD_FLAGS
 else
-  gcloud container builds submit \
-    --config=$PROJECT_ROOT/cloudbuild.yaml \
-    --substitutions="_IMAGE=$IMAGE,_MODULE=$MODULE,_STAGING_IMAGE=$STAGING_IMAGE" \
-    --timeout=25m \
-    $PROJECT_ROOT
+  gcloud container builds submit --timeout=25m $BUILD_FLAGS
 fi
 
