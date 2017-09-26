@@ -22,14 +22,8 @@ steps:
   args: ['push', '${_STAGING_IMAGE}']
   id: 'PUSH_STAGING_IMG'
 
-# Build a 'builder' image for running integration tests
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=mvn-gcloud', 'java-runtimes-common/mvn-gcloud-image']
-  waitFor: ['-']
-  id: 'BUILD_MVN_GCLOUD'
-
 # Execute integration tests
-- name: 'mvn-gcloud'
+- name: 'gcr.io/java-runtime-test/mvn-gcloud-builder'
   entrypoint: 'scripts/integration_test.sh'
   args: ['${_STAGING_IMAGE}']
   id: 'INTEGRATION_TEST'
