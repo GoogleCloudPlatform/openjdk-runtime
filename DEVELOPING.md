@@ -28,15 +28,23 @@ you need to have the [Google Cloud SDK](https://cloud.google.com/sdk/) installed
 # the following commands will build and push an image named "gcr.io/my-project/openjdk:8"
 $ PROJECT_ID=my-project
 $ MODULE_TO_BUILD=openjdk8 # only builds the openjdk:8 image
-$ ./scripts/build.sh -d gcr.io/$PROJECT_ID -m $MODULE_TO_BUILD
+$ ./scripts/build.sh -p $PROJECT_ID -m $MODULE_TO_BUILD
 ```
 
 If you would like to simulate the cloud build locally, pass in the `--local` argument.
 ```
 $ PROJECT_ID=my-project
 $ MODULE_TO_BUILD=openjdk8 # only builds the openjdk:8 image
-$ ./scripts/build.sh -d gcr.io/$PROJECT_ID -m $MODULE_TO_BUILD --local
+$ ./scripts/build.sh -p $PROJECT_ID -m $MODULE_TO_BUILD --local
 ```
+
+The configured Cloud Build execution will build the OpenJDK docker container, then create and teardown various GCP resources for integration testing. 
+Before running, make sure you have done all of the following:
+
+* enabled the Cloud Container Builder API
+* initialized App Engine for your GCP project (run `gcloud app create`), and successfully deployed at least once
+* provided the Container Builder Service account (cloudbuild.gserviceaccount.com) with the appropriate permissions needed to deploy App Engine applications and create GKE clusters.
+* This includes at least the "App Engine Admin" and "Cloud Container Builder" roles, but simply adding the "Project Editor" role works fine as well.
 
 # Running Tests
 Integration tests can be run via [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/overview).

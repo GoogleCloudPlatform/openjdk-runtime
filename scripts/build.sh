@@ -19,10 +19,11 @@ set -e
 usage() {
   echo "Usage: ${0} <args>"
   echo "  where <args> include:"
-  echo "             -d|--docker-namespace <docker_namespace> - a docker repository beginning with gcr.io"
-  echo "             -m|--module           <module_to_build>  - one of {openjdk8, openjdk9}"
-  echo "           [ -s|--tag-suffix ]                        - suffix for the tag that is applied to the built image"
-  echo "           [ -l|--local ]                             - runs the build locally"
+  echo "             -p|--publishing-project <publishing_project> - GCP project to use for publishing. Used to generate the destination docker repository name in gcr.io"
+  echo "             -m|--module             <module_to_build>    - one of {openjdk8, openjdk9}"
+  echo "           [ -t|--tag-suffix ]       <tag_suffix>         - suffix for the tag that is applied to the built image"
+  echo "           [ -s|--staging-project ]  <staging_project>    - GCP project to use for staging images. If not provided, the publishing project will be used."
+  echo "           [ -l|--local ]                                 - runs the build locally"
   exit 1
 }
 
@@ -30,16 +31,20 @@ usage() {
 while [[ $# -gt 0 ]]; do
   key="$1"
   case $key in
-    -d|--docker-namespace)
-    DOCKER_NAMESPACE="$2"
+    -p|--publishing-project)
+    PUBLISHING_PROJECT="$2"
     shift # past argument
     ;;
     -m|--module)
     MODULE="$2"
     shift # past argument
     ;;
-    -s|--tag-suffix)
+    -t|--tag-suffix)
     TAG_SUFFIX="$2"
+    shift # past argument
+    ;;
+    -s|--staging-project)
+    STAGING_PROJECT="$2"
     shift # past argument
     ;;
     -l|--local)
@@ -57,7 +62,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT=$DIR/..
 RUNTIME_NAME="openjdk"
 
-if [ -z "${DOCKER_NAMESPACE}" -o -z "${MODULE}" ]; then
+if [ -z "${PUBLISHING_PROJECT}" -o -z "${MODULE}" ]; then
   usage
 fi
 
@@ -74,20 +79,29 @@ if [ -z "$TAG_SUFFIX" ]; then
   TAG_SUFFIX="$(date -u +%Y-%m-%d_%H_%M)"
 fi
 
+if [ -z "${STAGING_PROJECT}" ]; then
+  STAGING_PROJECT=$PUBLISHING_PROJECT
+fi
+
 # export TAG, IMAGE for use in downstream scripts
 export TAG="${TAG_PREFIX}-${TAG_SUFFIX}"
-export IMAGE="${DOCKER_NAMESPACE}/${RUNTIME_NAME}:${TAG}"
+export IMAGE="gcr.io/${PUBLISHING_PROJECT}/${RUNTIME_NAME}:${TAG}"
 echo "IMAGE: $IMAGE"
 
+STAGING_IMAGE="gcr.io/${STAGING_PROJECT}/${RUNTIME_NAME}_staging:${TAG}"
+
 # build and test the runtime image
+BUILD_FLAGS="--config $PROJECT_ROOT/cloudbuild.yaml"
+BUILD_FLAGS="$BUILD_FLAGS --substitutions _IMAGE=$IMAGE,_MODULE=$MODULE,_STAGING_IMAGE=$STAGING_IMAGE"
+BUILD_FLAGS="$BUILD_FLAGS $PROJECT_ROOT"
+
 if [ "${LOCAL_BUILD}" = "true" ]; then
-  source $DIR/cloudbuild_local.sh \
-    --config=$PROJECT_ROOT/cloudbuild.yaml \
-    --substitutions="_IMAGE=$IMAGE,_MODULE=$MODULE"
+  if [ ! $(which container-builder-local) ]; then
+    echo "The container-builder-local tool is required to perform a local build. To install it, run 'gcloud components install container-builder-local'"
+    exit 1
+  fi
+  container-builder-local --dryrun=false $BUILD_FLAGS
 else
-  gcloud container builds submit \
-    --config=$PROJECT_ROOT/cloudbuild.yaml \
-    --substitutions="_IMAGE=$IMAGE,_MODULE=$MODULE" \
-    $PROJECT_ROOT
+  gcloud container builds submit --timeout=25m $BUILD_FLAGS
 fi
 
