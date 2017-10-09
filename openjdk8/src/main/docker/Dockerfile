@@ -24,6 +24,10 @@ ENV GAE_IMAGE_LABEL ${docker.tag.long}
 RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list \
  && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
+    # Have to pin to the jessie-backports version otherwise dependency resolution conflict with openjdk8-jre-headless:
+    # The following packages have unmet dependencies:
+    #   openjdk-8-jre-headless : Breaks: ca-certificates-java (< 20160321~) but 20140324 is to be installed
+    #  E: Unable to correct problems, you have held broken packages.
     ca-certificates-java=20161107'*' \
     openjdk-8-jre-headless=${openjdk.version}'-*' \
     openjdk-8-jdk-headless=${openjdk.version}'-*' \
