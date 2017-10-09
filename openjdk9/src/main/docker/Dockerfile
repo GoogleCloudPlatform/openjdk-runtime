@@ -28,7 +28,7 @@ RUN \
  && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
     # install the jdk and its dependencies
-    ca-certificates-java=20170531'*' \
+    ca-certificates-java \
     openjdk-9-jdk-headless=${openjdk.version}'~*' \
     # procps is used in the jvm shutdown hook
     procps \
