@@ -92,7 +92,7 @@ STAGING_IMAGE="gcr.io/${STAGING_PROJECT}/${RUNTIME_NAME}_staging:${TAG}"
 
 # build and test the runtime image
 BUILD_FLAGS="--config $PROJECT_ROOT/cloudbuild.yaml"
-BUILD_FLAGS="$BUILD_FLAGS --substitutions _IMAGE=$IMAGE,_MODULE=$MODULE,_STAGING_IMAGE=$STAGING_IMAGE"
+BUILD_FLAGS="$BUILD_FLAGS --substitutions _IMAGE=$IMAGE,_MODULE=$MODULE" # temporarily getting rid of this ,_STAGING_IMAGE=$STAGING_IMAGE"
 BUILD_FLAGS="$BUILD_FLAGS $PROJECT_ROOT"
 
 if [ "${LOCAL_BUILD}" = "true" ]; then
