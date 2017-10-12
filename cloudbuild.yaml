@@ -14,24 +14,27 @@ steps:
   - '--also-make'
   id: 'MVN_PACKAGE'
 
-# Tag and push the openjdk image to a staging repository for integration testing
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['tag', '${_IMAGE}', '${_STAGING_IMAGE}']
-  id: 'TAG_STAGING_IMG'
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', '${_STAGING_IMAGE}']
-  id: 'PUSH_STAGING_IMG'
+# temporarily this test is turned off while we restructure the testing infrastructure, to enable
+# quicker release process
 
-# Build a 'builder' image for running integration tests
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=mvn-gcloud', 'java-runtimes-common/mvn-gcloud-image']
-  waitFor: ['-']
-  id: 'BUILD_MVN_GCLOUD'
-
-# Execute integration tests
-- name: 'mvn-gcloud'
-  entrypoint: 'scripts/integration_test.sh'
-  args: ['${_STAGING_IMAGE}']
-  id: 'INTEGRATION_TEST'
+## Tag and push the openjdk image to a staging repository for integration testing
+#- name: 'gcr.io/cloud-builders/docker'
+#  args: ['tag', '${_IMAGE}', '${_STAGING_IMAGE}']
+#  id: 'TAG_STAGING_IMG'
+#- name: 'gcr.io/cloud-builders/docker'
+#  args: ['push', '${_STAGING_IMAGE}']
+#  id: 'PUSH_STAGING_IMG'
+#
+## Build a 'builder' image for running integration tests
+#- name: 'gcr.io/cloud-builders/docker'
+#  args: ['build', '--tag=mvn-gcloud', 'java-runtimes-common/mvn-gcloud-image']
+#  waitFor: ['-']
+#  id: 'BUILD_MVN_GCLOUD'
+#
+## Execute integration tests
+#- name: 'mvn-gcloud'
+#  entrypoint: 'scripts/integration_test.sh'
+#  args: ['${_STAGING_IMAGE}']
+#  id: 'INTEGRATION_TEST'
 
 images: ['${_IMAGE}']
