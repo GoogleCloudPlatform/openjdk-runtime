@@ -19,7 +19,7 @@
 set -e
 
 dir=`dirname $0`
-scriptPath=https://raw.githubusercontent.com/GoogleCloudPlatform/runtimes-common/master/structure_tests/ext_run.sh
+scriptPath=https://raw.githubusercontent.com/GoogleCloudPlatform/container-structure-test/master/ext_run.sh
 destDir=$dir/../target
 fileName=$destDir/run_structure_tests.sh
 
