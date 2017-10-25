@@ -21,9 +21,8 @@ ENV GAE_IMAGE_NAME ${project.artifactId}
 ENV GAE_IMAGE_LABEL ${docker.tag.long}
 
 RUN \
- # add debian buster repo in order to install openjdk-9
- # See also https://wiki.debian.org/DebianBuster
- echo 'deb http://httpredir.debian.org/debian buster main' > /etc/apt/sources.list.d/buster.list \
+ # add debian stretch-backports repo in order to install openjdk-9
+ echo 'deb http://httpredir.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/stretch-backports.list \
 
  && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
