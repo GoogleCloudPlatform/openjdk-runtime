@@ -36,5 +36,5 @@ fi
 source /shutdown/shutdown-env.bash
 
 # exec the entry point arguments as a command
-echo "Start command: $@"
+echo "Start command: $*"
 exec "$@"
