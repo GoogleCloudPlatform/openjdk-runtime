@@ -10,9 +10,9 @@ function doTest() {
   set - java
   JAVA_OPTS=" "
   source /shutdown/shutdown-env.bash > /dev/null
-  if [ "$(echo $@ | xargs)" != "$expected" ]; then
+  if [ "$(echo "$@" | xargs)" != "$expected" ]; then
     echo $test_setup
-    echo "command='$(echo $@ | xargs)' rather than expected '$expected'"
+    echo "command='$(echo "$@" | xargs)' rather than expected '$expected'"
     echo FAILED
     exit 1
   fi
