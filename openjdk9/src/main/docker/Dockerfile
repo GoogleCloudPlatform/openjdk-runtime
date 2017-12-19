@@ -24,6 +24,10 @@ RUN \
  # add debian stretch-backports repo in order to install openjdk-9
  echo 'deb http://httpredir.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/stretch-backports.list \
 
+ # openjdk9 for some reason comes without these cacerts, and to successfully reinstall them
+ # they need to be removed here before the subsequent install
+ && dpkg --purge --force-depends ca-certificates-java \
+
  && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
     # install the jdk and its dependencies
