@@ -22,8 +22,8 @@ EOF
 sed -e 's/exec /# /' -e 's/set - /set -- /' /docker-entrypoint.bash > /tmp/entrypoint.bash
 
 source /tmp/entrypoint.bash
-if [ "$(echo $@ | xargs)" != "java -java -options 1 2 3" ]; then
-  echo "@='$(echo $@ | xargs)'"
+if [ "$(echo "$@" | xargs)" != "java -java -options 1 2 3" ]; then
+  echo "@='$(echo "$@" | xargs)'"
 elif [ "$THREE" != "OK" ]; then
   echo setup out of order $ONE, $TWO, $THREE
 else

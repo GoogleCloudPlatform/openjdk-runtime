@@ -23,7 +23,7 @@ function java_shutdown_hook {
 
 # capture the TERM signal and first generate the thread dump and/or heap info
 trap 'java_shutdown_hook; kill -TERM $PID' TERM
-$@ &
+"$@" &
 PID=$!
 wait $PID
 wait $PID
