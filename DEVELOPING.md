@@ -48,7 +48,7 @@ Before running, make sure you have done all of the following:
 
 # Running Tests
 Integration tests can be run via [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/overview).
-These tests deploy a sample test application to App Engine and to Google Container Engine using the provided runtime image, and
+These tests deploy a sample test application to App Engine and to Google Kubernetes Engine using the provided runtime image, and
 exercise various integrations with other GCP services. Note that the image under test must be pushed 
 to a gcr.io repository before the integration tests can run.
 
@@ -57,7 +57,7 @@ $ RUNTIME_IMAGE=gcr.io/my-project-id/openjdk:my-tag
 $ gcloud docker -- push $RUNTIME_IMAGE
 ```
 
-**Run ALL integration tests (Local Docker, App Engine, Google Container Engine):**
+**Run ALL integration tests (Local Docker, App Engine, Google Kubernetes Engine):**
 ```bash
 $ ./scripts/integration_test.sh $RUNTIME_IMAGE
 ```
@@ -78,7 +78,7 @@ $ ./scripts/local_shutdown_test.sh $RUNTIME_IMAGE
 $ ./scripts/ae_integration_test.sh $RUNTIME_IMAGE
 ```
 
-**Run ONLY Container Engine (GKE) integration tests:**
+**Run ONLY Kubernetes Engine (GKE) integration tests:**
 ```bash
 $ ./scripts/gke_integration_test.sh $RUNTIME_IMAGE
 ```

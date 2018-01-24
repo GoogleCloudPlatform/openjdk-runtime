@@ -63,7 +63,7 @@ pushd ${testAppDir}
 mvn clean install -Pruntime.custom -Dapp.deploy.image=$imageUnderTest -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
 popd
 
-# deploy to Google Container Engine
+# deploy to Google Kubernetes Engine
 pushd ${deployDir}
 export TESTED_IMAGE=${imageUrl}
 envsubst < "openjdk-spring-boot.yaml.in" > "openjdk-spring-boot.yaml"
@@ -79,7 +79,7 @@ if [ -z "$TEST_CLUSTER_EXISTENCE" ]; then
   gcloud container clusters create "$clusterName" --num-nodes=1 --disk-size=10 --zone="$defaultZone"
 fi
 
-echo "Deploying application to Google Container Engine..."
+echo "Deploying application to Google Kubernetes Engine..."
 gcloud container clusters get-credentials ${clusterName} --zone="$defaultZone"
 kubectl apply -f "openjdk-spring-boot.yaml"
 popd
