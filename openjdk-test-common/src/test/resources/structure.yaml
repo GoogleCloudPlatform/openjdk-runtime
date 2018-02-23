@@ -41,6 +41,16 @@ commandTests:
   command: [ '/workspace/setup-debug.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
+- name: 'check setup cloud profiler'
+  setup: [[ 'chmod', '+x', '/workspace/setup-profiler.bash' ]]
+  command: [ '/workspace/setup-profiler.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
+- name: 'check setup cloud profiler'
+  setup: [[ 'chmod', '+x', '/workspace/setup-profiler.bash' ]]
+  command: [ '/workspace/setup-profiler.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
 - name: 'APP_DESTINATION env variable is set'
   command: ['env']
   expectedOutput: ['APP_DESTINATION=app.jar']
@@ -67,6 +77,10 @@ fileExistenceTests:
   path: '/opt/cdbg/format-env-appengine-vm.sh'
   isDirectory: false
   shouldExist: true
+- name: 'Cloud profiler agent is installed'
+  path: '/opt/cprof/profiler_java_agent.so'
+  isDirectory: false
+  shouldExist: true
 - name: 'Docker entrypoint exists'
   path: '/docker-entrypoint.bash'
   isDirectory: false
@@ -85,6 +99,10 @@ fileExistenceTests:
   shouldExist: true
 - name: 'Debug setup script exists'
   path: '/setup-env.d/20-debug-env.bash'
+  isDirectory: false
+  shouldExist: true
+- name: 'Profiler setup script exists'
+  path: '/setup-env.d/25-profiler-env.bash'
   isDirectory: false
   shouldExist: true
 - name: 'Java setup script exists'

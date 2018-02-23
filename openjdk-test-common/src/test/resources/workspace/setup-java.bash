@@ -60,10 +60,11 @@ JAVA_TMP_OPTS=-XX:Temp
 JAVA_HEAP_OPTS=-XX:Heap
 JAVA_GC_OPTS=-XX:GC
 DBG_AGENT=debug
+PROFILER_AGENT=profiler
 JAVA_USER_OPTS=user
 
 source /setup-env.d/30-java-env.bash
-if [ "$(echo $JAVA_OPTS | xargs)" != "-showversion -XX:Temp debug -XX:Heap -XX:GC user" ]; then
+if [ "$(echo $JAVA_OPTS | xargs)" != "-showversion -XX:Temp debug profiler -XX:Heap -XX:GC user" ]; then
   echo "Bad opts JAVA_OPTS='$(echo $JAVA_OPTS | xargs)'"
   exit 1
 fi
@@ -102,7 +103,7 @@ if [ "$TEST_MIN_HEAP" != "OK" -o "$TEST_MAX_HEAP" != "OK" ]; then
 fi
 
 
-#test GKE envrionment
+#test GKE environment
 unset JAVA_OPTS TMPDIR GAE_MEMORY_MB HEAP_SIZE_MB JAVA_HEAP_OPTS JAVA_GC_OPTS JAVA_OPTS DBG_AGENT HEAP_SIZE_RATIO
 TMPDIR=/var/tmp
 KUBERNETES_MEMORY_LIMIT=20000000
