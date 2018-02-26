@@ -36,17 +36,17 @@ commandTests:
   command: [ '/workspace/setup-java.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
-- name: 'check setup cloud debugger'
+- name: 'check setup Stackdriver Debugger'
   setup: [[ 'chmod', '+x', '/workspace/setup-debug.bash' ]]
   command: [ '/workspace/setup-debug.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
-- name: 'check setup cloud profiler'
+- name: 'check setup Stackdriver Profiler'
   setup: [[ 'chmod', '+x', '/workspace/setup-profiler.bash' ]]
   command: [ '/workspace/setup-profiler.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
-- name: 'check setup cloud profiler'
+- name: 'check setup Stackdriver Profiler'
   setup: [[ 'chmod', '+x', '/workspace/setup-profiler.bash' ]]
   command: [ '/workspace/setup-profiler.bash' ]
   expectedOutput: ['OK']
@@ -73,11 +73,11 @@ fileExistenceTests:
   path: '/var/log/app_engine'
   isDirectory: true
   shouldExist: true
-- name: 'Cloud debugger agent is installed'
+- name: 'Stackdriver Debugger agent is installed'
   path: '/opt/cdbg/format-env-appengine-vm.sh'
   isDirectory: false
   shouldExist: true
-- name: 'Cloud profiler agent is installed'
+- name: 'Stackdriver Profiler agent is installed'
   path: '/opt/cprof/profiler_java_agent.so'
   isDirectory: false
   shouldExist: true

@@ -43,9 +43,9 @@ RUN \
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
 
-# Add the cloud debugger libraries
+# Add the Stackdriver Debugger libraries
 ADD https://storage.googleapis.com/cloud-debugger/appengine-java/current/cdbg_java_agent.tar.gz /opt/cdbg/
-# Add the cloud profiler libraries
+# Add the Stackdriver Profiler libraries
 ADD https://storage.googleapis.com/cloud-profiler/java/latest/profiler_java_agent.tar.gz /opt/cprof/
 COPY docker-entrypoint.bash /
 COPY setup-env.d /setup-env.d/

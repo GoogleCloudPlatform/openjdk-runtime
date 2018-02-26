@@ -22,6 +22,7 @@ function cleanEnv() {
   unset PROFILER_AGENT
   unset PROFILER_ENABLE
   unset PLATFORM
+  unset JAVA_USER_OPTS
 }
 
 # test default - profiler OFF
@@ -57,5 +58,11 @@ testProfilerOff "PROFILER_ENABLE=$PROFILER_ENABLE"
 cleanEnv
 PROFILER_ENABLE=False
 testProfilerOff "PROFILER_ENABLE=$PROFILER_ENABLE"
+
+# test JAVA_USER_OPTS = -agentpath:/opt/cprof/profiler_java_agent.so=--logtostderr
+cleanEnv
+JAVA_USER_OPTS=-agentpath:/opt/cprof/profiler_java_agent.so=--logtostderr
+PROFILER_ENABLE=True
+testProfilerOff "JAVA_USER_OPTS=$JAVA_USER_OPTS"
 
 echo OK
