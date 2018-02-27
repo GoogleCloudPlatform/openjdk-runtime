@@ -37,13 +37,17 @@ RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/a
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
 
-# Add the cloud debugger libraries
+# Add the Stackdriver Debugger libraries
 ADD https://storage.googleapis.com/cloud-debugger/appengine-java/current/cdbg_java_agent.tar.gz /opt/cdbg/
+# Add the Stackdriver Profiler libraries
+ADD https://storage.googleapis.com/cloud-profiler/java/latest/profiler_java_agent.tar.gz /opt/cprof/
 COPY docker-entrypoint.bash /
 COPY setup-env.d /setup-env.d/
 COPY shutdown/ /shutdown/
 RUN tar Cxfvz /opt/cdbg /opt/cdbg/cdbg_java_agent.tar.gz --no-same-owner \
  && rm /opt/cdbg/cdbg_java_agent.tar.gz \
+ && tar Cxfvz /opt/cprof /opt/cprof/profiler_java_agent.tar.gz --no-same-owner \
+ && rm /opt/cprof/profiler_java_agent.tar.gz \
  && chmod +x /docker-entrypoint.bash /shutdown/*.bash /setup-env.d/*.bash \
  && mkdir /var/log/app_engine \
  && chmod go+rwx /var/log/app_engine

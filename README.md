@@ -102,6 +102,7 @@ If the default command (java) is used, then the entry point sources the [setup-e
 |Env Var                             | Description         | Type     | Default                                     |
 |------------------------------------|---------------------|----------|---------------------------------------------|
 |`DBG_ENABLE`                        | Stackdriver Debugger| boolean  | `true`                                      |
+|`PROFILER_ENABLE`                   | Stackdriver Profiler| boolean  | `false`                                     |
 |`TMPDIR`                            | Temporary Directory | dirname  |                                             |
 |`JAVA_TMP_OPTS`                     | JVM tmpdir args     | JVM args | `-Djava.io.tmpdir=${TMPDIR}`                |
 |`GAE_MEMORY_MB`                     | Available memory    | size     | Set by GAE or `/proc/meminfo`-400M          |
@@ -120,6 +121,7 @@ If not explicitly set, `JAVA_OPTS` is defaulted to
 JAVA_OPTS:=-showversion \
            ${JAVA_TMP_OPTS} \
            ${DBG_AGENT} \
+           ${PROFILER_AGENT} \
            ${JAVA_HEAP_OPTS} \
            ${JAVA_GC_OPTS} \
            ${JAVA_USER_OPTS}

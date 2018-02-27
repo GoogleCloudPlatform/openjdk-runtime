@@ -36,9 +36,19 @@ commandTests:
   command: [ '/workspace/setup-java.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
-- name: 'check setup cloud debugger'
+- name: 'check setup Stackdriver Debugger'
   setup: [[ 'chmod', '+x', '/workspace/setup-debug.bash' ]]
   command: [ '/workspace/setup-debug.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
+- name: 'check setup Stackdriver Profiler'
+  setup: [[ 'chmod', '+x', '/workspace/setup-profiler.bash' ]]
+  command: [ '/workspace/setup-profiler.bash' ]
+  expectedOutput: ['OK']
+  exitCode: 0
+- name: 'check setup Stackdriver Profiler'
+  setup: [[ 'chmod', '+x', '/workspace/setup-profiler.bash' ]]
+  command: [ '/workspace/setup-profiler.bash' ]
   expectedOutput: ['OK']
   exitCode: 0
 - name: 'APP_DESTINATION env variable is set'
@@ -63,8 +73,12 @@ fileExistenceTests:
   path: '/var/log/app_engine'
   isDirectory: true
   shouldExist: true
-- name: 'Cloud debugger agent is installed'
+- name: 'Stackdriver Debugger agent is installed'
   path: '/opt/cdbg/format-env-appengine-vm.sh'
+  isDirectory: false
+  shouldExist: true
+- name: 'Stackdriver Profiler agent is installed'
+  path: '/opt/cprof/profiler_java_agent.so'
   isDirectory: false
   shouldExist: true
 - name: 'Docker entrypoint exists'
@@ -85,6 +99,10 @@ fileExistenceTests:
   shouldExist: true
 - name: 'Debug setup script exists'
   path: '/setup-env.d/20-debug-env.bash'
+  isDirectory: false
+  shouldExist: true
+- name: 'Profiler setup script exists'
+  path: '/setup-env.d/25-profiler-env.bash'
   isDirectory: false
   shouldExist: true
 - name: 'Java setup script exists'
