@@ -1,5 +1,10 @@
 #!/bin/bash
-unset JAVA_OPTS TMPDIR GAE_MEMORY_MB HEAP_SIZE_MB JAVA_HEAP_OPTS JAVA_GC_OPTS JAVA_OPTS DBG_AGENT
+
+function cleanEnv() {
+  unset JAVA_OPTS TMPDIR GAE_MEMORY_MB HEAP_SIZE_MB JAVA_HEAP_OPTS JAVA_GC_OPTS JAVA_OPTS DBG_AGENT PROFILER_AGENT
+}
+
+cleanEnv
 
 #test default
 source /setup-env.d/30-java-env.bash
@@ -31,7 +36,7 @@ fi
 
 
 # test base values
-unset JAVA_OPTS TMPDIR GAE_MEMORY_MB HEAP_SIZE_MB JAVA_HEAP_OPTS JAVA_GC_OPTS JAVA_OPTS DBG_AGENT
+cleanEnv
 TMPDIR=/var/tmp
 GAE_MEMORY_MB=1000
 source /setup-env.d/30-java-env.bash
@@ -40,7 +45,7 @@ if [ "$(echo $JAVA_OPTS | xargs)" != "-showversion -Djava.io.tmpdir=/var/tmp -Xm
   exit 1
 fi
 
-unset JAVA_OPTS TMPDIR GAE_MEMORY_MB HEAP_SIZE_MB JAVA_HEAP_OPTS JAVA_GC_OPTS JAVA_OPTS DBG_AGENT
+cleanEnv
 TMPDIR=/var/tmp
 GAE_MEMORY_MB=1000
 HEAP_SIZE_MB=500
@@ -52,7 +57,7 @@ fi
 
 
 # test direct OPTS
-unset JAVA_OPTS TMPDIR GAE_MEMORY_MB HEAP_SIZE_MB JAVA_HEAP_OPTS JAVA_GC_OPTS JAVA_OPTS DBG_AGENT
+cleanEnv
 TMPDIR=/var/tmp
 GAE_MEMORY_MB=1000
 HEAP_SIZE_MB=500
@@ -70,7 +75,7 @@ if [ "$(echo $JAVA_OPTS | xargs)" != "-showversion -XX:Temp debug profiler -XX:H
 fi
 
 #test override
-unset JAVA_OPTS TMPDIR GAE_MEMORY_MB HEAP_SIZE_MB JAVA_HEAP_OPTS JAVA_GC_OPTS JAVA_OPTS DBG_AGENT
+cleanEnv
 TMPDIR=/var/tmp
 GAE_MEMORY_MB=1000
 HEAP_SIZE_MB=500
@@ -89,7 +94,7 @@ fi
 
 
 # test heap size ratio
-unset JAVA_OPTS TMPDIR GAE_MEMORY_MB HEAP_SIZE_MB JAVA_HEAP_OPTS JAVA_GC_OPTS JAVA_OPTS DBG_AGENT
+cleanEnv
 GAE_MEMORY_MB=1000
 HEAP_SIZE_RATIO=50
 source /setup-env.d/30-java-env.bash
@@ -104,7 +109,7 @@ fi
 
 
 #test GKE environment
-unset JAVA_OPTS TMPDIR GAE_MEMORY_MB HEAP_SIZE_MB JAVA_HEAP_OPTS JAVA_GC_OPTS JAVA_OPTS DBG_AGENT HEAP_SIZE_RATIO
+cleanEnv
 TMPDIR=/var/tmp
 KUBERNETES_MEMORY_LIMIT=20000000
 HEAP_SIZE_RATIO=30
