@@ -1,7 +1,6 @@
 # Test spec for the Cloud Runtimes container structure testing framework.
 #
 # See https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/functional_tests/README.md for more detail.
-# See https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/functional_tests/README.md for more detail.
 #
 schemaVersion: 1.0.0
 
