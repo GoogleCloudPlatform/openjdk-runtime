@@ -54,7 +54,7 @@ fi
 
 if [[ -z "$clusterName" ]]; then
  # generate random alpha string
- clusterName=$(cat /dev/urandom | tr -dc 'a-z' | fold -w 20 | head -n 1)
+ clusterName=$(head /dev/urandom | tr -dc 'a-z' | fold -w 20 | head -n 1)
  readonly tearDown="true"
 fi
 

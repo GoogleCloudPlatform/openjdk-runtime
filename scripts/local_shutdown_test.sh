@@ -51,7 +51,7 @@ docker rm -f $CONTAINER || echo "Integration-test-app container is not running, 
 # to the metadata server faster
 
 echo "Starting app container..."
-docker run --rm  --net=host --name $CONTAINER -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" -e "SHUTDOWN_LOGGING_HEAP_INFO=true" $APP_IMAGE &> $OUTPUT_FILE &
+docker run --rm  --memory="1g" --net=host --name $CONTAINER -e "SHUTDOWN_LOGGING_THREAD_DUMP=true" -e "SHUTDOWN_LOGGING_HEAP_INFO=true" $APP_IMAGE &> $OUTPUT_FILE &
 
 function waitForOutput() {
   found_output='false'

@@ -30,7 +30,7 @@
 
   <properties>
     <openjdk.version.major>9</openjdk.version.major>
-    <openjdk.version.minor></openjdk.version.minor>
+    <openjdk.version.minor></openjdk.version.minor> <!-- leave empty for latest JDK update -->
     <openjdk.version>${openjdk.version.major}${openjdk.version.minor}</openjdk.version>
     <docker.appengine.image>gcr.io/google-appengine/debian9</docker.appengine.image>
     <docker.image.name>${docker.image.baseName}:${docker.tag.long}</docker.image.name>

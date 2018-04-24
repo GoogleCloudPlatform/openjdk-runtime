@@ -1,6 +1,6 @@
 # Test spec for the Cloud Runtimes container structure testing framework.
 #
-# See https://github.com/GoogleCloudPlatform/runtimes-common/blob/master/structure_tests/README.md for more detail.
+# See https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/functional_tests/README.md for more detail.
 #
 schemaVersion: 1.0.0
 
@@ -63,6 +63,10 @@ commandTests:
   setup: [[ 'chmod', '+x', '/workspace/test-blacklisted-pkgs.bash' ]]
   command: [ '/workspace/test-blacklisted-pkgs.bash' ]
   excludedOutput: ['NOT OK.* is installed']
+- name: 'Debian 9'
+  command: [ 'cat', '/etc/debian_version' ]
+  expectedOutput: ['9.*']
+
 
 fileExistenceTests:
 - name: 'ssl certificates are present'

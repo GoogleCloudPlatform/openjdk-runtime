@@ -20,7 +20,7 @@ set -e
 
 readonly dir=$(dirname $0)
 readonly projectRoot="$dir/.."
-readonly testAppDir="$projectRoot/test-application"
+readonly testAppDir="$projectRoot/java-runtimes-common/test-spring-application"
 readonly deployDir="$testAppDir/target/deploy"
 
 APP_IMAGE='openjdk-local-integration'
@@ -41,13 +41,12 @@ fi
 
 # build the test app
 pushd ${testAppDir}
-mvn clean package -Ddeployment.token="${DEPLOYMENT_TOKEN}" -DskipTests --batch-mode
+mvn clean package -Pruntime.custom -Ddeployment.token="${DEPLOYMENT_TOKEN}" -Dapp.deploy.image=${imageUnderTest} -DskipTests --batch-mode
 popd
 
 # build app container locally
 pushd $deployDir
 export STAGING_IMAGE=$imageUnderTest
-envsubst < Dockerfile.in > Dockerfile
 echo "Building app container..."
 docker build -t $APP_IMAGE . || docker build -t $APP_IMAGE .
 

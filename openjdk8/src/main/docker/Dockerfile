@@ -20,20 +20,24 @@ ENV OPENJDK_VERSION ${openjdk.version}
 ENV GAE_IMAGE_NAME ${project.artifactId}
 ENV GAE_IMAGE_LABEL ${docker.tag.long}
 
-# Update debian
-RUN echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list \
- && apt-get -q update \
+RUN \
+ apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
-    # Have to pin to the jessie-backports version otherwise dependency resolution conflict with openjdk8-jre-headless:
-    # The following packages have unmet dependencies:
-    #   openjdk-8-jre-headless : Breaks: ca-certificates-java (< 20160321~) but 20140324 is to be installed
-    #  E: Unable to correct problems, you have held broken packages.
-    ca-certificates-java=20161107'*' \
-    openjdk-8-jre-headless=${openjdk.version}'-*' \
-    openjdk-8-jdk-headless=${openjdk.version}'-*' \
+    # install the jdk and its dependencies
+    ca-certificates-java \
+    openjdk-${openjdk.version.major}-jdk-headless=${openjdk.version}'*' \
+    # procps is used in the jvm shutdown hook
+    procps \
+    # other system utilities
     netbase \
     wget \
     unzip \
+
+ # Remove libgnutls30 dependency brought in by openjdk package. One of its dependencies uses
+ # the AGPL license, so we cannot use it.
+ && dpkg --remove --force-depends libgnutls30 \
+
+ # cleanup package manager caches
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
 
