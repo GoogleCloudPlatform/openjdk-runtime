@@ -28,14 +28,14 @@ RUN \
  && apt-get -y -q --no-install-recommends install \
     # install the jdk and its dependencies
     ca-certificates-java \
-    openjdk-9-jdk-headless=${openjdk.version}'~*' \
+    openjdk-${openjdk.version.major}-jdk-headless=${openjdk.version}'~*' \
     # procps is used in the jvm shutdown hook
     procps \
     # other system utilities
     netbase \
     unzip \
 
- # Remove libgnutls30 dependency brought in by openjdk-9 package. One of its dependencies uses
+ # Remove libgnutls30 dependency brought in by openjdk package. One of its dependencies uses
  # the AGPL license, so we cannot use it.
  && dpkg --remove --force-depends libgnutls30 \
 
