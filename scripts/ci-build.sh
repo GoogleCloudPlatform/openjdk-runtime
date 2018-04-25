@@ -34,3 +34,5 @@ if [ -z "$IMAGE" ]; then
   exit 1
 fi
 
+echo "Running integration tests on image: $IMAGE"
+./scripts/integration_test.sh "$IMAGE"
