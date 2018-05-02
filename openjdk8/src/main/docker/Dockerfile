@@ -33,10 +33,6 @@ RUN \
     wget \
     unzip \
 
- # Remove libgnutls30 dependency brought in by openjdk package. One of its dependencies uses
- # the AGPL license, so we cannot use it.
- && dpkg --remove --force-depends libgnutls30 \
-
  # cleanup package manager caches
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
