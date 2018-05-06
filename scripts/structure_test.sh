@@ -19,7 +19,7 @@
 set -e
 
 dir=`dirname $0`
-scriptPath=https://raw.githubusercontent.com/GoogleCloudPlatform/container-structure-test/master/ext_run.sh
+scriptPath=https://storage.googleapis.com/container-structure-test/v1.1.0/container-structure-test
 destDir=$dir/../target
 fileName=$destDir/run_structure_tests.sh
 
@@ -29,4 +29,5 @@ then
 fi
 
 wget -O $fileName --no-verbose $scriptPath
+chmod +x $fileName
 bash $fileName "$@"
