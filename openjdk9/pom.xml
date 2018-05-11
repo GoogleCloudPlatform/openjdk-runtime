@@ -107,11 +107,8 @@
               <executable>${project.parent.basedir}/scripts/structure_test.sh</executable>
               <workingDirectory>${project.basedir}</workingDirectory>
               <arguments>
-                <argument>--image</argument>
                 <argument>${docker.image.name}</argument>
-                <argument>--workspace</argument>
                 <argument>${project.build.testOutputDirectory}</argument>
-                <argument>--config</argument>
                 <argument>${project.build.testOutputDirectory}/openjdk9-structure.yaml</argument>
               </arguments>
             </configuration>

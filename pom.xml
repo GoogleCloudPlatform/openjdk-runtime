@@ -174,11 +174,8 @@
                 <executable>${project.parent.basedir}/scripts/structure_test.sh</executable>
                 <workingDirectory>${project.build.outputDirectory}</workingDirectory>
                 <arguments>
-                  <argument>--image</argument>
                   <argument>${docker.image.name}</argument>
-                  <argument>--workspace</argument>
                   <argument>${project.build.testOutputDirectory}/openjdk-test-common-out/workspace</argument>
-                  <argument>--config</argument>
                   <argument>${project.build.testOutputDirectory}/openjdk-test-common-out/structure.yaml</argument>
                 </arguments>
               </configuration>

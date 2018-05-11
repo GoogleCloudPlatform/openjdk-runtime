@@ -21,7 +21,7 @@ set -e
 dir=`dirname $0`
 scriptPath=https://storage.googleapis.com/container-structure-test/v1.1.0/container-structure-test
 destDir=$dir/../target
-fileName=$destDir/run_structure_tests.sh
+fileName=$destDir/container-structure-test
 
 if [ ! -d $destDir ]
 then
@@ -30,4 +30,22 @@ fi
 
 wget -O $fileName --no-verbose $scriptPath
 chmod +x $fileName
-bash $fileName "$@"
+
+IMAGE=$1
+WORKSPACE=$2
+CONFIG=$3
+TEST_IMAGE="${IMAGE}-struct-test"
+
+pushd `pwd`
+cd $WORKSPACE
+echo "Creating temporary image $TEST_IMAGE"
+cat <<EOF > Dockerfile
+FROM $IMAGE
+ADD . /workspace
+EOF
+docker build -t $TEST_IMAGE .
+rm Dockerfile
+popd
+
+$fileName test --image $TEST_IMAGE --config $CONFIG
+
