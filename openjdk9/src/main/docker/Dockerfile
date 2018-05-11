@@ -34,10 +34,7 @@ RUN \
     # other system utilities
     netbase \
     unzip \
-
- # Remove libgnutls30 dependency brought in by openjdk package. One of its dependencies uses
- # the AGPL license, so we cannot use it.
- && dpkg --remove --force-depends libgnutls30 \
+    wget \
 
  # cleanup package manager caches
  && apt-get clean \
