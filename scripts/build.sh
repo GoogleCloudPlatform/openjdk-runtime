@@ -102,6 +102,6 @@ if [ "${LOCAL_BUILD}" = "true" ]; then
   fi
   cloud-build-local --dryrun=false $BUILD_FLAGS
 else
-  gcloud container builds submit --timeout=25m $BUILD_FLAGS
+  gcloud builds submit --timeout=25m $BUILD_FLAGS
 fi
 

@@ -97,7 +97,7 @@ done
 
 # run in cloud container builder
 echo "Running integration tests on application that is deployed at $DEPLOYED_APP_URL"
-gcloud container builds submit \
+gcloud builds submit \
   --config ${dir}/integration_test.yaml \
   --substitutions "_DEPLOYED_APP_URL=http://$DEPLOYED_APP_URL" \
   ${dir}
@@ -105,7 +105,7 @@ gcloud container builds submit \
 # teardown any resources we created
 if [ "$tearDown" == "true" ]; then
   # run a cleanup build once tests have finished executing
-  gcloud container builds submit \
+  gcloud builds submit \
     --config $dir/gke_cluster_cleanup.yaml \
     --substitutions "_CLUSTER_NAME=$clusterName,_ZONE=$defaultZone" \
     --async \
