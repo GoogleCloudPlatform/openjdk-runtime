@@ -101,7 +101,7 @@ docker rm -f metadata || echo "ready to run local cloud builder"
 # run in cloud container builder
 echo "Running integration tests on application that is deployed at $DEPLOYED_APP_URL"
 echo `pwd`
-container-builder-local \
+cloud-build-local \
   --config ${dir}/integration_test.yaml \
   --substitutions "_DEPLOYED_APP_URL=$DEPLOYED_APP_URL" \
   --dryrun=false \
