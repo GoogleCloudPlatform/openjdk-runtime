@@ -70,14 +70,14 @@ echo "-----"
 echo "Running integration tests on application that is deployed at $DEPLOYED_APP_URL"
 
 # run in cloud container builder
-gcloud container builds submit \
+gcloud builds submit \
   --config $dir/integration_test.yaml \
   --substitutions "_DEPLOYED_APP_URL=$DEPLOYED_APP_URL" \
   $dir
 
 if [ "$tearDown" == "true" ]; then
   # run a cleanup build once tests have finished executing
-  gcloud container builds submit \
+  gcloud builds submit \
     --config $dir/integration_test_cleanup.yaml \
     --substitutions "_VERSION=$gaeDeploymentVersion" \
     --async \

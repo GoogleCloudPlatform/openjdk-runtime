@@ -96,12 +96,12 @@ BUILD_FLAGS="$BUILD_FLAGS --substitutions _IMAGE=$IMAGE,_MODULE=$MODULE" # tempo
 BUILD_FLAGS="$BUILD_FLAGS $PROJECT_ROOT"
 
 if [ "${LOCAL_BUILD}" = "true" ]; then
-  if [ ! $(which container-builder-local) ]; then
-    echo "The container-builder-local tool is required to perform a local build. To install it, run 'gcloud components install container-builder-local'"
+  if [ ! $(which cloud-build-local) ]; then
+    echo "The cloud-build-local tool is required to perform a local build. To install it, run 'gcloud components install cloud-build-local'"
     exit 1
   fi
-  container-builder-local --dryrun=false $BUILD_FLAGS
+  cloud-build-local --dryrun=false $BUILD_FLAGS
 else
-  gcloud container builds submit --timeout=25m $BUILD_FLAGS
+  gcloud builds submit --timeout=25m $BUILD_FLAGS
 fi
 
