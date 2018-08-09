@@ -95,9 +95,9 @@ root@c7b35e88ff93:/#
 ```
 
 ## Entry Point Features
-The entry point for the openjdk8 image is [docker-entrypoint.bash](https://github.com/GoogleCloudPlatform/openjdk-runtime/blob/master/openjdk8/src/main/docker/docker-entrypoint.bash), which does the processing of the passed command line arguments to look for an executable alternative or arguments to the default command (java).
+The entry point for the openjdk8 image is [docker-entrypoint.bash](https://github.com/GoogleCloudPlatform/openjdk-runtime/blob/master/openjdk-common/src/main/docker/docker-entrypoint.bash), which does the processing of the passed command line arguments to look for an executable alternative or arguments to the default command (java).
 
-If the default command (java) is used, then the entry point sources the [setup-env.d/](https://github.com/GoogleCloudPlatform/openjdk-runtime/blob/master/openjdk8/src/main/docker/setup-env.d/), which looks for supported features to be enabled and/or configured.  The following table indicates the environment variables that may be used to enable/disable/configure features, any default values if they are not set:
+If the default command (java) is used, then the entry point sources the [setup-env.d/](https://github.com/GoogleCloudPlatform/openjdk-runtime/tree/master/openjdk-common/src/main/docker/setup-env.d), which looks for supported features to be enabled and/or configured.  The following table indicates the environment variables that may be used to enable/disable/configure features, any default values if they are not set:
 
 |Env Var                             | Description         | Type     | Default                                     |
 |------------------------------------|---------------------|----------|---------------------------------------------|
