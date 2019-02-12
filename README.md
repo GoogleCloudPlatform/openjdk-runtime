@@ -18,7 +18,7 @@ When using App Engine Flexible, you can use the runtime without worrying about D
 runtime: java
 env: flex
 ```
-The runtime image `gcr.io/google-appenine/openjdk:8` will be automatically selected if you are attempting to deploy a JAR (`*.jar` file).
+The runtime image `gcr.io/google-appengine/openjdk:8` will be automatically selected if you are attempting to deploy a JAR (`*.jar` file).
 
 To select a jdk version, use the `runtime_config.jdk` field in app.yaml. Supported JDK versions include `openjdk8` and `openjdk9`.
 ```yaml
