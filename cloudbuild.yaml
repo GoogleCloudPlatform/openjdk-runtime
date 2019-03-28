@@ -3,7 +3,9 @@
 
 steps:
 # Build the openjdk image
-- name: 'gcr.io/cloud-builders/mvn:3.3.9-jdk-8'
+- name: gcr.io/cloud-builders/docker
+  args: ['build', '.', '-f', 'Dockerfile.builder', '-t', 'builder']
+- name: 'builder'
   args:
   - 'clean'
   - 'install'
