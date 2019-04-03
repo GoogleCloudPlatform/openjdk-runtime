@@ -16,10 +16,10 @@ $ mvn clean install
 # only build the openjdk:8 image
 $ mvn clean install --also-make --projects openjdk8
 
-# only build the openjdk:9 image
-$ mvn clean install --also-make --projects openjdk9
+# only build the openjdk:11 image
+$ mvn clean install --also-make --projects openjdk11
 ```
-These commands build the `openjdk` image with tags for each JDK version (`openjdk:8` and `openjdk:9`).
+These commands build the `openjdk` image with tags for each JDK version (`openjdk:8` and `openjdk:11`).
 
 ### Cloud build
 To build using the [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/overview), 

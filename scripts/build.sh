@@ -20,7 +20,7 @@ usage() {
   echo "Usage: ${0} <args>"
   echo "  where <args> include:"
   echo "             -p|--publishing-project <publishing_project> - GCP project to use for publishing. Used to generate the destination docker repository name in gcr.io"
-  echo "             -m|--module             <module_to_build>    - one of {openjdk8, openjdk9}"
+  echo "             -m|--module             <module_to_build>    - one of {openjdk8, openjdk11}"
   echo "           [ -t|--tag-suffix ]       <tag_suffix>         - suffix for the tag that is applied to the built image"
   echo "           [ -s|--staging-project ]  <staging_project>    - GCP project to use for staging images. If not provided, the publishing project will be used."
   echo "           [ -l|--local ]                                 - runs the build locally"
@@ -68,8 +68,8 @@ fi
 
 if [ "${MODULE}" == "openjdk8" ]; then
   TAG_PREFIX="8"
-elif [ "${MODULE}" == "openjdk9" ]; then
-  TAG_PREFIX="9"
+elif [ "${MODULE}" == "openjdk11" ]; then
+  TAG_PREFIX="11"
 else
   echo "${MODULE} is not a supported module"
   usage

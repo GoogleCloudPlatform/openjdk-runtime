@@ -7,11 +7,11 @@ schemaVersion: 1.0.0
 commandTests:
 - name: 'correct java version is installed'
   command: ['java', '-version']
-  expectedError: ['openjdk version "${openjdk.version.major}-Debian"']
+  expectedError: ['openjdk version "${openjdk.version.major}']
 - name: 'correct javac version is installed'
   command: ['javac', '-version']
-  expectedOut: ['javac ${openjdk.version.major}-Debian']
-- name: 'compilation of openjdk9 code works'
-  setup: [['chmod', '+x', '/workspace/jdk9-compilation-test/compile-and-run.sh']]
-  command: ['/workspace/jdk9-compilation-test/compile-and-run.sh', '/workspace/jdk9-compilation-test']
+  expectedOut: ['javac ${openjdk.version.major}']
+- name: 'compilation of openjdk11 code works'
+  setup: [['chmod', '+x', '/workspace/jdk11-compilation-test/compile-and-run.sh']]
+  command: ['/workspace/jdk11-compilation-test/compile-and-run.sh', '/workspace/jdk11-compilation-test']
   expectedOut: ['Greetings World!']
