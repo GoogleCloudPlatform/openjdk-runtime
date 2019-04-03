@@ -1,7 +1,7 @@
 | Image     | Build Status  |
 | :---      | :---:         |
 | ![Stability](https://img.shields.io/badge/openjdk:8-stable-green.svg) | ![Build Status](http://storage.googleapis.com/java-runtimes-kokoro-build-badges/openjdk8-master.png) |
-| ![Stability](https://img.shields.io/badge/openjdk:9-unstable-orange.svg) | ![Build Status](http://storage.googleapis.com/java-runtimes-kokoro-build-badges/openjdk9-master.png) |
+| ![Stability](https://img.shields.io/badge/openjdk:11-unstable-orange.svg) | ![Build Status](http://storage.googleapis.com/java-runtimes-kokoro-build-badges/openjdk11-master.png) |
 
 # Google Cloud Platform OpenJDK Docker Image
 
@@ -10,7 +10,7 @@ This repository contains the source for the Google-maintained OpenJDK [docker](h
 ## Repository/Tag Details
 Supported images/tags include:
 * `gcr.io/google-appengine/openjdk:8`, also mirrored at `launcher.gcr.io/google/openjdk8` 
-* `gcr.io/google-appengine/openjdk:9` (currently in beta)
+* `gcr.io/google-appengine/openjdk:11` (currently in beta)
 
 ## App Engine Flexible Environment
 When using App Engine Flexible, you can use the runtime without worrying about Docker by specifying `runtime: java` in your `app.yaml`:
@@ -20,7 +20,7 @@ env: flex
 ```
 The runtime image `gcr.io/google-appenine/openjdk:8` will be automatically selected if you are attempting to deploy a JAR (`*.jar` file).
 
-To select a jdk version, use the `runtime_config.jdk` field in app.yaml. Supported JDK versions include `openjdk8` and `openjdk9`.
+To select a jdk version, use the `runtime_config.jdk` field in app.yaml. Supported JDK versions include `openjdk8` and `openjdk11`.
 ```yaml
 runtime: java
 env: flex

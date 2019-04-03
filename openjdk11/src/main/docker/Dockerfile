@@ -21,14 +21,14 @@ ENV GAE_IMAGE_NAME ${project.artifactId}
 ENV GAE_IMAGE_LABEL ${docker.tag.long}
 
 RUN \
- # add debian stretch-backports repo in order to install openjdk-9
+ # add debian stretch-backports repo in order to install openjdk11
  echo 'deb http://httpredir.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/stretch-backports.list \
 
  && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
     # install the jdk and its dependencies
     ca-certificates-java \
-    openjdk-${openjdk.version.major}-jdk-headless=${openjdk.version}'~*' \
+    openjdk-${openjdk.version.major}-jdk-headless=${openjdk.version}'*' \
     # procps is used in the jvm shutdown hook
     procps \
     # other system utilities
