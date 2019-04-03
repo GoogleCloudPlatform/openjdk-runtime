@@ -24,12 +24,12 @@
     <version>0.1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <name>Google App Engine Image for OpenJDK (openjdk9)</name>
-  <artifactId>openjdk9</artifactId>
+  <name>Google App Engine Image for OpenJDK (openjdk11)</name>
+  <artifactId>openjdk11</artifactId>
   <packaging>pom</packaging>
 
   <properties>
-    <openjdk.version.major>9</openjdk.version.major>
+    <openjdk.version.major>11</openjdk.version.major>
     <openjdk.version.minor></openjdk.version.minor> <!-- leave empty for latest JDK update -->
     <openjdk.version>${openjdk.version.major}${openjdk.version.minor}</openjdk.version>
     <docker.appengine.image>gcr.io/google-appengine/debian9</docker.appengine.image>
@@ -98,7 +98,7 @@
           </execution>
           <!-- Execute structure tests specific to this module -->
           <execution>
-            <id>openjdk9-structure-test</id>
+            <id>openjdk11-structure-test</id>
             <phase>integration-test</phase>
             <goals>
               <goal>exec</goal>
@@ -109,7 +109,7 @@
               <arguments>
                 <argument>${docker.image.name}</argument>
                 <argument>${project.build.testOutputDirectory}</argument>
-                <argument>${project.build.testOutputDirectory}/openjdk9-structure.yaml</argument>
+                <argument>${project.build.testOutputDirectory}/openjdk11-structure.yaml</argument>
               </arguments>
             </configuration>
           </execution>
