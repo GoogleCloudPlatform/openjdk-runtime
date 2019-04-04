@@ -12,5 +12,5 @@ fi
 source ./scripts/build.sh ${params}
 
 METADATA=$(pwd)/METADATA
-cd cd ${KOKORO_GFILE_DIR}/kokoro
+cd ${KOKORO_GFILE_DIR}/kokoro
 python note.py openjdk -m ${METADATA} -t ${TAG}
