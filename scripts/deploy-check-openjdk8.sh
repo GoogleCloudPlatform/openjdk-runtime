@@ -39,4 +39,4 @@ if [ "${SKIP_XRT}" = "true" ]; then
   skip_flag="$skip_flag --skip-xrt"
 fi
 
-python deploy_check.py -d ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_SOURCE_DIRECTORY} -l ${LANGUAGE} ${skip_flag}
+python deploy_check.py -d ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_DIRECTORY} -l ${LANGUAGE} ${skip_flag}
