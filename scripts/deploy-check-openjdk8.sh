@@ -3,6 +3,7 @@
 export KOKORO_GITHUB_DIR=${KOKORO_ROOT}/src/github
 source ${KOKORO_GFILE_DIR}/kokoro/common.sh
 
+mkdir -p ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_DIRECTORY}
 cd ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_DIRECTORY}
 
 mvn install --batch-mode -DskipTests -Pruntime.java,deploy.war
