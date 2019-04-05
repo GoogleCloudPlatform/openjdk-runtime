@@ -4,11 +4,11 @@ export KOKORO_GITHUB_DIR=${KOKORO_ROOT}/src/github
 source ${KOKORO_GFILE_DIR}/kokoro/common.sh
 
 mkdir -p ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_DIRECTORY}
-cd ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_DIRECTORY}
+cd ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_SOURCE_DIRECTORY}
 
 mvn install --batch-mode -DskipTests -Pruntime.java,deploy.war
 
-cat <<EOF > ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_DIRECTORY}/app.yaml
+cat <<EOF > ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_SOURCE_DIRECTORY}/app.yaml
 runtime: java
 env: flex
 runtime_config:
@@ -21,9 +21,9 @@ cd ${KOKORO_GFILE_DIR}/appengine/integration_tests
 
 sudo /usr/local/bin/pip install --upgrade -r requirements.txt
 
-if [ -f ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_DIRECTORY}/requirements.txt ]
+if [ -f ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_SOURCE_DIRECTORY}/requirements.txt ]
 then
-  sudo /usr/local/bin/pip install --upgrade -r ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_DIRECTORY}/requirements.txt
+  sudo /usr/local/bin/pip install --upgrade -r ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_SOURCE_DIRECTORY}/requirements.txt
 fi
 
 export DEPLOY_LATENCY_PROJECT='cloud-deploy-latency'
@@ -38,4 +38,4 @@ if [ "${SKIP_XRT}" = "true" ]; then
   skip_flag="$skip_flag --skip-xrt"
 fi
 
-python deploy_check.py -d ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_DIRECTORY} -l ${LANGUAGE} ${skip_flag}
+python deploy_check.py -d ${KOKORO_GITHUB_DIR}/${SAMPLE_APP_SOURCE_DIRECTORY} -l ${LANGUAGE} ${skip_flag}
