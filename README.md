@@ -108,6 +108,7 @@ If the default command (java) is used, then the entry point sources the [setup-e
 |`GAE_MEMORY_MB`                     | Available memory    | size     | Set by GAE or `/proc/meminfo`-400M          |
 |`HEAP_SIZE_RATIO`                   | Memory for the heap | percent  | 80                                          |
 |`HEAP_SIZE_MB`                      | Available heap      | size     | `${HEAP_SIZE_RATIO}`% of `${GAE_MEMORY_MB}` |
+|`MAX_HEAP_SIZE_MB`                  | Max calculated heap | size     | 20 * 1024                                   |
 |`JAVA_HEAP_OPTS`                    | JVM heap args       | JVM args | `-Xms${HEAP_SIZE_MB}M -Xmx${HEAP_SIZE_MB}M` |
 |`JAVA_GC_OPTS`                      | JVM GC args         | JVM args | `-XX:+UseG1GC` plus configuration           |
 |`JAVA_USER_OPTS`                    | JVM other args      | JVM args |                                             |
