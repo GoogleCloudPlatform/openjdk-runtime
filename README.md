@@ -101,10 +101,12 @@ If the default command (java) is used, then the entry point sources the [setup-e
 |Env Var                             | Description         | Type     | Default                                     |
 |------------------------------------|---------------------|----------|---------------------------------------------|
 |`DBG_ENABLE`                        | Stackdriver Debugger| boolean  | `true`                                      |
-|`PROFILER_ENABLE`                   | Stackdriver Profiler| boolean  | `false`                                     |
+|`PROFILER_ENABLE`                   | Stackdriver Profiler| boolean  | `false`[1]                                  |
 |`TMPDIR`                            | Temporary Directory | dirname  |                                             |
 |`JAVA_TMP_OPTS`                     | JVM tmpdir args     | JVM args | `-Djava.io.tmpdir=${TMPDIR}`                |
 |`GAE_MEMORY_MB`                     | Available memory    | size     | Set by GAE or `/proc/meminfo`-400M          |
+|`GAE_SERVICE`                       | Name of service     | string   | Set by GAE                                  |
+|`GAE_VERSION`                       | Version of service  | string   | Set by GAE                                  |
 |`HEAP_SIZE_RATIO`                   | Memory for the heap | percent  | 80                                          |
 |`HEAP_SIZE_MB`                      | Available heap      | size     | `${HEAP_SIZE_RATIO}`% of `${GAE_MEMORY_MB}` |
 |`JAVA_HEAP_OPTS`                    | JVM heap args       | JVM args | `-Xms${HEAP_SIZE_MB}M -Xmx${HEAP_SIZE_MB}M` |
@@ -114,6 +116,8 @@ If the default command (java) is used, then the entry point sources the [setup-e
 |`SHUTDOWN_LOGGING_THREAD_DUMP`      | Shutdown thread dump| boolean  | `false`                                     |
 |`SHUTDOWN_LOGGING_HEAP_INFO`        | Shutdown heap info  | boolean  | `false`                                     |
 |`SHUTDOWN_LOGGING_SAMPLE_THRESHOLD` | Shutdown sampling   | percent  | 100                                         |
+
+[1]: To enable Stackdriver Profiler, the service name must be specified, either using `GAE_SERVICE` or `K_SERVICE`. The service version may also be specified using `GAE_VERSION` or `K_REVISION`.
 
 If not explicitly set, `JAVA_OPTS` is defaulted to 
 ```
