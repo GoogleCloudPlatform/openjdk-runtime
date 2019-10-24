@@ -29,3 +29,5 @@ script: mvn --batch-mode clean verify
 branches:
   only:
   - master
+
+dist: trusty
