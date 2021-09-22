@@ -85,10 +85,10 @@ fi
 
 # export TAG, IMAGE for use in downstream scripts
 export TAG="${TAG_PREFIX}-${TAG_SUFFIX}"
-export IMAGE="gcr.io/${PUBLISHING_PROJECT}/${RUNTIME_NAME}:${TAG}"
+export IMAGE="us-docker.pkg.dev/${PUBLISHING_PROJECT}/docker/phc-docker-support/${RUNTIME_NAME}:${TAG}"
 echo "IMAGE: $IMAGE"
 
-STAGING_IMAGE="gcr.io/${STAGING_PROJECT}/${RUNTIME_NAME}_staging:${TAG}"
+STAGING_IMAGE="us-docker.pkg.dev/${STAGING_PROJECT}/docker/phc-docker-support/${RUNTIME_NAME}_staging:${TAG}"
 
 # build and test the runtime image
 BUILD_FLAGS="--config $PROJECT_ROOT/cloudbuild.yaml"
