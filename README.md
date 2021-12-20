@@ -9,7 +9,7 @@ This repository contains the source for the Google-maintained OpenJDK [docker](h
 
 ## Repository/Tag Details
 Supported images/tags include:
-* `gcr.io/google-appengine/openjdk:8`, also mirrored at `launcher.gcr.io/google/openjdk8` 
+* `gcr.io/google-appengine/openjdk:8`
 
 ## App Engine Flexible Environment
 When using App Engine Flexible, you can use the runtime without worrying about Docker by specifying `runtime: java` in your `app.yaml`:
