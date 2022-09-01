@@ -60,8 +60,8 @@ commandTests:
   expectedOutput: ['OK']
   exitCode: 0
 - name: 'ensure blacklisted packages are not installed as a dependency accidentally'
-  setup: [[ 'chmod', '+x', '/workspace/test-blacklisted-pkgs.bash' ]]
-  command: [ '/workspace/test-blacklisted-pkgs.bash' ]
+  setup: [[ 'chmod', '+x', '/workspace/test-denylisted-pkgs.bash' ]]
+  command: [ '/workspace/test-denylisted-pkgs.bash' ]
   excludedOutput: ['NOT OK.* is installed']
 - name: 'Debian 9'
   command: [ 'cat', '/etc/debian_version' ]
