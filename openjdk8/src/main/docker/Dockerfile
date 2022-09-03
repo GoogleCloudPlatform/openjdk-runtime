@@ -37,6 +37,37 @@ RUN \
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
 
+# Below code is a temporary fix to patch CVE-2022-34169 and address b/244448607.
+# It should be removed once openjdk-8-8u342-b07-1 is promoted to stable (strech) debian package source.  
+ARG JAVA_PATCH_SRC=/tmp/java/src
+ARG JAVA_PATCH_OUTPUT=/tmp/java/output
+ARG JAVA_PATCH_BACKUP=/tmp/java/backup
+ARG ORIG_RT_JAR_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar
+
+RUN mkdir -p $JAVA_PATCH_SRC \
+    && mkdir -p $JAVA_PATCH_OUTPUT \
+    && mkdir -p $JAVA_PATCH_BACKUP 
+
+# COPY patched files
+COPY ConstantPoolGen.java $JAVA_PATCH_SRC/com/sun/org/apache/bcel/internal/generic/
+COPY ConstantPool.java $JAVA_PATCH_SRC/com/sun/org/apache/bcel/internal/classfile/
+
+# Build and Replace
+RUN cp $ORIG_RT_JAR_PATH $JAVA_PATCH_BACKUP\original_rt.jar \
+    # Unpack existing rt.jar to the output folder (used as the base drop folder)
+    && cd $JAVA_PATCH_OUTPUT \
+    && jar xf /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar \
+    # Compile the patched files and drop them in the output folder
+    && cd $JAVA_PATCH_SRC \
+    && javac -d $JAVA_PATCH_OUTPUT -cp $ORIG_RT_JAR_PATH $(find * -name '*.java') \
+    # Pack the output folder which now has the new patched classes
+    && cd $JAVA_PATCH_OUTPUT \
+    && jar cvf $JAVA_PATCH_BACKUP/new_rt.jar . \
+    # Replace the live rt.jar with the new rt.jar
+    && cp $JAVA_PATCH_BACKUP/new_rt.jar $ORIG_RT_JAR_PATH
+    ## clean-up
+    #&& rm -rf /tmp/java
+
 # Add the Stackdriver Debugger libraries
 ADD https://storage.googleapis.com/cloud-debugger/appengine-java/current/cdbg_java_agent.tar.gz /opt/cdbg/
 # Add the Stackdriver Profiler libraries
