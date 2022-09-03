@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BLACKLIST="\
+DENYLIST="\
 jvm-7-avian-jre \
 java7-runtime-headless \
 python2.7-pyjavaproperties \
@@ -30,7 +30,7 @@ libnb-platform7-devel-java \
 uwsgi-plugin-jwsgi-openjdk-7"
 
 
-for PKG in $BLACKLIST;
+for PKG in $DENYLIST;
   do
    dpkg -l | grep '^.i' | grep $PKG > /dev/null && echo "NOT OK. $PKG is installed" || echo "OK. $PKG is not installed"
   done
