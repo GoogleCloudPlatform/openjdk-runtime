@@ -37,8 +37,8 @@ RUN \
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
 
-# Below code is a temporary fix to patch CVE-2022-34169 and address b/244448607.
-# It should be removed once openjdk-8-8u342-b07-1 is promoted to stable (strech) debian package source.  
+# Below code is a temporary fix to patch a bug  and address b/244448607.
+# It should be removed once openjdk-8-8u342-b07-1 is promoted to stable (strech) debian package source.
 ARG JAVA_PATCH_SRC=/tmp/java/src
 ARG JAVA_PATCH_OUTPUT=/tmp/java/output
 ARG JAVA_PATCH_BACKUP=/tmp/java/backup
@@ -46,14 +46,14 @@ ARG ORIG_RT_JAR_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar
 
 RUN mkdir -p $JAVA_PATCH_SRC \
     && mkdir -p $JAVA_PATCH_OUTPUT \
-    && mkdir -p $JAVA_PATCH_BACKUP 
+    && mkdir -p $JAVA_PATCH_BACKUP
 
 # COPY patched files
 COPY ConstantPoolGen.java $JAVA_PATCH_SRC/com/sun/org/apache/bcel/internal/generic/
 COPY ConstantPool.java $JAVA_PATCH_SRC/com/sun/org/apache/bcel/internal/classfile/
 
 # Build and Replace
-RUN cp $ORIG_RT_JAR_PATH $JAVA_PATCH_BACKUP\original_rt.jar \
+RUN cp $ORIG_RT_JAR_PATH $JAVA_PATCH_BACKUP/original_rt.jar \
     # Unpack existing rt.jar to the output folder (used as the base drop folder)
     && cd $JAVA_PATCH_OUTPUT \
     && jar xf /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar \
