@@ -25,7 +25,6 @@ RUN \
  && apt-get -y -q --no-install-recommends install \
     # install the jdk and its dependencies
     ca-certificates-java \
-    openjdk-${openjdk.version.major}-jdk-headless=${openjdk.version}'*' \
     # procps is used in the jvm shutdown hook
     procps \
     # other system utilities
@@ -36,6 +35,15 @@ RUN \
  # cleanup package manager caches
  && apt-get clean \
  && rm /var/lib/apt/lists/*_*
+
+ARG OPENJDK_PATH='/tmp/openjdk'
+ARG OPENJDK_OUT='/usr/lib/openjdk'
+RUN mkdir -p $OPENJDK_PATH \
+ && mkdir -p $OPENJDK_OUT
+RUN wget -O $OPENJDK_PATH/openjdk.tar.gz https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u345-b01/OpenJDK8U-jdk_x64_linux_hotspot_8u345b01.tar.gz \
+ && tar Cxfvz --file $OPENJDK_PATH/openjdk.tar.gz --directory $OPENJDK_OUT --no-same-owner \
+ && rm -rf $OPENJDK_PATH
+ENV PATH $OPENJDK_OUT/bin:$PATH
 
 # Add the Stackdriver Debugger libraries
 ADD https://storage.googleapis.com/cloud-debugger/appengine-java/current/cdbg_java_agent.tar.gz /opt/cdbg/
