@@ -24,7 +24,7 @@ RUN \
  apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
     # install the jdk and its dependencies
-    ca-certificates \
+    ca-certificates-java \
     # procps is used in the jvm shutdown hook
     procps \
     # other system utilities
