@@ -42,18 +42,17 @@ ARG OPENJDK_VER='jdk8u345-b01'
 ARG OPENJDK_VER_NAME='8u345b01'
 ARG OPENJDK_TEMP_PATH='/tmp/openjdk'
 ARG OPENJDK_OUT='/usr/lib/openjdk'
-RUN mkdir -p $OPENJDK_TEMP_PATH \
-&& mkdir -p $OPENJDK_OUT
-RUN wget -O $OPENJDK_TEMP_PATH/openjdk.tar.gz https://github.com/adoptium/temurin8-binaries/releases/download/$OPENJDK_VER/OpenJDK8U-jdk_x64_linux_hotspot_$OPENJDK_VER_NAME.tar.gz \
-&& tar Cxfvz --file $OPENJDK_TEMP_PATH/openjdk.tar.gz --directory $OPENJDK_TEMP_PATH --no-same-owner \
-&& rm $OPENJDK_TEMP_PATH/openjdk.tar.gz \
-&& cp -r $OPENJDK_TEMP_PATH/$OPENJDK_VER/* $OPENJDK_OUT \
-&& rm -rf $OPENJDK_PATH
-
 ENV PATH $OPENJDK_OUT/bin:$PATH
 ENV JAVA_HOME $OPENJDK_OUT
 
-RUN ln -s $OPENJDK_OUT/bin/* /usr/local/bin/
+RUN mkdir -p $OPENJDK_TEMP_PATH \
+&& mkdir -p $OPENJDK_OUT \
+&& wget -O $OPENJDK_TEMP_PATH/openjdk.tar.gz https://github.com/adoptium/temurin8-binaries/releases/download/$OPENJDK_VER/OpenJDK8U-jdk_x64_linux_hotspot_$OPENJDK_VER_NAME.tar.gz \
+&& tar Cxfvz --file $OPENJDK_TEMP_PATH/openjdk.tar.gz --directory $OPENJDK_TEMP_PATH --no-same-owner \
+&& rm $OPENJDK_TEMP_PATH/openjdk.tar.gz \
+&& cp -r $OPENJDK_TEMP_PATH/$OPENJDK_VER/* $OPENJDK_OUT \
+&& rm -rf $OPENJDK_PATH \
+&& ln -s $OPENJDK_OUT/bin/* /usr/local/bin/
 
 # Add the Stackdriver Debugger libraries
 ADD https://storage.googleapis.com/cloud-debugger/appengine-java/current/cdbg_java_agent.tar.gz /opt/cdbg/
