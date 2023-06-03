@@ -20,8 +20,8 @@ ENV OPENJDK_VERSION ${openjdk.version}
 ENV GAE_IMAGE_NAME ${project.artifactId}
 ENV GAE_IMAGE_LABEL ${docker.tag.long}
 
-RUN \
- apt-get -q update \
+RUN echo 'deb http://archive.debian.org/debian stretch main' > /etc/apt/sources.list \
+ && apt-get -q update \
  && apt-get -y -q --no-install-recommends install \
     # install the jdk and its dependencies
     ca-certificates-java \
