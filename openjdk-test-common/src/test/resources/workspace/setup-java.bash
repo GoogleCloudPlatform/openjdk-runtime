@@ -64,12 +64,11 @@ HEAP_SIZE_MB=500
 JAVA_TMP_OPTS=-XX:Temp
 JAVA_HEAP_OPTS=-XX:Heap
 JAVA_GC_OPTS=-XX:GC
-DBG_AGENT=debug
 PROFILER_AGENT=profiler
 JAVA_USER_OPTS=user
 
 source /setup-env.d/30-java-env.bash
-if [ "$(echo $JAVA_OPTS | xargs)" != "-showversion -XX:Temp debug profiler -XX:Heap -XX:GC user" ]; then
+if [ "$(echo $JAVA_OPTS | xargs)" != "-showversion -XX:Temp profiler -XX:Heap -XX:GC user" ]; then
   echo "Bad opts JAVA_OPTS='$(echo $JAVA_OPTS | xargs)'"
   exit 1
 fi
@@ -82,7 +81,6 @@ HEAP_SIZE_MB=500
 JAVA_TMP_OPTS=-XX:Temp
 JAVA_HEAP_OPTS=-XX:Heap
 JAVA_GC_OPTS=-XX:GC
-DBG_AGENT=debug
 JAVA_USER_OPTS=user
 JAVA_OPTS=-XX:options
 
