@@ -10,7 +10,3 @@ if [ -n "${TAG_SUFFIX}" ]; then
 fi
 
 source ./scripts/build.sh ${params}
-
-METADATA=$(pwd)/METADATA
-cd ${KOKORO_GFILE_DIR}/kokoro
-python note.py openjdk -m ${METADATA} -t ${TAG}
