@@ -1,7 +1,3 @@
-| Image     | Build Status  |
-| :---      | :---:         |
-| ![Stability](https://img.shields.io/badge/openjdk:8-stable-green.svg) | ![Build Status](http://storage.googleapis.com/java-runtimes-kokoro-build-badges/openjdk8-master.png) |
-| ![Stability](https://img.shields.io/badge/openjdk:11-unstable-orange.svg) | ![Build Status](http://storage.googleapis.com/java-runtimes-kokoro-build-badges/openjdk11-master.png) |
 
 # Google Cloud Platform OpenJDK Docker Image
 
